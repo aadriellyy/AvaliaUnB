@@ -52,7 +52,6 @@ public class TelaAvaliacao extends javax.swing.JPanel {
         jButton5 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         lblAvaliacao1 = new javax.swing.JPanel();
         jTextField5 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -68,7 +67,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        lblBusca.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
+        lblBusca.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisar Professor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
         lblBusca.setToolTipText("Buscar por professor");
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
@@ -122,17 +121,17 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(lblBuscaLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(28, 28, 28)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(66, 66, 66)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(93, 93, 93)
                                 .addComponent(jButton4)
                                 .addGap(36, 36, 36)
                                 .addComponent(jButton3)
-                                .addGap(0, 111, Short.MAX_VALUE)))
+                                .addGap(0, 123, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(lblBuscaLayout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -171,7 +170,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblAvaliacao.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
+        lblAvaliacao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avaliar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,10 +184,13 @@ public class TelaAvaliacao extends javax.swing.JPanel {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/marca-paginas.png"))); // NOI18N
         jButton5.setText("Salvar");
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/circulo-cruzado.png"))); // NOI18N
         jButton7.setText("Cancelar");
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/deletar-usuario.png"))); // NOI18N
         jButton8.setText("Excluir");
 
         javax.swing.GroupLayout lblAvaliacaoLayout = new javax.swing.GroupLayout(lblAvaliacao);
@@ -200,7 +202,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addGroup(lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(212, Short.MAX_VALUE))
+                        .addContainerGap(225, Short.MAX_VALUE))
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -210,9 +212,9 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                         .addGap(69, 69, 69))
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
                         .addComponent(jButton5)
-                        .addGap(253, 253, 253)
-                        .addComponent(jButton7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
+                        .addGap(213, 213, 213)
                         .addComponent(jButton8)
                         .addGap(56, 56, 56))))
         );
@@ -234,9 +236,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel6.setText("Minhas Avaliações");
-
-        lblAvaliacao1.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
+        lblAvaliacao1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Minhas Avaliações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,6 +250,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/editar-arquivo.png"))); // NOI18N
         jButton10.setText("Editar");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,8 +258,10 @@ public class TelaAvaliacao extends javax.swing.JPanel {
             }
         });
 
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/circulo-cruzado.png"))); // NOI18N
         jButton11.setText("Cancelar");
 
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/deletar-usuario.png"))); // NOI18N
         jButton12.setText("Excluir");
 
         javax.swing.GroupLayout lblAvaliacao1Layout = new javax.swing.GroupLayout(lblAvaliacao1);
@@ -270,7 +273,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addGroup(lblAvaliacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(lblAvaliacao1Layout.createSequentialGroup()
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(212, Short.MAX_VALUE))
+                        .addContainerGap(225, Short.MAX_VALUE))
                     .addGroup(lblAvaliacao1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -282,7 +285,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                         .addComponent(jButton10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton11)
-                        .addGap(263, 263, 263)
+                        .addGap(199, 199, 199)
                         .addComponent(jButton12)
                         .addGap(56, 56, 56))))
         );
@@ -313,9 +316,6 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblBusca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblAvaliacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(lblAvaliacao1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -326,9 +326,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addComponent(lblBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jLabel6)
-                .addGap(5, 5, 5)
+                .addGap(18, 18, 18)
                 .addComponent(lblAvaliacao1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -382,7 +380,6 @@ public class TelaAvaliacao extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;

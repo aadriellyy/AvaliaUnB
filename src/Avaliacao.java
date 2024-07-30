@@ -1,6 +1,3 @@
-package classes;
-
-import java.sql.Date;
 import java.util.List;
 
 public class Avaliacao {
@@ -78,3 +75,4 @@ public class Avaliacao {
     }
 
 }
+
