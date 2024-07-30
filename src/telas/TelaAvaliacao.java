@@ -68,7 +68,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        lblBusca.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
+        lblBusca.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
         lblBusca.setToolTipText("Buscar por professor");
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
@@ -171,7 +171,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblAvaliacao.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
+        lblAvaliacao.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,7 +236,7 @@ public class TelaAvaliacao extends javax.swing.JPanel {
 
         jLabel6.setText("Minhas Avaliações");
 
-        lblAvaliacao1.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
+        lblAvaliacao1.setBorder(javax.swing.BorderFactory.createBevelBorder((Integer) null));
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
