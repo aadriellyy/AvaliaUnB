@@ -2,17 +2,16 @@ package classes;
 
 import java.util.*;
 
-public class Aluno {
-    private int id;
+public class Aluno extends Pessoa{
+    static int id;
     private String matricula;
-    private String nome;
     private String curso;
     private String senha;
     private List<Avaliacao> avaliacoes;
 
-    public Aluno(String matricula, String nome, String curso, String senha) {
+    public Aluno(String nome, String departamento, String email, String matricula, String curso, String senha) {
+        super(nome, departamento, email);
         this.matricula = matricula;
-        this.nome = nome;
         this.curso = curso;
         this.senha = senha;
         this.avaliacoes = new ArrayList<>();
@@ -29,14 +28,6 @@ public class Aluno {
 
     public String getMatricula() {
         return matricula;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public void setCurso(String curso) {

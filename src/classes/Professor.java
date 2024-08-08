@@ -5,11 +5,18 @@ public class Professor extends Pessoa{
     
     private ArrayList <String> horarios;
     private ArrayList <Disciplina> listaDisciplinas;
-    private int id;
+    static int id;
     private ArrayList <Avaliacao> listaAvaliacoes;
     
-    public int getId (String nome, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
-        return this.id;
+    
+    public Professor(){}
+    
+    public Professor(String nome, String departamento, String email){
+        super(nome, departamento, email);
+    }
+    
+    public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
+        return this;
     }
     public void setId(int id) {
         this.id= id;
@@ -20,9 +27,11 @@ public class Professor extends Pessoa{
     public void setHorarios (String horario) {
         this.horarios.add(horario);
     }
+    
     public ArrayList<Disciplina> getDisciplinas(){
         return this.listaDisciplinas;
     }
+    
     public void setDisciplinas (Disciplina disciplina) {
         listaDisciplinas.add(disciplina);
     }
@@ -30,6 +39,7 @@ public class Professor extends Pessoa{
     public void removeAvaliacao(Avaliacao avaliacao) {
         this.listaAvaliacoes.remove(avaliacao);
     }
+    
     public void recebeAvaliacao (Avaliacao avaliacao) {
         this.listaAvaliacoes.add(avaliacao);
     }
@@ -41,7 +51,7 @@ public class Professor extends Pessoa{
         else {
             int notas= 0;
             for (Avaliacao avaliacao : this.listaAvaliacoes) {
-                notas+=avaliacao.getNota();
+                notas+=avaliacao.getLike();
             } 
             return notas/this.listaAvaliacoes.size();
         }

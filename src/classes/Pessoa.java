@@ -6,14 +6,12 @@ public class Pessoa {
     private String name;
     private String departamento;
     private String email;
-    static int id;
 
     /*Construtor da classe*/
     public Pessoa(String name, String departamento, String email){
         this.name = name;
         this.departamento = departamento;
         this.email = email;
-        id++;
     }
 
     public Pessoa(){}

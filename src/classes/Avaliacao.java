@@ -1,24 +1,26 @@
 package classes;
 
-import java.sql.Date;
 import java.util.List;
 
 public class Avaliacao {
 
     private int id;
-    private int nota;
     private String feedback;
     private int like;
     private final Aluno aluno;
     private List<Comentario> comentarios;
+    private Professor professor;
+    private Disciplina disciplina;
 
     //construtor
-    public Avaliacao (int nota, String feedback, int like, Aluno aluno){
-        this.nota = nota;
+    public Avaliacao (String feedback, int like, Aluno aluno, Professor professor, Disciplina disciplina){
         this.feedback = feedback;
         this.like = like;
         this.aluno = aluno;
         id ++;
+        this.professor= professor;
+        this.disciplina = disciplina;
+        this.professor.recebeAvaliacao(this);
     }
 
     public void removeAvaliacao(Professor professor, Aluno aluno) {
@@ -32,21 +34,13 @@ public class Avaliacao {
     }
 
     public void inserirAvaliacao(Aluno aluno, Professor professor, String feedback, int like) {
-        Avaliacao novaAvaliacao = new Avaliacao(this.id, feedback, like, aluno);
+        Avaliacao novaAvaliacao = new Avaliacao(feedback, like, aluno, professor, disciplina);
         professor.recebeAvaliacao(novaAvaliacao);
         aluno.adicionaAvaliacao(novaAvaliacao);
     }
 
     public int getId(){
         return this.id;
-    }
-
-    public void setNota(int nota){
-        this.nota = nota;
-    }
-
-    public int getNota(){
-        return this.nota;
     }
 
     public void setFeedback(String feedback){
