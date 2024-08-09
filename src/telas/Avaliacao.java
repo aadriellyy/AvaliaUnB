@@ -27,8 +27,8 @@ public class Avaliacao extends javax.swing.JFrame {
     private void initComponents() {
 
         lblBusca = new javax.swing.JPanel();
-        lblNota = new javax.swing.JTextField();
-        txtNomeProfessor = new javax.swing.JTextField();
+        txtNota = new javax.swing.JTextField();
+        txtNomePesquisa = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         lblFiltrar = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -41,19 +41,19 @@ public class Avaliacao extends javax.swing.JFrame {
         lblNome2 = new javax.swing.JLabel();
         lblNome3 = new javax.swing.JLabel();
         lblNome4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNomeProfessor = new javax.swing.JTextField();
+        txtDepartamento = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        lsMaterias = new javax.swing.JList<>();
+        btnAvaliar = new javax.swing.JButton();
+        btnCancelarPesquisa = new javax.swing.JButton();
+        btnExibir = new javax.swing.JButton();
         lblAvaliacao = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        txtFeedback = new javax.swing.JTextField();
+        cmbNota = new javax.swing.JComboBox<>();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelarAvaliacao = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         lblNome5 = new javax.swing.JLabel();
         lblNome6 = new javax.swing.JLabel();
 
@@ -62,15 +62,15 @@ public class Avaliacao extends javax.swing.JFrame {
         lblBusca.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisar Professor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
         lblBusca.setToolTipText("Buscar por professor");
 
-        lblNota.addActionListener(new java.awt.event.ActionListener() {
+        txtNota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblNotaActionPerformed(evt);
+                txtNotaActionPerformed(evt);
             }
         });
 
-        txtNomeProfessor.addActionListener(new java.awt.event.ActionListener() {
+        txtNomePesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeProfessorActionPerformed(evt);
+                txtNomePesquisaActionPerformed(evt);
             }
         });
 
@@ -89,7 +89,7 @@ public class Avaliacao extends javax.swing.JFrame {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departamento" }));
 
-        btnOk.setBackground(new java.awt.Color(204, 255, 204));
+        btnOk.setBackground(new java.awt.Color(0, 204, 51));
         btnOk.setText("OK");
 
         lblNome.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -117,13 +117,13 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addComponent(lblNome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addGap(52, 52, 52)
                         .addComponent(lblNome1)
                         .addGap(18, 18, 18)
-                        .addComponent(lblNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 108, Short.MAX_VALUE))
         );
         lblBuscaLayout.setVerticalGroup(
@@ -139,10 +139,10 @@ public class Avaliacao extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
-                    .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(lblNome1)
-                    .addComponent(lblNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -159,26 +159,26 @@ public class Avaliacao extends javax.swing.JFrame {
         lblNome4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome4.setText("Matérias:");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        lsMaterias.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(lsMaterias);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
-        jButton2.setText("Avaliar");
+        btnAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
+        btnAvaliar.setText("Avaliar");
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
-        jButton3.setText("Cancelar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelarPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
+        btnCancelarPesquisa.setText("Cancelar");
+        btnCancelarPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnCancelarPesquisaActionPerformed(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/pesquisar-avaliacao.png"))); // NOI18N
-        jButton4.setText("Exibir avaliações");
+        btnExibir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/pesquisar-avaliacao.png"))); // NOI18N
+        btnExibir.setText("Exibir avaliações");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -194,7 +194,7 @@ public class Avaliacao extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblNome2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblNome4)
                                 .addGap(18, 18, 18)
@@ -202,14 +202,14 @@ public class Avaliacao extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblNome3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnAvaliar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(btnCancelarPesquisa)
                         .addGap(111, 111, 111)
-                        .addComponent(jButton4)
+                        .addComponent(btnExibir)
                         .addGap(52, 52, 52))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -223,44 +223,44 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNome2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNome3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNome4)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnAvaliar)
+                    .addComponent(btnCancelarPesquisa)
+                    .addComponent(btnExibir))
                 .addContainerGap())
         );
 
         lblAvaliacao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avaliar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtFeedback.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtFeedbackActionPerformed(evt);
             }
         });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbNota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/salvar-avaliacao.png"))); // NOI18N
-        jButton5.setText("Salvar");
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/salvar-avaliacao.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
-        jButton7.setText("Cancelar");
+        btnCancelarAvaliacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
+        btnCancelarAvaliacao.setText("Cancelar");
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/excluir-avaliacao.png"))); // NOI18N
-        jButton8.setText("Excluir");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/excluir-avaliacao.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnExcluirActionPerformed(evt);
             }
         });
 
@@ -282,18 +282,18 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblNome6)
                         .addGap(29, 29, 29)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblAvaliacaoLayout.createSequentialGroup()
-                        .addComponent(jTextField2)
+                        .addComponent(txtFeedback)
                         .addContainerGap())
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addComponent(jButton5)
+                        .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton8)
+                        .addComponent(btnExcluir)
                         .addGap(213, 213, 213)
-                        .addComponent(jButton7)
+                        .addComponent(btnCancelarAvaliacao)
                         .addGap(43, 43, 43))))
         );
         lblAvaliacaoLayout.setVerticalGroup(
@@ -303,14 +303,14 @@ public class Avaliacao extends javax.swing.JFrame {
                 .addGroup(lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome5)
                     .addComponent(lblNome6)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton8)
-                    .addComponent(jButton7))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelarAvaliacao))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -341,29 +341,29 @@ public class Avaliacao extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblNotaActionPerformed
+    private void txtNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lblNotaActionPerformed
+    }//GEN-LAST:event_txtNotaActionPerformed
 
-    private void txtNomeProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeProfessorActionPerformed
+    private void txtNomePesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomePesquisaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeProfessorActionPerformed
+    }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeedbackActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtFeedbackActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnCancelarPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPesquisaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnCancelarPesquisaActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,24 +401,20 @@ public class Avaliacao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvaliar;
+    private javax.swing.JButton btnCancelarAvaliacao;
+    private javax.swing.JButton btnCancelarPesquisa;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnExibir;
     private javax.swing.JButton btnOk;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cmbNota;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JPanel lblAvaliacao;
     private javax.swing.JPanel lblBusca;
     private javax.swing.JLabel lblFiltrar;
@@ -429,7 +425,11 @@ public class Avaliacao extends javax.swing.JFrame {
     private javax.swing.JLabel lblNome4;
     private javax.swing.JLabel lblNome5;
     private javax.swing.JLabel lblNome6;
-    private javax.swing.JTextField lblNota;
+    private javax.swing.JList<String> lsMaterias;
+    private javax.swing.JTextField txtDepartamento;
+    private javax.swing.JTextField txtFeedback;
+    private javax.swing.JTextField txtNomePesquisa;
     private javax.swing.JTextField txtNomeProfessor;
+    private javax.swing.JTextField txtNota;
     // End of variables declaration//GEN-END:variables
 }

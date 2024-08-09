@@ -53,6 +53,11 @@ public class Aluno extends Pessoa{
     public void setSenha(String senha){
         this.senha = senha;
     }
+    
+    public String getSenha(){
+        return senha;
+    }
+    
 
     public void removeAvaliacao(Avaliacao avaliacao) {
         this.avaliacoes.remove(avaliacao);
