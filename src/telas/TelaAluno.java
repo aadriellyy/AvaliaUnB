@@ -5,6 +5,10 @@
 package telas;
 
 import classes.Aluno;
+import classes.MySQLConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -412,13 +416,28 @@ public class TelaAluno extends javax.swing.JFrame {
         }
         else{
             Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha);
-            listaAlunos.add(aluno);
-            JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!", "mensagem", JOptionPane.INFORMATION_MESSAGE );
+            try (Connection conn = MySQLConnection.getConnection()) {
+                String sql = "INSERT INTO alunos (nome, email, senha, curso, departamento, matricula) VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, nome);
+                stmt.setString(2, email);
+                stmt.setString(3, senha);
+                stmt.setString(4, curso);
+                stmt.setString(5, departamento);
+                stmt.setString(6, matricula);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Erro ao salvar usuário: " + e.getMessage());
+            }
+            
+            this.limpar();
         }
         
-        this.limpar();
         this.habilitarBtn(true, true, false, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
+        
         
     }//GEN-LAST:event_btnSalvarActionPerformed
 

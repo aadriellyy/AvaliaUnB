@@ -16,6 +16,7 @@ public class Aluno extends Pessoa{
         this.senha = senha;
         this.avaliacoes = new ArrayList<>();
         id ++;
+        
     }
 
     public int getId() {
