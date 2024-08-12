@@ -6,9 +6,7 @@ package telas;
 
 import classes.Aluno;
 import classes.MySQLConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -352,39 +350,38 @@ public class TelaAluno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        if(this.txtMatricula.getText().equals("")){
+        
+        String matricula = txtMatricula.getText();
+        
+        if(matricula.equals("")){
             JOptionPane.showMessageDialog(null, "A matrícula deve ser informada!", "erro", JOptionPane.INFORMATION_MESSAGE );
+            return;
         }
-        else{
-            String matricula = txtMatricula.getText();
-            String nome = "";
-            String departamento = "";
-            String email = "";
-            String curso = "";
-            boolean matriculaAtiva = false;
+        
+        String query = "SELECT nome, departamento, email, curso FROM alunos WHERE matricula = ?";
+        
+        try(Connection conn = MySQLConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)){
             
-            for(Aluno alu: listaAlunos){
-                if(alu.getMatricula().equals(matricula)){
-                    matriculaAtiva = true;
-                    nome = alu.getNome();
-                    departamento = alu.getDepartamento();
-                    email = alu.getEmail();
-                    curso = alu.getCurso();
-                }
-            }
+            stmt.setString(1, matricula);
+            ResultSet rs = stmt.executeQuery();
             
-            if(matriculaAtiva){
-                this.txtNome.setText(nome);
-                this.txtMatricula.setText(matricula);
-                this.txtCurso.setText(curso);
-                this.txtDepartament.setText(departamento);
-                this.txtEmail.setText(email);
+            if(rs.next()){
+                txtNome.setText(rs.getString("nome"));
+                txtCurso.setText(rs.getString("curso"));
+                txtDepartament.setText(rs.getString("departamento"));
+                txtEmail.setText(rs.getString("email"));
             }
             else{
-                JOptionPane.showMessageDialog(null, "Aluno não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );
-                this.limpar();
-            }
+                JOptionPane.showMessageDialog(null, "Aluno não cadastrado!", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                limpar();
+            }   
         }
+        catch(SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao consultar o banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        
         this.txtMatricula.selectAll();
         this.txtMatricula.requestFocus();
     }//GEN-LAST:event_btnOkActionPerformed
@@ -442,15 +439,10 @@ public class TelaAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        if(listaAlunos.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Não há alunos cadastrados", "mensagem", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
-            this.limpar();
-            this.habilitarTexto(false, false, false, true, false, false);
-            this.habilitarBtn(false, false, false, true, true, false, false, true);
-            this.txtMatricula.requestFocus();
-        }
+        this.limpar();
+        this.habilitarTexto(false, false, false, true, false, false);
+        this.habilitarBtn(false, false, false, true, true, false, false, true);
+        this.txtMatricula.requestFocus();   
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
