@@ -36,11 +36,11 @@ public class telaLogin extends javax.swing.JFrame {
         lblMatricula = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         txtMatricula = new javax.swing.JTextField();
-        txtSenha = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         btnEntrar = new javax.swing.JButton();
         btnCadastrar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        txtSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login/cadastro");
@@ -78,6 +78,8 @@ public class telaLogin extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/imagens-login/avaliacao.png"))); // NOI18N
 
+        txtSenha.setText("jPasswordField1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,14 +92,14 @@ public class telaLogin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnCadastrar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEntrar))
-                        .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblMatricula)
-                    .addComponent(lblSenha))
+                    .addComponent(lblSenha)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(btnCadastrar)
+                            .addGap(96, 96, 96)
+                            .addComponent(btnEntrar))))
                 .addGap(180, 180, 180))
         );
         layout.setVerticalGroup(
@@ -174,12 +176,12 @@ public class telaLogin extends javax.swing.JFrame {
             new Avaliacao().setVisible(true);
         }
         else{
-            this.txtMatricula.setText("");
-            this.txtSenha.setText("");
             JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );
-
         }
        }
+       
+       this.txtMatricula.setText("");
+       this.txtSenha.setText("");
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
@@ -225,6 +227,6 @@ public class telaLogin extends javax.swing.JFrame {
     private javax.swing.JLabel lblMatricula;
     private javax.swing.JLabel lblSenha;
     private javax.swing.JTextField txtMatricula;
-    private javax.swing.JTextField txtSenha;
+    private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 }
