@@ -8,8 +8,6 @@ import classes.Aluno;
 import classes.MySQLConnection;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,7 +19,6 @@ public class TelaAluno extends javax.swing.JFrame {
     /**
      * Creates new form TelaAluno
      */
-    static ArrayList <Aluno> listaAlunos;
     
     public TelaAluno() {
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
@@ -29,7 +26,6 @@ public class TelaAluno extends javax.swing.JFrame {
         this.limpar();
         this.habilitarBtn(true, true, false, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
-        listaAlunos = new ArrayList();
     }
 
     /**
