@@ -127,6 +127,16 @@ public class telaLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private static String matriculaLogada;
+    
+    public static boolean matricula(String matriculaAtual){
+        if(matriculaAtual.equals(matriculaLogada)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
     public static boolean autenticar(String matricula, String senha){
         String sql = "SELECT * FROM alunos WHERE matricula=? and senha=?";
         

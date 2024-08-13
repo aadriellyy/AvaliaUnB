@@ -6,9 +6,7 @@ package telas;
 
 import classes.Aluno;
 import classes.MySQLConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +24,7 @@ public class TelaAluno extends javax.swing.JFrame {
     static ArrayList <Aluno> listaAlunos;
     
     public TelaAluno() {
+        //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();
         this.habilitarBtn(true, true, false, false, true, false, false, false);
@@ -40,7 +39,7 @@ public class TelaAluno extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     
-    private void habilitarTexto(boolean nome, boolean departamento,boolean email,boolean matricula, boolean curso, boolean senha){
+    private void habilitarTexto(boolean nome, boolean departamento,boolean email,boolean matricula, boolean curso, boolean senha){ //metodo para habilitar campos de texto
         this.txtNome.setEnabled(nome);
         this.txtDepartament.setEnabled(departamento);
         this.txtEmail.setEnabled(email);
@@ -49,7 +48,7 @@ public class TelaAluno extends javax.swing.JFrame {
         this.txtSenha.setEnabled(senha);
     }
     
-    private void habilitarBtn(boolean voltar, boolean novo, boolean editar, boolean cancelar, boolean pesquisar, boolean salvar, boolean excluir, boolean ok){
+    private void habilitarBtn(boolean voltar, boolean novo, boolean editar, boolean cancelar, boolean pesquisar, boolean salvar, boolean excluir, boolean ok){ //metodo para habilitar botoes
         this.btnVoltar.setEnabled(voltar);
         this.btnNovo.setEnabled(novo);
         this.btnEditar.setEnabled(editar);
@@ -60,7 +59,7 @@ public class TelaAluno extends javax.swing.JFrame {
         this.btnOk.setEnabled(ok);
     }
     
-    private void limpar(){
+    private void limpar(){ //metodo para limpar campos de texto
         this.txtNome.setText("");
         this.txtDepartament.setText("");
         this.txtEmail.setText("");
@@ -354,42 +353,38 @@ public class TelaAluno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        //esse metodo realiza a busca do perfil do aluno pela matricula inserida. sao buscados os dados referidos a matricula no banco de dados, caso a matricula nao exista a consulta retorna uma mensagem de erro
+        String matricula = txtMatricula.getText();  //pega a matricula digitada no campo de texto
         
-        String sql = "SELECT * FROM alunos WHERE id=?";
-        
-        if(this.txtMatricula.getText().equals("")){
+        if(matricula.equals("")){ //caso tenham clicado no botao sem digitar nenhuma matricula
             JOptionPane.showMessageDialog(null, "A matrícula deve ser informada!", "erro", JOptionPane.INFORMATION_MESSAGE );
+            return;
         }
-        else{
-            String matricula = txtMatricula.getText();
-            String nome = "";
-            String departamento = "";
-            String email = "";
-            String curso = "";
-            boolean matriculaAtiva = false;
+        
+        String query = "SELECT nome, departamento, email, curso FROM alunos WHERE matricula = ?"; //texto para consulta no banco de dados
+        
+        try(Connection conn = MySQLConnection.getConnection(); //tentando conexão com o banco de dados
+                PreparedStatement stmt = conn.prepareStatement(query)){
             
-            for(Aluno alu: listaAlunos){
-                if(alu.getMatricula().equals(matricula)){
-                    matriculaAtiva = true;
-                    nome = alu.getNome();
-                    departamento = alu.getDepartamento();
-                    email = alu.getEmail();
-                    curso = alu.getCurso();
-                }
-            }
+            stmt.setString(1, matricula);//seleciona a linha referente a matricula inserida
+            ResultSet rs = stmt.executeQuery(); //rs eh a linha referente a matricula selecionada
             
-            if(matriculaAtiva){
-                this.txtNome.setText(nome);
-                this.txtMatricula.setText(matricula);
-                this.txtCurso.setText(curso);
-                this.txtDepartament.setText(departamento);
-                this.txtEmail.setText(email);
+            if(rs.next()){ //caso a matricula exista no banco de dados
+                txtNome.setText(rs.getString("nome"));
+                txtCurso.setText(rs.getString("curso"));
+                txtDepartament.setText(rs.getString("departamento"));
+                txtEmail.setText(rs.getString("email"));
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Aluno não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );
-                this.limpar();
-            }
+            else{ //caso a linha seja nula
+                JOptionPane.showMessageDialog(null, "Aluno não cadastrado!", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                limpar();
+            }   
         }
+        catch(SQLException e){ //caso a conexão com o banco de dados falhe:
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao consultar o banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        
         this.txtMatricula.selectAll();
         this.txtMatricula.requestFocus();
     }//GEN-LAST:event_btnOkActionPerformed
@@ -400,7 +395,7 @@ public class TelaAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -409,6 +404,7 @@ public class TelaAluno extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         this.habilitarBtn(false, false, false, true, false, true, false, false);
+        //pega os dados inseridos na caixa de texto
         String nome = txtNome.getText();
         String matricula = txtMatricula.getText();
         String curso = txtCurso.getText();
@@ -416,14 +412,15 @@ public class TelaAluno extends javax.swing.JFrame {
         String email = txtEmail.getText();
         String senha = txtSenha.getText();
         
+        //verifica se todos os campos estao preenchidos
         if(nome.equals("") || matricula.equals("") || curso.equals("") || departamento.equals("") || email.equals("") || senha.equals("")){
             JOptionPane.showMessageDialog(null, "Todos os campos devem ser inseridos!", "erro", JOptionPane.INFORMATION_MESSAGE );
         }
         else{
-            Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha);
-            try (Connection conn = MySQLConnection.getConnection()) {
-                String sql = "INSERT INTO alunos (nome, email, senha, curso, departamento, matricula) VALUES (?, ?, ?, ?, ?, ?)";
-                PreparedStatement stmt = conn.prepareStatement(sql);
+            Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha); //instancia um novo objeto aluno
+            try (Connection conn = MySQLConnection.getConnection()) { //testando conexao com o banco de dados
+                String sql = "INSERT INTO alunos (nome, email, senha, curso, departamento, matricula) VALUES (?, ?, ?, ?, ?, ?)"; //comando para inserir os dados na tabela alunos
+                PreparedStatement stmt = conn.prepareStatement(sql); //variavel que fara a inserção dos dados na tabela
                 stmt.setString(1, nome);
                 stmt.setString(2, email);
                 stmt.setString(3, senha);
@@ -432,7 +429,7 @@ public class TelaAluno extends javax.swing.JFrame {
                 stmt.setString(6, matricula);
                 stmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso!");
-            } catch (SQLException e) {
+            } catch (SQLException e) { //caso a conexão com o banco de dados falhe
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erro ao salvar usuário: " + e.getMessage());
             }
@@ -447,24 +444,22 @@ public class TelaAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        if(listaAlunos.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Não há alunos cadastrados", "mensagem", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
-            this.limpar();
-            this.habilitarTexto(false, false, false, true, false, false);
-            this.habilitarBtn(false, false, false, true, true, false, false, true);
-            this.txtMatricula.requestFocus();
-        }
+        //apenas habilita botoes e campos de texto para que a consulta seja realizada
+        this.limpar();
+        this.habilitarTexto(false, false, false, true, false, false);
+        this.habilitarBtn(false, false, false, true, true, false, false, true);
+        this.txtMatricula.requestFocus();   
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        //cancela a acao atual e volta para estado inicial da pagina, com todos os campos limpos
         this.limpar();
         this.habilitarBtn(true, true, false, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        //apenas habilita botoes e campos de texto para que os dados sejam inseridos
         this.limpar();
         this.habilitarTexto(true, true, true, true, true, true);
         this.habilitarBtn(false, false, false, true, false, true, false, false);
