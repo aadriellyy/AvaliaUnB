@@ -1,1 +1,1 @@
-SELECT * FROM avaliaunb.alunos
+SELECT * FROM AVALIAUNB.ALUNOS
