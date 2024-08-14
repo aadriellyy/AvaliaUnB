@@ -1,6 +1,6 @@
 package classes;
 
-public class Pessoa {
+public abstract class Pessoa {
 
     /*VARIAVEIS: nome, departamento e email*/
     private String name;

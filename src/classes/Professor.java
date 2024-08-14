@@ -1,8 +1,9 @@
 package classes;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Professor extends Pessoa{
-    //commitando mudanças
+    
     private ArrayList <String> horarios;
     private ArrayList <Disciplina> listaDisciplinas;
     static int id;
@@ -44,17 +45,57 @@ public class Professor extends Pessoa{
         this.listaAvaliacoes.add(avaliacao);
     }
     
-    public int mediaAvaliacao () {
+    public double mediaAvaliacao () {
         if (this.listaAvaliacoes.isEmpty()) {
             return 0;
         }
         else {
-            int notas= 0;
+            double notas= 0;
             for (Avaliacao avaliacao : this.listaAvaliacoes) {
                 notas+=avaliacao.getLike();
             } 
             return notas/this.listaAvaliacoes.size();
         }
+    }
+    
+    public double mediaAvaliacao(Disciplina disciplina){
+        if (this.listaAvaliacoes.isEmpty()) {
+            return 0;
+        }
+        else {
+            double notas=0;
+            int numAvaliacoes=0;
+            for (Avaliacao avaliacao : this.listaAvaliacoes) {
+                if (avaliacao.getDisciplina().equals(disciplina)){
+                    notas+=avaliacao.getLike();
+                    numAvaliacoes++;
+                }
+            } 
+            if (numAvaliacoes==0){
+                return 0;
+            }
+            else{
+                return notas/numAvaliacoes;
+            }
+        }
+    }
+    
+    public ArrayList<Avaliacao> rankearAvaliacao (ArrayList<Avaliacao> listaAvaliacoes){
+        ArrayList<Avaliacao> listaRankeada = new ArrayList<>();
+        ArrayList <Integer> listaLikes = new ArrayList<>();
+        for (Avaliacao avaliacao: listaAvaliacoes){
+            listaLikes.add(avaliacao.getLike());
+        }
+        Collections.sort(listaLikes);
+        for (int like : listaLikes){
+            for (Avaliacao avaliacao: listaAvaliacoes){
+                if (avaliacao.getLike()==like){
+                    listaRankeada.add(avaliacao);
+                    break;
+                }
+            }
+        }
+        return listaRankeada;
     }
     
     public ArrayList <Professor> mostraTodos () { //retorna todos os professores presentes no banco de dados
