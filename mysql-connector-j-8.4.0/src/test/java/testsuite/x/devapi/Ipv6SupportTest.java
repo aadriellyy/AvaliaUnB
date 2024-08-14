@@ -96,7 +96,7 @@ public class Ipv6SupportTest extends DevApiBaseTestCase {
         if (!atLeastOne) {
             String errMsg = "None of the tested hosts have server sockets listening on the port " + port
                     + ". This test requires a MySQL server with X Protocol running in local host with IPv6 support enabled "
-                    + "(set '--mysqlx-bind-address = *' if needed.";
+                    + "(set '--mysqlx-bind-address = 0.0.0.0 ";
             assertFalse(isMysqlRunningLocally(), errMsg);
             System.err.println(errMsg);
         }

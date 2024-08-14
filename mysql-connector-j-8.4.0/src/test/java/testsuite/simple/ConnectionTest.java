@@ -1505,7 +1505,7 @@ public class ConnectionTest extends BaseTestCase {
     @Test
     public void testIPv6() throws Exception {
         assumeTrue(versionMeetsMinimum(5, 6), "MySQL 5.6+ is required to run this test."); // this test could work with MySQL 5.5 but requires specific server configuration, e.g. "--bind-address=::"
-
+        
         String testUser = "testIPv6User";
         createUser("'" + testUser + "'@'%'", "IDENTIFIED BY '" + testUser + "'");
         this.stmt.execute("GRANT ALL ON *.* TO '" + testUser + "'@'%'");
