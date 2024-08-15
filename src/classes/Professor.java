@@ -1,32 +1,65 @@
 package classes;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Professor extends Pessoa{
     
-    private ArrayList <String> horarios;
-    private ArrayList <Disciplina> listaDisciplinas;
+    Map <Disciplina, ArrayList<String>> horarios = new HashMap<>();     //um objeto do tipo Map com as chaves sendo as disciplinas que o professor oferta e os valores sendo os horários que o professor oferta aquela disciplina
+    private ArrayList <Disciplina> listaDisciplinas;                    //lista de disciplinas do professor    
     static int id;
-    private ArrayList <Avaliacao> listaAvaliacoes;
+    private ArrayList <Avaliacao> listaAvaliacoes;                      //lista de avaliações feitas pelo professor
     
     
-    public Professor(){}
+    public Professor(){} //construtor vazio
     
     public Professor(String nome, String departamento, String email){
         super(nome, departamento, email);
-    }
+    }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
         return this;
     }
+    
     public void setId(int id) {
         this.id= id;
     }
+    
     public ArrayList <String> getHorarios () {
-        return this.horarios;
+        ArrayList <String> listaHorarios = new ArrayList <>();
+        for (ArrayList<String> horarios : this.horarios.values()){
+            for (String horario : horarios){
+                listaHorarios.add(horario);
+            }
+        }
+        Collections.sort(listaHorarios);
+        return listaHorarios;
     }
-    public void setHorarios (String horario) {
-        this.horarios.add(horario);
+    
+    public ArrayList <String> getHorarios (Disciplina disciplina) {
+        if (this.listaDisciplinas.contains(disciplina)){
+            return this.horarios.get(disciplina);
+        }
+        else{
+            throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
+        }
+    }
+    
+    
+    public void setHorariosDisciplinas (String horario, Disciplina disciplina) {
+        if (this.listaDisciplinas.contains(disciplina)){
+            this.horarios.get(disciplina).add(horario);
+        }
+        else{
+            throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
+        }
+    }
+    
+    public void ordenarHorarios(){
+        for (Disciplina disciplina : this.horarios.keySet()){
+            Collections.sort(this.horarios.get(disciplina));
+        }
     }
     
     public ArrayList<Disciplina> getDisciplinas(){
@@ -87,6 +120,7 @@ public class Professor extends Pessoa{
             listaLikes.add(avaliacao.getLike());
         }
         Collections.sort(listaLikes);
+        Collections.reverse(listaLikes);
         for (int like : listaLikes){
             for (Avaliacao avaliacao: listaAvaliacoes){
                 if (avaliacao.getLike()==like){

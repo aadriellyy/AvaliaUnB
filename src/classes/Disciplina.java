@@ -8,27 +8,26 @@ import java.util.Collections;
  * @author pedro
  */
 public class Disciplina {
-    private String nome;
-    private String departamento;
-    private String codigo;
-    private int horas;
-    private ArrayList <Professor> listaProfessores = new ArrayList <Professor>();
+    private String nome;            //nome da disciplina
+    private String departamento;    //departamento que oferta a disciplina
+    private String codigo;          //código da disciplina
+    private int horas;              //carga horária da disciplina
+    private ArrayList <Professor> listaProfessores = new ArrayList <Professor>();   //lista dos professores que ofertam a disciplina
 
    public Disciplina (String nome, String departamento, String codigo, int horas) {
        this.nome= nome;
        this.departamento= departamento;
        this.codigo = codigo;
-       this.horas= horas;
-   }
+       this.horas= horas;}      //construtor que inicializa a lista de professores vazia e exige os demais atributos
+   
       public Disciplina (String nome, String departamento, String codigo, int horas, ArrayList <Professor> listaProfessores) {
        this.nome= nome;
        this.departamento= departamento;
        this.codigo = codigo;
        this.horas= horas;
-       this.listaProfessores= listaProfessores;
-   }
+       this.listaProfessores= listaProfessores;}    //construtor que passa uma lista com professores como argumento
     
-    public ArrayList <Professor> melhoresProfessores() {
+    public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
         ArrayList <Double> avaliacoes = new ArrayList<Double>();
         ArrayList <Professor> rankingProfessores = new ArrayList <Professor>();
         for (Professor i : listaProfessores) {
@@ -47,7 +46,7 @@ public class Disciplina {
         return rankingProfessores;
     }
     
-    public ArrayList<String> mostrarMelhoresProfessores (){
+    public ArrayList<String> mostrarMelhoresProfessores (){     //retorna uma lista com os nomes dos professores em ordem de melhor avaliação, usando o método melhoresProfessores()
         ArrayList <String> listaMelhoresProfessores = new ArrayList<>();
         ArrayList <Professor> rankingProfessor = this.melhoresProfessores();
         for (Professor professor : rankingProfessor){
