@@ -1,1 +1,2 @@
-SELECT * FROM AVALIAUNB.ALUNOS
+SELECT * FROM AVALIAUNB.PROFESSORES
+professoresprofessoresprofessores
