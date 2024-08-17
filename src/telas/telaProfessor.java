@@ -35,8 +35,7 @@ public class telaProfessor extends javax.swing.JFrame {
         lblEmail.setFont(font.deriveFont(attributes));
         StringSelection stringSelection = new StringSelection(lblEmail.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
-        
+        clipboard.setContents(stringSelection, null);        
     }
 
     /**

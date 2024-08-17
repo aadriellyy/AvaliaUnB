@@ -30,6 +30,9 @@ public class Disciplina {
         this.horas= horas;
         this.listaProfessores= listaProfessores;
         todasDisciplinas.add(this);
+        for (Professor prof : listaProfessores) {
+            prof.setDisciplinas(this);
+        }
       }    //construtor que passa uma lista com professores como argumento
     
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
@@ -86,7 +89,12 @@ public class Disciplina {
     }
     
     public void setListaProfessores (Professor professor){
-        this.listaProfessores.add(professor);
+        if (!this.listaProfessores.contains(professor)){
+            this.listaProfessores.add(professor);
+            if (!professor.getDisciplinas().contains(this)){
+                professor.setDisciplinas(this);
+            }
+        }
     }
     
     public ArrayList <Professor> getListaProfessores (){
