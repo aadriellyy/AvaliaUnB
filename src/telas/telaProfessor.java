@@ -4,12 +4,19 @@
  */
 package telas;
 
+import classes.Disciplina;
+import classes.MySQLConnection;
+import java.sql.*;
+import classes.Professor;
+import com.sun.jdi.connect.spi.Connection;
 import java.awt.Font;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *

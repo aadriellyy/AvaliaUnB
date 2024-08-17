@@ -4,17 +4,24 @@
  */
 package telas;
 
+import classes.Disciplina;
+
 /**
  *
  * @author pedro
  */
 public class telaDisciplina extends javax.swing.JFrame {
-
+    Disciplina disciplina;
+    public void achaProfessor () {  
+        
+    }
     /**
      * Creates new form telaDisciplina
      */
     public telaDisciplina() {
         initComponents();
+        
+        
     }
 
     /**

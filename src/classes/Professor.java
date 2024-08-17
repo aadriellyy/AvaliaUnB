@@ -8,14 +8,18 @@ public class Professor extends Pessoa{
     
     Map <Disciplina, ArrayList<String>> horarios = new HashMap<>();     //um objeto do tipo Map com as chaves sendo as disciplinas que o professor oferta e os valores sendo os horários que o professor oferta aquela disciplina
     private ArrayList <Disciplina> listaDisciplinas;                    //lista de disciplinas do professor    
+//lista de disciplinas do professor    
     static int id;
-    private ArrayList <Avaliacao> listaAvaliacoes;                      //lista de avaliações feitas pelo professor
+    //lista de avaliações feitas pelo professor
+    private ArrayList <Avaliacao> listaAvaliacoes;                      
+    private static ArrayList <Professor> todosProfessores= new ArrayList<>();
     
-    
-    public Professor(){} //construtor vazio
-    
+
     public Professor(String nome, String departamento, String email){
         super(nome, departamento, email);
+        this.listaAvaliacoes = new ArrayList<>();
+        this.listaDisciplinas = new ArrayList<>();
+        Professor.todosProfessores.add(this);
     }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
@@ -24,6 +28,10 @@ public class Professor extends Pessoa{
     
     public void setId(int id) {
         this.id= id;
+    }
+    
+    public Map <Disciplina, ArrayList<String>> getListaHorarios () {
+        return this.horarios;
     }
     
     public ArrayList <String> getHorarios () {
@@ -134,5 +142,14 @@ public class Professor extends Pessoa{
     
     public ArrayList <Professor> mostraTodos () { //retorna todos os professores presentes no banco de dados
         return null;
+    }
+    
+    public Professor achaProfessor (String nome){
+        for (Professor prof : Professor.todosProfessores) {
+            if (prof.getNome().equals(nome)){
+                return prof;
+            }
+        }
+        throw new IllegalArgumentException ("Professor não encontrado");
     }
 }

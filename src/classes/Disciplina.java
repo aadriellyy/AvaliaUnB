@@ -12,20 +12,25 @@ public class Disciplina {
     private String departamento;    //departamento que oferta a disciplina
     private String codigo;          //código da disciplina
     private int horas;              //carga horária da disciplina
-    private ArrayList <Professor> listaProfessores = new ArrayList <Professor>();   //lista dos professores que ofertam a disciplina
+    private ArrayList <Professor> listaProfessores = new ArrayList <>();   //lista dos professores que ofertam a disciplina
+    private static ArrayList <Disciplina> todasDisciplinas = new ArrayList <>();
 
-   public Disciplina (String nome, String departamento, String codigo, int horas) {
-       this.nome= nome;
-       this.departamento= departamento;
-       this.codigo = codigo;
-       this.horas= horas;}      //construtor que inicializa a lista de professores vazia e exige os demais atributos
+    public Disciplina (String nome, String departamento, String codigo, int horas) {
+        this.nome= nome;
+        this.departamento= departamento;
+        this.codigo = codigo;
+        this.horas= horas;
+        todasDisciplinas.add(this);
+       }      //construtor que inicializa a lista de professores vazia e exige os demais atributos
    
-      public Disciplina (String nome, String departamento, String codigo, int horas, ArrayList <Professor> listaProfessores) {
-       this.nome= nome;
-       this.departamento= departamento;
-       this.codigo = codigo;
-       this.horas= horas;
-       this.listaProfessores= listaProfessores;}    //construtor que passa uma lista com professores como argumento
+    public Disciplina (String nome, String departamento, String codigo, int horas, ArrayList <Professor> listaProfessores) {
+        this.nome= nome;
+        this.departamento= departamento;
+        this.codigo = codigo;
+        this.horas= horas;
+        this.listaProfessores= listaProfessores;
+        todasDisciplinas.add(this);
+      }    //construtor que passa uma lista com professores como argumento
     
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
         ArrayList <Double> avaliacoes = new ArrayList<Double>();
@@ -87,5 +92,23 @@ public class Disciplina {
     public ArrayList <Professor> getListaProfessores (){
         return this.listaProfessores;
     }
-
+    
+    public static Disciplina acharDisciplina (String procura, int escolha ){ //procura tanto pelo código ou pelo nome: se escolha for igual a 0, procura pelo código, e se escolha for igual a 1, procura pelo nome
+        if (escolha ==0){
+            for (Disciplina disc : todasDisciplinas) {
+                if (disc.getCodigo().equals(procura)){
+                    return disc;         
+                }
+            }
+        }
+        
+        else if (escolha==1){
+            for (Disciplina disc : todasDisciplinas) {
+                if (disc.getNome().equals(procura)){
+                    return disc;
+                }
+           } 
+        }
+        throw new IllegalArgumentException ("Disciplina não encontrada");
+    }
 }

@@ -86,7 +86,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="lblFotoProfessor" pref="204" max="32767" attributes="0"/>
-                      <Component id="pnlInformacoesProfessor" pref="0" max="32767" attributes="0"/>
+                      <Component id="pnlInformacoesProfessor" pref="204" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="pblAvaliacoes" min="-2" max="-2" attributes="0"/>
