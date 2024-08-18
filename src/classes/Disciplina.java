@@ -12,15 +12,21 @@ public class Disciplina {
     private String departamento;    //departamento que oferta a disciplina
     private String codigo;          //código da disciplina
     private int horas;              //carga horária da disciplina
-    private ArrayList <Professor> listaProfessores = new ArrayList <>();   //lista dos professores que ofertam a disciplina
-    private static ArrayList <Disciplina> todasDisciplinas = new ArrayList <>();
+    private ArrayList <Professor> listaProfessores ;   //lista dos professores que ofertam a disciplina
+    private static ArrayList <Disciplina> todasDisciplinas = new ArrayList <>();  //lista com todas as disciplinas ofertadas
 
-    public Disciplina (String nome, String departamento, String codigo, int horas) {
+    public Disciplina (String nome, String departamento, String codigo, int horas) { //usar enum para departamento?
         this.nome= nome;
         this.departamento= departamento;
         this.codigo = codigo;
-        this.horas= horas;
-        todasDisciplinas.add(this);
+        if (horas >0){ //verificação de valor para o argumento passado para horas
+            this.horas= horas;
+        }
+        else {
+            throw new IllegalArgumentException("A carga horária da disciplina não pode ser um valor negativo");
+        }
+        todasDisciplinas.add(this); //adiciona o objeto criado a lista com todos os objetos
+        listaProfessores = new ArrayList <>();
        }      //construtor que inicializa a lista de professores vazia e exige os demais atributos
    
     public Disciplina (String nome, String departamento, String codigo, int horas, ArrayList <Professor> listaProfessores) {
@@ -29,11 +35,66 @@ public class Disciplina {
         this.codigo = codigo;
         this.horas= horas;
         this.listaProfessores= listaProfessores;
-        todasDisciplinas.add(this);
+        todasDisciplinas.add(this);   //adiciona o objeto criado a lista com todos os objetos
         for (Professor prof : listaProfessores) {
-            prof.setDisciplinas(this);
+            if (!listaProfessores.isEmpty()){ //verifica se a lista de professores passada como argumento é vazia
+            prof.addDisciplina(this);
+            }
         }
       }    //construtor que passa uma lista com professores como argumento
+    
+    public String getNome () {
+        return this.nome;
+    }
+    
+    public void setNome (String nome) {
+        this.nome= nome;
+    }
+        
+    public String getDepartamento() {
+        return this.departamento;
+    }
+    
+    public void setDepartamento (String departamento) {
+        this.departamento= departamento;
+    }
+    
+     public String getCodigo () {
+        return this.codigo;
+    }
+     
+    public void setCodigo (String codigo) {
+        this.codigo=codigo;
+    }
+    
+    public int getHoras () {
+        return this.horas;
+    }
+    
+    public void setHoras (int horas) {
+        if (horas>0) { //verificação de valor
+            this.horas= horas;
+        }
+        else {
+            throw new IllegalArgumentException ("A carga horária deve ser um valor válido");
+        }
+    }
+        
+    public ArrayList <Professor> getListaProfessores (){
+        return this.listaProfessores;
+    }
+    
+    public void setListaProfessores(ArrayList<Professor> listaProfessores){
+        this.listaProfessores= listaProfessores;
+    }
+    public void addListaProfessores (Professor professor){
+        if (!this.listaProfessores.contains(professor)){
+            this.listaProfessores.add(professor);
+            if (!professor.getDisciplinas().contains(this)){
+                professor.addDisciplina(this);
+            }
+        }
+    }
     
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
         ArrayList <Double> avaliacoes = new ArrayList<Double>();
@@ -63,44 +124,6 @@ public class Disciplina {
         return listaMelhoresProfessores;
     }
     
-    public String getNome () {
-        return this.nome;
-    }
-    public void setNome (String nome) {
-        this.nome= nome;
-    }
-    public String getDepartamento() {
-        return this.departamento;
-    }
-    public void setDepartamento (String departamento) {
-        this.departamento= departamento;
-    }
-    public String getCodigo () {
-        return this.codigo;
-    }
-    public void setCodigo (String codigo) {
-        this.codigo=codigo;
-    }
-    public int getHoras () {
-        return this.horas;
-    }
-    public void setHoras (int horas) {
-        this.horas= horas;
-    }
-    
-    public void setListaProfessores (Professor professor){
-        if (!this.listaProfessores.contains(professor)){
-            this.listaProfessores.add(professor);
-            if (!professor.getDisciplinas().contains(this)){
-                professor.setDisciplinas(this);
-            }
-        }
-    }
-    
-    public ArrayList <Professor> getListaProfessores (){
-        return this.listaProfessores;
-    }
-    
     public static Disciplina acharDisciplina (String procura, int escolha ){ //procura tanto pelo código ou pelo nome: se escolha for igual a 0, procura pelo código, e se escolha for igual a 1, procura pelo nome
         if (escolha ==0){
             for (Disciplina disc : todasDisciplinas) {
@@ -118,5 +141,9 @@ public class Disciplina {
            } 
         }
         throw new IllegalArgumentException ("Disciplina não encontrada");
+    }
+    
+    public static ArrayList<Disciplina> getTodasDisciplinas (){
+        return Disciplina.todasDisciplinas;
     }
 }
