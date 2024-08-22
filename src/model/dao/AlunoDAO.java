@@ -67,7 +67,33 @@ public class AlunoDAO {
         }
         
         return alunos;
-   
+    }
+    
+    public void update(Aluno aluno){
+        
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        try {
+            stmt = con.prepareStatement("UPDATE alunos SET nome = ?, email = ?, senha = ?, curso = ?, departamento = ?, matricula = ? WHERE id = ?");
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getEmail());
+            stmt.setString(3, aluno.getSenha());
+            stmt.setString(4, aluno.getCurso());
+            stmt.setString(5, aluno.getDepartamento());
+            stmt.setString(6, aluno.getMatricula());
+            stmt.setInt(7, aluno.getId());
+            //executando a sql
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
     }
     
 }

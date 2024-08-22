@@ -5,9 +5,6 @@
 package telas;
 
 import classes.Aluno;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
 

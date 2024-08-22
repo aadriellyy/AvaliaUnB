@@ -16,6 +16,9 @@ public class Avaliacao extends javax.swing.JFrame {
      */
     public Avaliacao() {
         initComponents();
+        this.limpar();
+        this.habilitarBtn(true, true, false, false, false, false, false, false);
+        this.habilitarTxt(true, false, false, false, false, false);
     }
 
     /**
@@ -30,7 +33,7 @@ public class Avaliacao extends javax.swing.JFrame {
         lblBusca = new javax.swing.JPanel();
         txtNota = new javax.swing.JTextField();
         txtNomePesquisa = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         lblFiltrar = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
@@ -51,12 +54,12 @@ public class Avaliacao extends javax.swing.JFrame {
         btnExibir = new javax.swing.JButton();
         lblAvaliacao = new javax.swing.JPanel();
         txtFeedback = new javax.swing.JTextField();
-        cmbNota = new javax.swing.JComboBox<>();
         btnSalvar = new javax.swing.JButton();
         btnCancelarAvaliacao = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         lblNome5 = new javax.swing.JLabel();
         lblNome6 = new javax.swing.JLabel();
+        txtNotaAvaliacao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,11 +78,11 @@ public class Avaliacao extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/buscar.png"))); // NOI18N
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/buscar.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -92,6 +95,11 @@ public class Avaliacao extends javax.swing.JFrame {
 
         btnOk.setBackground(new java.awt.Color(0, 204, 51));
         btnOk.setText("OK");
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkActionPerformed(evt);
+            }
+        });
 
         lblNome.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome.setText("Nome:");
@@ -120,7 +128,7 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addComponent(btnBuscar)
                         .addGap(52, 52, 52)
                         .addComponent(lblNome1)
                         .addGap(18, 18, 18)
@@ -141,7 +149,7 @@ public class Avaliacao extends javax.swing.JFrame {
                 .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
                     .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(btnBuscar)
                     .addComponent(lblNome1)
                     .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -160,15 +168,37 @@ public class Avaliacao extends javax.swing.JFrame {
         lblNome4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome4.setText("Matérias:");
 
+        txtNomeProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeProfessorActionPerformed(evt);
+            }
+        });
+
+        txtDepartamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDepartamentoActionPerformed(evt);
+            }
+        });
+
         lsMaterias.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        lsMaterias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lsMateriasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(lsMaterias);
 
         btnAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
         btnAvaliar.setText("Avaliar");
+        btnAvaliar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvaliarActionPerformed(evt);
+            }
+        });
 
         btnCancelarPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
         btnCancelarPesquisa.setText("Cancelar");
@@ -180,6 +210,11 @@ public class Avaliacao extends javax.swing.JFrame {
 
         btnExibir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/pesquisar-avaliacao.png"))); // NOI18N
         btnExibir.setText("Exibir avaliações");
+        btnExibir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExibirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,13 +284,21 @@ public class Avaliacao extends javax.swing.JFrame {
             }
         });
 
-        cmbNota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/salvar-avaliacao.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelarAvaliacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/cancelar-avaliacao.png"))); // NOI18N
         btnCancelarAvaliacao.setText("Cancelar");
+        btnCancelarAvaliacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarAvaliacaoActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/excluir-avaliacao.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -271,6 +314,12 @@ public class Avaliacao extends javax.swing.JFrame {
         lblNome6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome6.setText("Nota");
 
+        txtNotaAvaliacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNotaAvaliacaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout lblAvaliacaoLayout = new javax.swing.GroupLayout(lblAvaliacao);
         lblAvaliacao.setLayout(lblAvaliacaoLayout);
         lblAvaliacaoLayout.setHorizontalGroup(
@@ -282,16 +331,16 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addComponent(lblNome5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblNome6)
-                        .addGap(29, 29, 29)
-                        .addComponent(cmbNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNotaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblAvaliacaoLayout.createSequentialGroup()
                         .addComponent(txtFeedback)
                         .addContainerGap())
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(btnSalvar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
                         .addComponent(btnExcluir)
                         .addGap(213, 213, 213)
                         .addComponent(btnCancelarAvaliacao)
@@ -304,7 +353,7 @@ public class Avaliacao extends javax.swing.JFrame {
                 .addGroup(lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome5)
                     .addComponent(lblNome6)
-                    .addComponent(cmbNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNotaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(txtFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -342,6 +391,41 @@ public class Avaliacao extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void habilitarBtn(boolean ok, boolean buscar, boolean avaliar, boolean cancelarPesquisa, 
+            boolean exibirAvaliacao, boolean salvar, boolean excluir, boolean cancelarAvaliacao){
+     
+        this.btnOk.setEnabled(ok);
+        this.btnBuscar.setEnabled(buscar);
+        this.btnAvaliar.setEnabled(avaliar);
+        this.btnCancelarPesquisa.setEnabled(cancelarPesquisa);
+        this.btnExibir.setEnabled(exibirAvaliacao);
+        this.btnSalvar.setEnabled(salvar);
+        this.btnExcluir.setEnabled(excluir);
+        this.btnCancelarAvaliacao.setEnabled(cancelarAvaliacao);       
+    }
+    
+    private void habilitarTxt(boolean nomePesquisa, boolean nota, boolean nomeProfessor, boolean departamento, 
+            boolean feedback, boolean notaAvaliacao){
+
+        this.txtNomePesquisa.setEnabled(nomePesquisa);
+        this.txtNota.setEnabled(nota);
+        this.txtNomeProfessor.setEnabled(nomeProfessor);
+        this.txtDepartamento.setEnabled(departamento);
+        this.txtFeedback.setEnabled(feedback);
+        this.txtNotaAvaliacao.setEnabled(notaAvaliacao);
+  
+    }
+    
+    private void limpar(){
+        this.txtNomePesquisa.setText(" ");
+        this.txtNota.setText(" ");
+        this.txtNomeProfessor.setText(" ");
+        this.txtDepartamento.setText(" ");
+        this.txtFeedback.setText(" ");
+        this.txtNotaAvaliacao.setText(" ");
+    }
+    
+    
     private void txtNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNotaActionPerformed
@@ -350,9 +434,9 @@ public class Avaliacao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeedbackActionPerformed
         // TODO add your handling code here:
@@ -365,6 +449,42 @@ public class Avaliacao extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAvaliarActionPerformed
+
+    private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExibirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnCancelarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAvaliacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarAvaliacaoActionPerformed
+
+    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOkActionPerformed
+
+    private void txtNomeProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeProfessorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeProfessorActionPerformed
+
+    private void txtDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepartamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepartamentoActionPerformed
+
+    private void lsMateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsMateriasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lsMateriasMouseClicked
+
+    private void txtNotaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaAvaliacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNotaAvaliacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,14 +523,13 @@ public class Avaliacao extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvaliar;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelarAvaliacao;
     private javax.swing.JButton btnCancelarPesquisa;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnExibir;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cmbNota;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -432,5 +551,6 @@ public class Avaliacao extends javax.swing.JFrame {
     private javax.swing.JTextField txtNomePesquisa;
     private javax.swing.JTextField txtNomeProfessor;
     private javax.swing.JTextField txtNota;
+    private javax.swing.JTextField txtNotaAvaliacao;
     // End of variables declaration//GEN-END:variables
 }
