@@ -9,8 +9,8 @@ public class Avaliacao {
     private int like;
     private final Aluno aluno;
     private List<Comentario> comentarios;
-    private Professor professor;
-    private Disciplina disciplina;
+    private final Professor professor;
+    private final Disciplina disciplina;
 
     //construtor
     public Avaliacao (String feedback, int like, Aluno aluno, Professor professor, Disciplina disciplina){
@@ -69,6 +69,14 @@ public class Avaliacao {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+    
+    public Disciplina getDisciplina (){
+        return this.disciplina;
+    }
+    
+    public Professor getProfessor(){
+        return this.professor;
     }
 
 }

@@ -1,6 +1,6 @@
 package classes;
 
-public class Pessoa {
+public abstract class Pessoa { //classe abstrata, pois os únicos objetos relevantes para o sistema são do tipo Aluno e Professor
 
     /*VARIAVEIS: nome, departamento e email*/
     private String name;

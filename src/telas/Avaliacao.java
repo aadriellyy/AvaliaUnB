@@ -434,9 +434,9 @@ public class Avaliacao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeedbackActionPerformed
         // TODO add your handling code here:
@@ -449,42 +449,6 @@ public class Avaliacao extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirActionPerformed
-
-    private void btnAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAvaliarActionPerformed
-
-    private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExibirActionPerformed
-
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void btnCancelarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAvaliacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelarAvaliacaoActionPerformed
-
-    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnOkActionPerformed
-
-    private void txtNomeProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeProfessorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeProfessorActionPerformed
-
-    private void txtDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepartamentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDepartamentoActionPerformed
-
-    private void lsMateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsMateriasMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lsMateriasMouseClicked
-
-    private void txtNotaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaAvaliacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNotaAvaliacaoActionPerformed
 
     /**
      * @param args the command line arguments
