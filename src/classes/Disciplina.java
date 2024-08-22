@@ -12,7 +12,7 @@ public class Disciplina {
     private String departamento;    //departamento que oferta a disciplina
     private String codigo;          //código da disciplina
     private int horas;              //carga horária da disciplina
-    private ArrayList <Professor> listaProfessores ;   //lista dos professores que ofertam a disciplina
+    private ArrayList <Professor> listaProfessores;   //lista dos professores que ofertam a disciplina
     private static ArrayList <Disciplina> todasDisciplinas = new ArrayList <>();  //lista com todas as disciplinas ofertadas
 
     public Disciplina (String nome, String departamento, String codigo, int horas) { //usar enum para departamento?

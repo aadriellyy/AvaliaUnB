@@ -1,13 +1,10 @@
 package classes;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JOptionPane;
+import verificacao.Horario;
 
 public class Professor extends Pessoa{
     
@@ -25,7 +22,6 @@ public class Professor extends Pessoa{
         this.listaAvaliacoes = new ArrayList<>();
         this.listaDisciplinas = new ArrayList<>();
         Professor.todosProfessores.add(this);
-        
     }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
@@ -64,11 +60,18 @@ public class Professor extends Pessoa{
     }
     
     public void setHorariosDisciplinas (String horario, Disciplina disciplina) {
-        if (this.listaDisciplinas.contains(disciplina)){ //verifica se a disciplina passada como argumento é ministrada pelo professor
-            this.horarios.put(disciplina, horario);        
+        try {
+            Horario.verificaHorario(horario);
+            if (this.listaDisciplinas.contains(disciplina)){ //verifica se a disciplina passada como argumento é ministrada pelo professor
+                this.horarios.put(disciplina, horario);        
+            }
+
+            else{
+                throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
+            }
         }
-        else{
-            throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
+        catch (IllegalArgumentException e){
+            
         }
     }
     
@@ -113,7 +116,7 @@ public class Professor extends Pessoa{
     
     public double mediaAvaliacao(Disciplina disciplina){ //retorna a media de avaliação do professor para uma determinada disciplina
         if (this.listaAvaliacoes.isEmpty()) {
-            return 0;
+            return -1;
         }
         else {
             double notas=0;
@@ -125,7 +128,7 @@ public class Professor extends Pessoa{
                 }
             } 
             if (numAvaliacoes==0){
-                return 0;
+                return -1;
             }
             else{
                 return notas/numAvaliacoes;
@@ -160,7 +163,7 @@ public class Professor extends Pessoa{
         return this.listaAvaliacoes;
 }
     
-    public Professor achaProfessor (String nome){
+    public static Professor achaProfessor (String nome){
         for (Professor prof : Professor.todosProfessores) {
             if (prof.getNome().equals(nome)){
                 return prof;

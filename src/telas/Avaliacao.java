@@ -180,6 +180,11 @@ public class Avaliacao extends javax.swing.JFrame {
 
         btnExibir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/pesquisar-avaliacao.png"))); // NOI18N
         btnExibir.setText("Exibir avaliações");
+        btnExibir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExibirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -351,7 +356,7 @@ public class Avaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+                // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeedbackActionPerformed
@@ -365,6 +370,10 @@ public class Avaliacao extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
+        //TelaProfessor.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExibirActionPerformed
 
     /**
      * @param args the command line arguments

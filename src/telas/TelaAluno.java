@@ -21,6 +21,8 @@ public class TelaAluno extends javax.swing.JFrame {
      */
     
     public TelaAluno() {
+        //int indiceProfessor;
+        //boolean chamaProfessor = false;
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();

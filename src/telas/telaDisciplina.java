@@ -6,8 +6,11 @@ package telas;
 
 import classes.Disciplina;
 import classes.Professor;
+import static java.lang.Character.isDigit;
 import java.util.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import verificacao.MapeiaHorarios;
 
 /**
  *
@@ -17,14 +20,145 @@ public class telaDisciplina extends javax.swing.JFrame {
     Disciplina disciplina;
     boolean pesquisaProfessor = false;
     boolean pesquisaDisciplina = false;
-
+    Professor professorSelecionado;
+    static ArrayList <Disciplina> disciplinasAdicionadasGrade = new ArrayList<>();
+    static ArrayList <Disciplina> disciplinasParaAdicionarGrade = new ArrayList <>();
+    static ArrayList <ArrayList<String>> horarios = new ArrayList<>();
+    Disciplina disciplinaTeste = new Disciplina ("Técnicas de Programação 1", "Departamento de Ciência da Computação" ,"CIC0197", 60);
+    Professor professorTeste = new Professor ("Roberta Barroso de Oliveira", "roberta.barroso@unb.com.br", "Departamento de Ciência da Computação" );
+    
     /**
      * Creates new form telaDisciplina
      */
     public telaDisciplina() {
         initComponents();
         cmbPesquisa.setVisible(false);
+        disciplinaTeste.addListaProfessores(professorTeste);
+        professorTeste.setHorariosDisciplinas("35M34", disciplinaTeste);
+        inicializaHorario();
+        carregarTabelaProfessores();
+    }
+    
+    public void carregarTabelaProfessores (){
+         DefaultTableModel modeloProfessores = new DefaultTableModel(new Object[]{"Professor","Horário", "Avaliação"},0);
+         for (int i = 0; i <disciplinaTeste.getListaProfessores().size(); i++){
+             double avaliacaoProfessor = disciplinaTeste.getListaProfessores().get(i).mediaAvaliacao(disciplinaTeste);
+             String avaliacaoFormatada= "";
+             if (avaliacaoProfessor==-1){
+                 avaliacaoFormatada = "Não há avaliação cadastrada";
+             }
+             else{
+                 avaliacaoFormatada= String.valueOf(avaliacaoProfessor);
+             }
+            Object [] linha = new Object [] {disciplinaTeste.getListaProfessores().get(i).getNome(),
+                                             disciplinaTeste.getListaProfessores().get(i).getHorario(disciplinaTeste),
+                                             avaliacaoFormatada};
+            modeloProfessores.addRow(linha);
+        }
+        tblRanking.setModel(modeloProfessores);
+        btnAdicionarGrade.setEnabled(false);
+        btnAvaliarProfessor.setEnabled(false);
+        btnPerfilProfessor.setEnabled(false);
+        btnRemover.setEnabled(false);
+        btnSalvarGrade.setEnabled(false);
+        btnVoltar.setEnabled(true);
+        lbNomeDisciplina.setText(disciplinaTeste.getNome());
+        lblCargaHoraria.setText(String.valueOf(disciplinaTeste.getCodigo()));
+        lblCodigo.setText(disciplinaTeste.getCodigo());
+        lblDepartamentoDisciplina.setText(disciplinaTeste.getDepartamento());
+    }
+    
+    public void carregarTabelaGrade (){
+        DefaultTableModel modelo = new DefaultTableModel(new Object[]{"-","Segunda","Terça","Quarta","Quinta","Sexta", "Sábado"},0);
+
+        for (int i = 0; i <horarios.size(); i++){
+            Object [] linha = new Object [] {horarios.get(i).get(0),
+                                             horarios.get(i).get(1),
+                                             horarios.get(i).get(2),
+                                             horarios.get(i).get(3),
+                                             horarios.get(i).get(4),
+                                             horarios.get(i).get(5),
+                                             horarios.get(i).get(6)};
+            modelo.addRow(linha);
+        }
+        tblGrade.setModel(modelo);
+
+        tblGrade.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tblGrade.getColumnModel().getColumn(1).setPreferredWidth(10);
+        tblGrade.getColumnModel().getColumn(2).setPreferredWidth(30);
+        tblGrade.getColumnModel().getColumn(3).setPreferredWidth(10);
+        tblGrade.getColumnModel().getColumn(4).setPreferredWidth(10);
+        tblGrade.getColumnModel().getColumn(5).setPreferredWidth(20);
+    }
+    
+    public void inicializaHorario (){
+         for (int i=0; i <14; i++){
+        ArrayList<String> adicionarHorario= new ArrayList ();
+        adicionarHorario.add(MapeiaHorarios.mapearHorarios.get(i));
+        adicionarHorario.add("");
+        adicionarHorario.add("");
+        adicionarHorario.add("");
+        adicionarHorario.add("");
+        adicionarHorario.add("");
+        adicionarHorario.add("");
+        horarios.add(adicionarHorario);
+    }
+
+    }
+    
+        public void ajustarHorario(String horario, String disciplina){
+    String dia, horas, turno;
+    dia = "";
+    horas="";
+    turno = "";
+    int count = 0;
+    Character carac = horario.charAt(count);
+    while (count < horario.length() && isDigit(carac)){
+            dia= dia+carac;
+            count+=1;
+            carac= horario.charAt(count);
+        }
+    while (count < horario.length() && Character.isAlphabetic(carac)){
+        turno= turno+carac;
+        count+=1;
+        carac= horario.charAt(count);
+    }
+    
+    while (count < horario.length()-1 && isDigit(carac)){
+            horas= horas+carac;
+            count+=1;
+            carac= horario.charAt(count);
+        }
+    horas = horas+ horario.charAt(horario.length()-1);
         
+
+    for (int i = 0; i<horas.length(); i++){
+        Integer linha = null;
+         if (turno.equals("m") || turno.equals("M")){
+            linha =Integer.parseInt(horas.substring(i,i+1))-1;
+         }
+         else if (turno.equals("t") || turno.equals("T")){
+            linha =Integer.parseInt(horas.substring(i,i+1))+4;
+         }
+        else if (turno.equals("n") || turno.equals("N")){
+             linha =Integer.parseInt(horas.substring(i,i+1))+9;
+        }
+        try {
+        for (int x = 0; x<dia.length(); x++){
+            if (!horarios.get(linha).get(Integer.parseInt(dia.substring(x, x+1))-1).equals("")){
+                JOptionPane.showMessageDialog(null, "Conflito de horários, escolha outro horário");
+                break;
+            }
+            else{
+                horarios.get(linha).set(Integer.parseInt(dia.substring(x, x+1))-1, disciplina);
+            }
+        }        
+            carregarTabelaGrade();
+        }
+        catch (NullPointerException e ) {
+            System.out.println("digite um valor valido");
+        }
+    }
     }
 
     /**
@@ -47,13 +181,13 @@ public class telaDisciplina extends javax.swing.JFrame {
         lblTitleCarga = new javax.swing.JLabel();
         lblCargaHoraria = new javax.swing.JLabel();
         pnlRankingProfessores = new javax.swing.JPanel();
-        scrlpnlRanking = new javax.swing.JScrollPane();
-        tblRanking = new javax.swing.JTable();
         lblTitleRanking = new javax.swing.JLabel();
         pnlBtnsRanking = new javax.swing.JPanel();
         btnPerfilProfessor = new javax.swing.JButton();
         btnAvaliarProfessor = new javax.swing.JButton();
         btnAdicionarGrade = new javax.swing.JButton();
+        scrllpnlRanking = new javax.swing.JScrollPane();
+        tblRanking = new javax.swing.JTable();
         pnlPesquisa = new javax.swing.JPanel();
         lblImagemPesquisa = new javax.swing.JLabel();
         txtPesquisa = new javax.swing.JTextField();
@@ -63,7 +197,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         pnlGradeHorária = new javax.swing.JPanel();
         lblGrade = new javax.swing.JLabel();
         scrlpnlGrade = new javax.swing.JScrollPane();
-        tblGradeHorária = new javax.swing.JTable();
+        tblGrade = new javax.swing.JTable();
         pnlBotoesGrade = new javax.swing.JPanel();
         btnSalvarGrade = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
@@ -95,28 +229,6 @@ public class telaDisciplina extends javax.swing.JFrame {
 
         lblCargaHoraria.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         lblCargaHoraria.setText("60 horas");
-
-        tblRanking.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Professor", "Horário", "Avaliação"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        scrlpnlRanking.setViewportView(tblRanking);
-        if (tblRanking.getColumnModel().getColumnCount() > 0) {
-            tblRanking.getColumnModel().getColumn(1).setPreferredWidth(20);
-            tblRanking.getColumnModel().getColumn(2).setPreferredWidth(10);
-        }
 
         lblTitleRanking.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTitleRanking.setText("Ranking de professores");
@@ -164,27 +276,60 @@ public class telaDisciplina extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tblRanking.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Professor", "Horário", "Avaliação"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblRanking.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRankingMouseClicked(evt);
+            }
+        });
+        scrllpnlRanking.setViewportView(tblRanking);
+        if (tblRanking.getColumnModel().getColumnCount() > 0) {
+            tblRanking.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblRanking.getColumnModel().getColumn(1).setPreferredWidth(70);
+            tblRanking.getColumnModel().getColumn(1).setMaxWidth(70);
+        }
+
         javax.swing.GroupLayout pnlRankingProfessoresLayout = new javax.swing.GroupLayout(pnlRankingProfessores);
         pnlRankingProfessores.setLayout(pnlRankingProfessoresLayout);
         pnlRankingProfessoresLayout.setHorizontalGroup(
             pnlRankingProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRankingProfessoresLayout.createSequentialGroup()
+                .addComponent(scrllpnlRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRankingProfessoresLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTitleRanking)
-                .addGap(166, 166, 166))
-            .addGroup(pnlRankingProfessoresLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(pnlRankingProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrlpnlRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlBtnsRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 19, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRankingProfessoresLayout.createSequentialGroup()
+                        .addComponent(lblTitleRanking)
+                        .addGap(166, 166, 166))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRankingProfessoresLayout.createSequentialGroup()
+                        .addComponent(pnlBtnsRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
         pnlRankingProfessoresLayout.setVerticalGroup(
             pnlRankingProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRankingProfessoresLayout.createSequentialGroup()
                 .addComponent(lblTitleRanking)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrlpnlRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrllpnlRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlBtnsRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -280,7 +425,7 @@ public class telaDisciplina extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmbPesquisa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
+                    .addComponent(txtPesquisa))
                 .addGap(18, 18, 18)
                 .addComponent(rdbPesquisaProfessor)
                 .addGap(18, 18, 18)
@@ -304,7 +449,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         lblGrade.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblGrade.setText("Grade horária");
 
-        tblGradeHorária.setModel(new javax.swing.table.DefaultTableModel(
+        tblGrade.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"08:00 - 08:45", "", null, null, null, null},
                 {"08:55 - 09:50", null, null, null, null, null},
@@ -324,10 +469,18 @@ public class telaDisciplina extends javax.swing.JFrame {
             new String [] {
                 "-", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"
             }
-        ));
-        scrlpnlGrade.setViewportView(tblGradeHorária);
-        if (tblGradeHorária.getColumnModel().getColumnCount() > 0) {
-            tblGradeHorária.getColumnModel().getColumn(0).setPreferredWidth(15);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scrlpnlGrade.setViewportView(tblGrade);
+        if (tblGrade.getColumnModel().getColumnCount() > 0) {
+            tblGrade.getColumnModel().getColumn(0).setPreferredWidth(15);
         }
 
         btnSalvarGrade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/icone salvar grade.png"))); // NOI18N
@@ -392,23 +545,21 @@ public class telaDisciplina extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlGradeHorária, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addContainerGap()
                 .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,7 +584,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvaliarProfessorActionPerformed
 
     private void btnAdicionarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGradeActionPerformed
-        // TODO add your handling code here:
+        ajustarHorario(professorSelecionado.getHorario(disciplinaTeste), disciplinaTeste.getCodigo());// TODO add your handling code here:
     }//GEN-LAST:event_btnAdicionarGradeActionPerformed
 
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
@@ -466,6 +617,16 @@ public class telaDisciplina extends javax.swing.JFrame {
     private void rdbDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbDisciplinaActionPerformed
         pesquisaDisciplina= true;        // TODO add your handling code here:
     }//GEN-LAST:event_rdbDisciplinaActionPerformed
+
+    private void tblRankingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRankingMouseClicked
+        int linha = tblRanking.getSelectedRow();
+        if (linha>=0 && linha <tblRanking.getRowCount()){
+            professorSelecionado = disciplinaTeste.getListaProfessores().get(linha);
+            btnAdicionarGrade.setEnabled(true);
+            btnAvaliarProfessor.setEnabled(true);   
+            btnPerfilProfessor.setEnabled(true);
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_tblRankingMouseClicked
 
     /**
      * @param args the command line arguments
@@ -530,9 +691,9 @@ public class telaDisciplina extends javax.swing.JFrame {
     private javax.swing.JPanel pnlRankingProfessores;
     private javax.swing.JRadioButton rdbDisciplina;
     private javax.swing.JRadioButton rdbPesquisaProfessor;
+    private javax.swing.JScrollPane scrllpnlRanking;
     private javax.swing.JScrollPane scrlpnlGrade;
-    private javax.swing.JScrollPane scrlpnlRanking;
-    private javax.swing.JTable tblGradeHorária;
+    private javax.swing.JTable tblGrade;
     private javax.swing.JTable tblRanking;
     private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
