@@ -87,11 +87,6 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblFotoProfessor">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\pedro\OneDrive\&#xc1;rea de Trabalho\person-icon-512x483-d7q8hqj4.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlInformacoesProfessor">
 
@@ -165,9 +160,9 @@
                           <Component id="lblTitleNumAvaliacoes" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblTituloDepartamento1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblNumAvaliacoes" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTituloDepartamento1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="lblEmail" min="-2" max="-2" attributes="0"/>

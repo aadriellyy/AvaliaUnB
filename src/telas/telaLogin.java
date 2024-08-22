@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
 
 public class telaLogin extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form telaLogin
      */
@@ -155,7 +155,7 @@ public class telaLogin extends javax.swing.JFrame {
        else{
         if(autenticar(matricula, senha)){
             this.setVisible(false);
-            new Avaliacao().setVisible(true);
+            new TelaAvaliacao().setVisible(true);
         }
         else{
             JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );
