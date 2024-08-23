@@ -7,11 +7,10 @@ import java.util.Map;
 import verificacao.Horario;
 
 public class Professor extends Pessoa{
-    
     Map <Disciplina,String> horarios = new HashMap<>();     //um objeto do tipo Map com as chaves sendo as disciplinas que o professor oferta e os valores sendo os horários que o professor oferta aquela disciplina
     private ArrayList <Disciplina> listaDisciplinas;                    //lista de disciplinas do professor    
-//lista de disciplinas do professor    
-    static int id;
+    //lista de disciplinas do professor    
+    private int id;
     //lista de avaliações feitas pelo professor
     private ArrayList <Avaliacao> listaAvaliacoes;                      
     private static ArrayList <Professor> todosProfessores= new ArrayList<>();
@@ -252,5 +251,10 @@ public class Professor extends Pessoa{
         }
     return null;
     }*/
+    
+    public int getId(){
+        return this.id;
+    }
+    
     
 }

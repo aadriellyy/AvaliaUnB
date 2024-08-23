@@ -4,6 +4,10 @@
  */
 package telas;
 
+import classes.Professor;
+import javax.swing.JOptionPane;
+import model.dao.AvaliacaoDAO;
+
 /**
  *
  * @author limaa
@@ -458,7 +462,21 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        
+        String nomeProfessor = this.txtNomePesquisa.getText();
+        AvaliacaoDAO dao = new AvaliacaoDAO();
+        Professor prof = dao.buscarProfessor(nomeProfessor);
+        if(prof != null){
+            //quando existir a media de nota da classe professor
+            //this.txtNota.setText(prof.getNota());
+            this.txtNomeProfessor.setText(prof.getNome());
+            this.txtDepartamento.setText(prof.getDepartamento());
+            this.habilitarBtn(true, false, true, true, true, false, false, false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Professor(a) não encontrado(a)");
+        }
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
