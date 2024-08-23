@@ -4,19 +4,12 @@
  */
 package telas;
 
-import classes.MySQLConnection;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import classes.Aluno;
 import javax.swing.JOptionPane;
+import model.dao.AlunoDAO;
 
-/**
- *
- * @author pedro
- */
 public class telaLogin extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form telaLogin
      */
@@ -138,24 +131,13 @@ public class telaLogin extends javax.swing.JFrame {
     }
     
     public static boolean autenticar(String matricula, String senha){
-        String sql = "SELECT * FROM alunos WHERE matricula=? and senha=?";
         
-        try(Connection con = MySQLConnection.getConnection();
-                PreparedStatement stmt = con.prepareStatement(sql)){
-            
-            stmt.setString(1, matricula);
-            stmt.setString(2, senha);
-            
-            ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
-                matriculaLogada = matricula;
+        AlunoDAO dao = new AlunoDAO();
+        for(Aluno aluno: dao.read()){
+            if(aluno.getMatricula().equals(matricula)&& aluno.getSenha().equals(senha)){
                 return true;
-            }    
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        
+            }
+        }  
         return false;
     }
     
@@ -173,7 +155,7 @@ public class telaLogin extends javax.swing.JFrame {
        else{
         if(autenticar(matricula, senha)){
             this.setVisible(false);
-            new Avaliacao().setVisible(true);
+            new TelaAvaliacao().setVisible(true);
         }
         else{
             JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );

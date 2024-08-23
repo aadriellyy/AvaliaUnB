@@ -5,10 +5,8 @@
 package telas;
 
 import classes.Aluno;
-import classes.MySQLConnection;
-import java.sql.*;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import model.dao.AlunoDAO;
 
 /**
  *
@@ -358,31 +356,21 @@ public class TelaAluno extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A matrícula deve ser informada!", "erro", JOptionPane.INFORMATION_MESSAGE );
             return;
         }
-        
-        String query = "SELECT nome, departamento, email, curso FROM alunos WHERE matricula = ?"; //texto para consulta no banco de dados
-        
-        try(Connection conn = MySQLConnection.getConnection(); //tentando conexão com o banco de dados
-                PreparedStatement stmt = conn.prepareStatement(query)){
-            
-            stmt.setString(1, matricula);//seleciona a linha referente a matricula inserida
-            ResultSet rs = stmt.executeQuery(); //rs eh a linha referente a matricula selecionada
-            
-            if(rs.next()){ //caso a matricula exista no banco de dados
-                txtNome.setText(rs.getString("nome"));
-                txtCurso.setText(rs.getString("curso"));
-                txtDepartament.setText(rs.getString("departamento"));
-                txtEmail.setText(rs.getString("email"));
+        AlunoDAO dao = new AlunoDAO();
+        boolean validar = false;
+        for(Aluno aluno : dao.read()){
+            if(aluno.getMatricula().equals(matricula)){
+                validar = true;
+                this.txtNome.setText(aluno.getNome());
+                this.txtCurso.setText(aluno.getCurso());
+                this.txtDepartament.setText(aluno.getDepartamento());
+                this.txtEmail.setText(aluno.getEmail());
             }
-            else{ //caso a linha seja nula
-                JOptionPane.showMessageDialog(null, "Aluno não cadastrado!", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                limpar();
-            }   
         }
-        catch(SQLException e){ //caso a conexão com o banco de dados falhe:
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Erro ao consultar o banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        if(!validar){
+            JOptionPane.showMessageDialog(null, "A matrícula informada não existe no sitema!", "erro", JOptionPane.INFORMATION_MESSAGE);
         }
-        
+      
         this.txtMatricula.selectAll();
         this.txtMatricula.requestFocus();
     }//GEN-LAST:event_btnOkActionPerformed
@@ -416,22 +404,8 @@ public class TelaAluno extends javax.swing.JFrame {
         }
         else{
             Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha); //instancia um novo objeto aluno
-            try (Connection conn = MySQLConnection.getConnection()) { //testando conexao com o banco de dados
-                String sql = "INSERT INTO alunos (nome, email, senha, curso, departamento, matricula) VALUES (?, ?, ?, ?, ?, ?)"; //comando para inserir os dados na tabela alunos
-                PreparedStatement stmt = conn.prepareStatement(sql); //variavel que fara a inserção dos dados na tabela
-                stmt.setString(1, nome);
-                stmt.setString(2, email);
-                stmt.setString(3, senha);
-                stmt.setString(4, curso);
-                stmt.setString(5, departamento);
-                stmt.setString(6, matricula);
-                stmt.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso!");
-            } catch (SQLException e) { //caso a conexão com o banco de dados falhe
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Erro ao salvar usuário: " + e.getMessage());
-            }
-            
+            AlunoDAO dao = new AlunoDAO();
+            dao.create(aluno);            
             this.limpar();
         }
         

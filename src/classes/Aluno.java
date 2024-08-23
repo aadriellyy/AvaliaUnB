@@ -9,6 +9,7 @@ public class Aluno extends Pessoa{
     private String senha;
     private List<Avaliacao> avaliacoes;
 
+    public Aluno(){}
     public Aluno(String nome, String departamento, String email, String matricula, String curso, String senha) {
         super(nome, departamento, email);
         this.matricula = matricula;

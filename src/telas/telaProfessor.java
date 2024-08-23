@@ -4,8 +4,7 @@
  */
 package telas;
 
-import classes.Disciplina;
-import classes.MySQLConnection;
+
 import java.sql.*;
 import classes.Professor;
 import com.sun.jdi.connect.spi.Connection;
@@ -27,7 +26,7 @@ public class telaProfessor extends javax.swing.JFrame {
     /**
      * Creates new form telaProfessor
      */
-    public telaProfessor(Professor professor) {
+    public telaProfessor() {
         initComponents();
         Font font = lblEmail.getFont();
         Map attributes = font.getAttributes();
@@ -80,8 +79,6 @@ public class telaProfessor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Perfil do professor");
-
-        lblFotoProfessor.setIcon(new javax.swing.ImageIcon("C:\\Users\\pedro\\OneDrive\\Área de Trabalho\\person-icon-512x483-d7q8hqj4.png")); // NOI18N
 
         lblTituloDepartamento.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTituloDepartamento.setText("Departamento");
@@ -174,9 +171,9 @@ public class telaProfessor extends javax.swing.JFrame {
                     .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTitleNumAvaliacoes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTituloDepartamento1)
-                    .addComponent(lblNumAvaliacoes))
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNumAvaliacoes)
+                    .addComponent(lblTituloDepartamento1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblEmail)
                 .addGap(48, 48, 48))
