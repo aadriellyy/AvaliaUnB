@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/pedro/OneDrive/Área%20de%20Trabalho/AvaliaUnB/src/telas/telaDisciplina.java</file>
             <file>file:/C:/Users/pedro/OneDrive/Área%20de%20Trabalho/AvaliaUnB/src/telas/telaProfessor.java</file>
-=======
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/classes/Avaliacao.java</file>
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/telas/TelaAluno.java</file>
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/telas/Avaliacao.java</file>
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/telas/telaLogin.java</file>
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/telas/telaDisciplina.java</file>
-            <file>file:/C:/Users/limaa/OneDrive/Documentos/tp1/projeto/AvaliaUnB/src/classes/Aluno.java</file>
->>>>>>> 512c85dca3e0e6944bd69ca51acab6f52e3d6349
+            <file>file:/C:/Users/pedro/OneDrive/Área%20de%20Trabalho/AvaliaUnB/src/classes/Comentario.java</file>
+            <file>file:/C:/Users/pedro/OneDrive/Área%20de%20Trabalho/AvaliaUnB/src/telas/telaDisciplina.java</file>
         </group>
     </open-files>
 </project-private>
