@@ -41,14 +41,12 @@ public class AvaliacaoDAO {
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"));        
                 professores.add(professor);
-            }
-            
+            }   
             for(Professor profe: professores){
                 if(profe.getNome().equals(nome)){
                     prof = profe;
                 }
-            }
-            
+            }    
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
@@ -59,15 +57,20 @@ public class AvaliacaoDAO {
         
     }
     
-    public void create(Aluno aluno, Avaliacao avaliacao, Professor professor){
+    public void create(String feedback, int like, Aluno aluno, Professor professor){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
+        Aluno alu = aluno;
+        Professor prof = professor;
+        System.out.println(feedback + " " + like + " " + alu.getMatricula() + " " + prof.getId());
+        Avaliacao avaliacao = new Avaliacao(feedback, like, alu, prof);
+        
         try {
-            stmt = con.prepareStatement("INSERT INTO avaliacao (feedback, nota, alunoID, professorID) VALUES(?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO avaliacao (feedback, nota, professorID, alunoID) VALUES(?, ?, ?, ?)");
             stmt.setString(1, avaliacao.getFeedback()); 
             stmt.setInt(2, avaliacao.getLike());
-            stmt.setInt(3, aluno.getId());
-            stmt.setInt(4, professor.getId());
+            stmt.setInt(3, avaliacao.getProfessor().getId());
+            stmt.setInt(4, avaliacao.getAluno().getId());
             //executando a sql
             stmt.executeUpdate();
 

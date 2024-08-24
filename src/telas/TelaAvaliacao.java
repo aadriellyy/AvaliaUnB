@@ -4,8 +4,12 @@
  */
 package telas;
 
+import classes.Aluno;
 import classes.Professor;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import model.dao.AlunoDAO;
 import model.dao.AvaliacaoDAO;
 
 /**
@@ -17,11 +21,18 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     /**
      * Creates new form TelaAvaliacao
      */
-    public TelaAvaliacao() {
+    private String matriculaAluno;
+    public TelaAvaliacao(){
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, false, false, false, false, false);
-        this.habilitarTxt(true, false, false, false, false, false);
+        this.inicial();
+    }
+    
+    public TelaAvaliacao(String matricula) {
+        initComponents();
+        this.limpar();
+        this.inicial();
+        this.matriculaAluno = matricula;
     }
 
     /**
@@ -398,6 +409,11 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeProfessorActionPerformed
 
+    private void inicial(){
+        this.limpar();
+        this.habilitarBtn(true, true, false, false, false, false, false, false);
+        this.habilitarTxt(true, false, false, false, false, false);
+    }
     
     private void habilitarBtn(boolean ok, boolean buscar, boolean avaliar, boolean cancelarPesquisa, 
             boolean exibirAvaliacao, boolean salvar, boolean excluir, boolean cancelarAvaliacao){
@@ -442,11 +458,12 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_lsMateriasMouseClicked
 
     private void btnAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarActionPerformed
-        // TODO add your handling code here:
+        this.habilitarTxt(false, false, false, false, true, true);
+        this.habilitarBtn(false, false, false, false, false, true, false, true);
     }//GEN-LAST:event_btnAvaliarActionPerformed
 
     private void btnCancelarPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPesquisaActionPerformed
-        // TODO add your handling code here:
+        this.inicial();
     }//GEN-LAST:event_btnCancelarPesquisaActionPerformed
 
     private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
@@ -488,11 +505,40 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFeedbackActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+        
+        AvaliacaoDAO dao = new AvaliacaoDAO();
+        Professor prof = dao.buscarProfessor(this.txtNomeProfessor.getText());
+        System.out.println(prof.getNome() + " " + prof.getId());
+        AlunoDAO daoAluno = new AlunoDAO();
+        List<Aluno> alunos = new ArrayList<>();
+        
+        Aluno aluno = new Aluno();
+        alunos = daoAluno.read();
+        String feedback = this.txtFeedback.getText();
+        int nota = Integer.parseInt(this.txtNotaAvaliacao.getText());
+        
+        for(Aluno alu: alunos){
+            if (alu.getMatricula().equals(this.getMatricula())){
+                aluno= alu;
+            }
+        }
+        
+        if(feedback.equals(" ") || this.txtNotaAvaliacao.getText().equals(" ") || aluno.getId() == 0){
+            JOptionPane.showMessageDialog(null, "A nota e feedback devem ser preenchidos!");
+        }
+        else{
+            dao.create(feedback, nota, aluno, prof);
+            JOptionPane.showMessageDialog(null, "Avaliação criada com sucesso!");
+        }
+        this.inicial();
+        
+        
+        
+        
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnCancelarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAvaliacaoActionPerformed
-        // TODO add your handling code here:
+        this.inicial();
     }//GEN-LAST:event_btnCancelarAvaliacaoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -506,6 +552,11 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public String getMatricula(){
+        return this.matriculaAluno;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -533,6 +584,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+               
                 new TelaAvaliacao().setVisible(true);
             }
         });

@@ -3,7 +3,7 @@ package classes;
 import java.util.*;
 
 public class Aluno extends Pessoa{
-    static int id;
+    private int id;
     private String matricula;
     private String curso;
     private String senha;

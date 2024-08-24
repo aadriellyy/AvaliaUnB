@@ -7,20 +7,21 @@ public class Avaliacao {
     private int id;
     private String feedback;
     private int like;
-    private final Aluno aluno;
+    private Aluno aluno;
     private List<Comentario> comentarios;
-    private final Professor professor;
-    private final Disciplina disciplina;
+    private Professor professor;
+    private final Disciplina disciplina = null;
 
     //construtor
-    public Avaliacao (String feedback, int like, Aluno aluno, Professor professor, Disciplina disciplina){
+    public Avaliacao (String feedback, int like, Aluno aluno, Professor prof){
         this.feedback = feedback;
         this.like = like;
         this.aluno = aluno;
         id ++;
-        this.professor= professor;
-        this.disciplina = disciplina;
-        this.professor.recebeAvaliacao(this);
+        this.professor = prof;
+    }
+
+    public Avaliacao() {
     }
 
     public void removeAvaliacao(Professor professor, Aluno aluno) {
@@ -28,16 +29,12 @@ public class Avaliacao {
         aluno.removeAvaliacao(this);
     }
 
+    /**
     public void atualizaAvaliacao(String newFeedback, int newLike) {
         this.feedback = newFeedback;
         this.like = newLike;
     }
-
-    public void inserirAvaliacao(Aluno aluno, Professor professor, String feedback, int like) {
-        Avaliacao novaAvaliacao = new Avaliacao(feedback, like, aluno, professor, disciplina);
-        professor.recebeAvaliacao(novaAvaliacao);
-        aluno.adicionaAvaliacao(novaAvaliacao);
-    }
+**/
 
     public int getId(){
         return this.id;
@@ -71,9 +68,11 @@ public class Avaliacao {
         this.comentarios = comentarios;
     }
     
+    
     public Disciplina getDisciplina (){
         return this.disciplina;
     }
+   
     
     public Professor getProfessor(){
         return this.professor;

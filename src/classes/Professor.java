@@ -20,17 +20,19 @@ public class Professor extends Pessoa{
         super(nome, departamento, email);
         this.listaAvaliacoes = new ArrayList<>();
         this.listaDisciplinas = new ArrayList<>();
-        Professor.todosProfessores.add(this);
+        id ++;
+        //Professor.todosProfessores.add(this);
     }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
         return this;
     }
     
+    /*
     public void setId(int id) {
         this.id= id;
     }
-    
+    */
     public Map <Disciplina, String> getListaHorarios () { 
         return this.horarios;
     }

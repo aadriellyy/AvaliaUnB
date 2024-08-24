@@ -155,7 +155,7 @@ public class telaLogin extends javax.swing.JFrame {
        else{
         if(autenticar(matricula, senha)){
             this.setVisible(false);
-            new TelaAvaliacao().setVisible(true);
+            new TelaAvaliacao(matricula).setVisible(true);
         }
         else{
             JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );
