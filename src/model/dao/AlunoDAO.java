@@ -144,8 +144,6 @@ public class AlunoDAO {
         PreparedStatement stmt = null;
         int id = aluno.getId();
         
-        System.out.println(aluno.getId());
-        
         ResultSet rs = null;
         List<Avaliacao> avaliacao = new ArrayList<>();
         
@@ -173,6 +171,27 @@ public class AlunoDAO {
         }       
         
         return null;
+        
+    }
+    
+    public void delete(Avaliacao avalia){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = con.prepareStatement("DELETE FROM avaliacao WHERE id = ?");
+            stmt.setInt(1, avalia.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            
+        } catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao deletar" + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
         
     }
     

@@ -31,7 +31,7 @@ public class TelaAluno extends javax.swing.JFrame{
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
         //listaAvaliacao = new ArrayList();
         this.carregarTabelaAvaliacao();
@@ -45,7 +45,7 @@ public class TelaAluno extends javax.swing.JFrame{
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, true, false, true, false);
         this.habilitarTexto(false, false, false, false, false, false);
         this.aluno = aluno;
         //listaAvaliacao = new ArrayList();
@@ -71,26 +71,29 @@ public class TelaAluno extends javax.swing.JFrame{
     @SuppressWarnings("unchecked")
     
     private void carregarTabelaAvaliacao(){
-        DefaultTableModel modelo = new DefaultTableModel(new Object[] {"Professor (a)", "Feedback", "Nota"},0);
+        DefaultTableModel modelo = new DefaultTableModel(new Object[] {"ID", "Professor (a)", "Feedback", "Nota"},0);
         AlunoDAO dao = new AlunoDAO();
-        //System.out.println(this.aluno.getId());
         
         List <Avaliacao> listaAvaliacao = dao.agrupAvaliacao(this.aluno).getAvaliacoes();
                 
         modelo.setNumRows(0);
         for(Avaliacao avalia: listaAvaliacao){
             modelo.addRow(new Object[]{
+                avalia.getId(),
+                avalia.getProfessor().getNome(),
                 avalia.getFeedback(), 
-                avalia.getLike(), 
-                avalia.getProfessor().getNome()
+                avalia.getLike()
             });
         }
         
         tblAvaliacoes.setModel(modelo);
         
-        tblAvaliacoes.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblAvaliacoes.getColumnModel().getColumn(0).setMinWidth(0); // ID escondido
+        tblAvaliacoes.getColumnModel().getColumn(0).setMaxWidth(0); // ID escondido
+        tblAvaliacoes.getColumnModel().getColumn(0).setPreferredWidth(0); // ID escondido
         tblAvaliacoes.getColumnModel().getColumn(1).setPreferredWidth(50);
-        tblAvaliacoes.getColumnModel().getColumn(2).setPreferredWidth(10);   
+        tblAvaliacoes.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tblAvaliacoes.getColumnModel().getColumn(3).setPreferredWidth(10);   
     } 
     
     private void habilitarTexto(boolean nome, boolean departamento,boolean email,boolean matricula, boolean curso, boolean senha){ //metodo para habilitar campos de texto
@@ -102,10 +105,10 @@ public class TelaAluno extends javax.swing.JFrame{
         this.txtSenha.setEnabled(senha);
     }
     
-    private void habilitarBtn(boolean voltar, boolean novo, boolean editar, boolean cancelar, boolean pesquisar, boolean salvar, boolean excluir, boolean ok){ //metodo para habilitar botoes
-        this.btnVoltar.setEnabled(voltar);
+    private void habilitarBtn(boolean voltar, boolean novo, boolean cancelar, boolean pesquisar, boolean salvar, boolean excluir, boolean ok){ //metodo para habilitar botoes
+        this.btnNovaAvaliacao.setEnabled(voltar);
         this.btnNovo.setEnabled(novo);
-        this.btnEditar.setEnabled(editar);
+        //this.btnEditar.setEnabled(editar);
         this.btnCancelar.setEnabled(cancelar);
         this.btnPesquisar.setEnabled(pesquisar);
         this.btnSalvar.setEnabled(salvar);
@@ -140,8 +143,7 @@ public class TelaAluno extends javax.swing.JFrame{
         btnPesquisar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnVoltar = new javax.swing.JButton();
+        btnNovaAvaliacao = new javax.swing.JButton();
         btnOk = new javax.swing.JButton();
         txtDepartamento = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
@@ -223,18 +225,11 @@ public class TelaAluno extends javax.swing.JFrame{
             }
         });
 
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnNovaAvaliacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
+        btnNovaAvaliacao.setText("Avaliar");
+        btnNovaAvaliacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
-        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVoltarActionPerformed(evt);
+                btnNovaAvaliacaoActionPerformed(evt);
             }
         });
 
@@ -264,16 +259,16 @@ public class TelaAluno extends javax.swing.JFrame{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addContainerGap(88, Short.MAX_VALUE)
+                        .addComponent(btnNovaAvaliacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisar))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPesquisar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSalvar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(jLabel1)
@@ -290,18 +285,15 @@ public class TelaAluno extends javax.swing.JFrame{
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                                 .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnSalvar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblMatricula))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExcluir)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,16 +328,14 @@ public class TelaAluno extends javax.swing.JFrame{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 28, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVoltar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnNovo)
-                        .addComponent(btnEditar)
-                        .addComponent(btnCancelar)
-                        .addComponent(btnPesquisar)
-                        .addComponent(btnSalvar)
-                        .addComponent(btnExcluir)))
+                .addGap(18, 29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPesquisar)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnNovo)
+                    .addComponent(btnNovaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -353,15 +343,23 @@ public class TelaAluno extends javax.swing.JFrame{
 
         tblAvaliacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Professor (a)", "Feedback", "Nota"
+                "id", "Professor (a)", "Feedback", "Nota"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblAvaliacoes.setToolTipText("");
         tblAvaliacoes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -374,13 +372,13 @@ public class TelaAluno extends javax.swing.JFrame{
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 910, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addGap(0, 463, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,22 +439,36 @@ public class TelaAluno extends javax.swing.JFrame{
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnOkActionPerformed
 
-    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+    private void btnNovaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaAvaliacaoActionPerformed
         this.limpar();
         this.setVisible(false);
+        new TelaAvaliacao(aluno.getMatricula()).setVisible(true);
         //carregarTabelaAvaliacao();
-    }//GEN-LAST:event_btnVoltarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        
-    }//GEN-LAST:event_btnEditarActionPerformed
+    }//GEN-LAST:event_btnNovaAvaliacaoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        
+        if(tblAvaliacoes.getSelectedRow() != -1){
+            
+            Avaliacao avalia = new Avaliacao();
+            AlunoDAO dao = new AlunoDAO();
+            
+            avalia.setId((int) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 0));
+            
+            dao.delete(avalia);
+            
+            // Remover a linha do modelo da tabela
+            DefaultTableModel modelo = (DefaultTableModel) tblAvaliacoes.getModel();
+            modelo.removeRow(tblAvaliacoes.getSelectedRow());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Selecione uma avaliação para excluir.");
+        }
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        this.habilitarBtn(false, false, false, true, false, true, false, false);
+        this.habilitarBtn(false, false, true, false, true, false, false);
         //pega os dados inseridos na caixa de texto
         String nome = txtNome.getText();
         String matricula = txtMatricula.getText();
@@ -476,7 +488,7 @@ public class TelaAluno extends javax.swing.JFrame{
             this.limpar();
         }
         
-        this.habilitarBtn(true, true, false, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
         //carregarTabelaAvaliacao();
         
@@ -488,7 +500,7 @@ public class TelaAluno extends javax.swing.JFrame{
         //apenas habilita botoes e campos de texto para que a consulta seja realizada
         this.limpar();
         this.habilitarTexto(false, false, false, true, false, false);
-        this.habilitarBtn(false, false, false, true, true, false, false, true);
+        this.habilitarBtn(false, false, true, true, false, false, true);
         this.txtMatricula.requestFocus();   
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnPesquisarActionPerformed
@@ -496,7 +508,7 @@ public class TelaAluno extends javax.swing.JFrame{
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         //cancela a acao atual e volta para estado inicial da pagina, com todos os campos limpos
         this.limpar();
-        this.habilitarBtn(true, true, false, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, true, false, false, false);
         this.habilitarTexto(false, false, false, false, false, false);
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -505,7 +517,7 @@ public class TelaAluno extends javax.swing.JFrame{
         //apenas habilita botoes e campos de texto para que os dados sejam inseridos
         this.limpar();
         this.habilitarTexto(true, true, true, true, true, true);
-        this.habilitarBtn(false, false, false, true, false, true, false, false);
+        this.habilitarBtn(false, false, true, false, true, false, false);
         this.txtNome.requestFocus();
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnNovoActionPerformed
@@ -519,7 +531,12 @@ public class TelaAluno extends javax.swing.JFrame{
     }//GEN-LAST:event_txtNomeActionPerformed
 
     private void tblAvaliacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAvaliacoesMouseClicked
-
+        int i = tblAvaliacoes.getSelectedRow();
+        if(i>=0 && i<aluno.getAvaliacoes().size()){
+            Avaliacao avalia = aluno.getAvaliacoes().get(i);
+        }
+        this.habilitarBtn(true, false, true, true, false, true, false);
+        
     }//GEN-LAST:event_tblAvaliacoesMouseClicked
 
     /**
@@ -559,13 +576,12 @@ public class TelaAluno extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovaAvaliacao;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

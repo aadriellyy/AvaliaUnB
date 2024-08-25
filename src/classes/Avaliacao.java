@@ -28,6 +28,10 @@ public class Avaliacao {
         professor.removeAvaliacao(this);
         aluno.removeAvaliacao(this);
     }
+    
+    public void setId(int id){
+        this.id = id;
+    }
 
     /**
     public void atualizaAvaliacao(String newFeedback, int newLike) {

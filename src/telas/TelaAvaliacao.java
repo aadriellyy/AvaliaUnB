@@ -454,7 +454,9 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarPesquisaActionPerformed
 
     private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
-        // TODO add your handling code here:
+        this.limpar();
+        this.setVisible(false);
+        new telaProfessor().setVisible(true);
     }//GEN-LAST:event_btnExibirActionPerformed
 
     private void txtNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaActionPerformed
@@ -495,7 +497,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         
         AvaliacaoDAO dao = new AvaliacaoDAO();
         Professor prof = dao.buscarProfessor(this.txtNomeProfessor.getText());
-        System.out.println(prof.getNome() + " " + prof.getId());
         AlunoDAO daoAluno = new AlunoDAO();
         List<Aluno> alunos = new ArrayList<>();
         
