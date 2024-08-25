@@ -14,14 +14,12 @@ public class Professor extends Pessoa{
     static int id;
     //lista de avaliações feitas pelo professor
     private ArrayList <Avaliacao> listaAvaliacoes;                      
-    private static ArrayList <Professor> todosProfessores= new ArrayList<>();
     
 
     public Professor(String nome, String departamento, String email){
         super(nome, departamento, email);
         this.listaAvaliacoes = new ArrayList<>();
         this.listaDisciplinas = new ArrayList<>();
-        Professor.todosProfessores.add(this);
     }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
@@ -60,6 +58,7 @@ public class Professor extends Pessoa{
     }
     
     public void setHorariosDisciplinas (String horario, Disciplina disciplina) {
+        
         try {
             Horario.verificaHorario(horario);
             if (this.listaDisciplinas.contains(disciplina)){ //verifica se a disciplina passada como argumento é ministrada pelo professor
@@ -77,7 +76,12 @@ public class Professor extends Pessoa{
     
     
     public ArrayList<Disciplina> getDisciplinas(){
-        return this.listaDisciplinas;
+        if (this.listaDisciplinas == null){
+            throw new NullPointerException ("Não há nenhuma disciplina cadastrada");
+        } 
+        else {
+            return this.listaDisciplinas;
+        }
     }
     
     public void addDisciplina (Disciplina disciplina) {
@@ -90,7 +94,12 @@ public class Professor extends Pessoa{
     }
     
     public void setListaDisciplinas (ArrayList <Disciplina> listaDisciplinas){
-        this.listaDisciplinas= listaDisciplinas;
+        if (listaDisciplinas == null){
+            throw new NullPointerException ("Lista vazia");
+        }
+        else{
+            this.listaDisciplinas= listaDisciplinas;
+        }
     }
     
     public void removeAvaliacao(Avaliacao avaliacao) {
@@ -163,18 +172,7 @@ public class Professor extends Pessoa{
         return this.listaAvaliacoes;
 }
     
-    public static Professor achaProfessor (String nome){
-        for (Professor prof : Professor.todosProfessores) {
-            if (prof.getNome().equals(nome)){
-                return prof;
-            }
-        }
-        throw new IllegalArgumentException ("Professor não encontrado");
-    }
-    
-    public static ArrayList<Professor> getTodosProfessores() {
-        return Professor.todosProfessores;
-    }
+
     
     /*public static void insereBanco(Professor prof){
         try (Connection conn = MySQLConnection.getConnection()) { //testando conexao com o banco de dados

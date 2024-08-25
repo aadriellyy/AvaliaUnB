@@ -5,6 +5,7 @@
 package telas;
 
 
+import classes.Disciplina;
 import java.sql.*;
 import classes.Professor;
 import com.sun.jdi.connect.spi.Connection;
@@ -16,13 +17,18 @@ import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import model.dao.DisciplinaDAO;
+import model.dao.ProfessorDAO;
 
 /**
  *
  * @author pedro
  */
 public class telaProfessor extends javax.swing.JFrame {
-
+Disciplina disciplinaPesquisada = null;
+Professor professorTela = null;
+boolean pesquisaProfessor = false ;
+boolean pesquisaDisciplina = false;
     /**
      * Creates new form telaProfessor
      */
@@ -35,6 +41,12 @@ public class telaProfessor extends javax.swing.JFrame {
         StringSelection stringSelection = new StringSelection(lblEmail.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null); 
+        btnIrAvaliar.setEnabled (false);
+        btnPesquisar.setEnabled(true);
+        btnVoltar.setEnabled(true);
+        cmbPesquisa.setEnabled(false);
+        
+            
         /*Professor professorLocal = Professor.resgataProfessorBanco();
         lblNome.setText(professorLocal.getNome());*/
     }
@@ -50,7 +62,6 @@ public class telaProfessor extends javax.swing.JFrame {
 
         grpPesquisa = new javax.swing.ButtonGroup();
         pnlFoto = new javax.swing.JPanel();
-        lblFotoProfessor = new javax.swing.JLabel();
         pnlInformacoesProfessor = new javax.swing.JPanel();
         lblTituloDepartamento = new javax.swing.JLabel();
         lblTitleNome = new javax.swing.JLabel();
@@ -62,20 +73,24 @@ public class telaProfessor extends javax.swing.JFrame {
         lblNota = new javax.swing.JLabel();
         lblTitleNumAvaliacoes = new javax.swing.JLabel();
         lblNumAvaliacoes = new javax.swing.JLabel();
+        lblTitleMedia = new javax.swing.JLabel();
+        lblMedia = new javax.swing.JLabel();
         pblAvaliacoes = new javax.swing.JPanel();
         lblTitleAvaliacoes = new javax.swing.JLabel();
         scrlpnlavaliações = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblAvaliacoes = new javax.swing.JTable();
         pnlBtnsAvaliacoes = new javax.swing.JPanel();
         btnVoltar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnPerfilDisciplina = new javax.swing.JButton();
         btnIrAvaliar = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        lblFoto = new javax.swing.JLabel();
+        pnlPesquisa = new javax.swing.JPanel();
         lblImagemPesquisa = new javax.swing.JLabel();
         txtPesquisa = new javax.swing.JTextField();
         rdbPesquisaProfessor = new javax.swing.JRadioButton();
         rdbDisciplina = new javax.swing.JRadioButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbPesquisa = new javax.swing.JComboBox<>();
+        btnPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Perfil do professor");
@@ -109,11 +124,16 @@ public class telaProfessor extends javax.swing.JFrame {
         lblNota.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         lblNota.setText("☆☆☆☆☆");
 
-        lblTitleNumAvaliacoes.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        lblTitleNumAvaliacoes.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTitleNumAvaliacoes.setText("Nº de avaliações");
 
         lblNumAvaliacoes.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
         lblNumAvaliacoes.setText("0");
+
+        lblTitleMedia.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
+        lblTitleMedia.setText("Média de avaliações");
+
+        lblMedia.setText("0");
 
         javax.swing.GroupLayout pnlInformacoesProfessorLayout = new javax.swing.GroupLayout(pnlInformacoesProfessor);
         pnlInformacoesProfessor.setLayout(pnlInformacoesProfessorLayout);
@@ -124,90 +144,96 @@ public class telaProfessor extends javax.swing.JFrame {
                 .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
                         .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitleNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
                                 .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblTituloDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblNome))
-                                .addGap(0, 6, Short.MAX_VALUE)))
-                        .addGap(34, 34, 34)
+                                .addGap(0, 36, Short.MAX_VALUE))
+                            .addComponent(lblTitleNome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNota)
-                            .addComponent(lblTitleNota))
-                        .addGap(55, 55, 55))
-                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                        .addComponent(lblEmail)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNota)
+                                    .addComponent(lblTitleNumAvaliacoes)))
+                            .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblTitleNota)))
+                        .addGap(33, 33, 33))
                     .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
                         .addComponent(lblTituloDepartamento1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblNumAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94))
+                        .addComponent(lblTitleMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
                         .addComponent(lblDepartamento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTitleNumAvaliacoes)
-                        .addGap(14, 14, 14))))
+                        .addComponent(lblNumAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(123, 123, 123))
+                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
+                        .addComponent(lblEmail)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(123, 123, 123))))
         );
         pnlInformacoesProfessorLayout.setVerticalGroup(
             pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInformacoesProfessorLayout.createSequentialGroup()
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTitleNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTituloDepartamento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(lblTitleNota)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNota)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitleNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitleNota))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNota))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloDepartamento)
                     .addComponent(lblTitleNumAvaliacoes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNumAvaliacoes)
-                    .addComponent(lblTituloDepartamento1))
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNumAvaliacoes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloDepartamento1)
+                    .addComponent(lblTitleMedia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblEmail)
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail)
+                    .addComponent(lblMedia))
                 .addGap(48, 48, 48))
         );
 
         lblTitleAvaliacoes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitleAvaliacoes.setText("Avaliações");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblAvaliacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Disciplina", "Horário", "Avaliação"
+                "Disciplina", "Horário", "Nota ", "Feedback", "Likes"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        scrlpnlavaliações.setViewportView(jTable1);
+        tblAvaliacoes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        scrlpnlavaliações.setViewportView(tblAvaliacoes);
 
         btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
         btnVoltar.setText("Voltar");
 
-        jButton1.setText("Ir para perfil ");
+        btnPerfilDisciplina.setText("Perfil da disciplina");
 
         javax.swing.GroupLayout pnlBtnsAvaliacoesLayout = new javax.swing.GroupLayout(pnlBtnsAvaliacoes);
         pnlBtnsAvaliacoes.setLayout(pnlBtnsAvaliacoesLayout);
@@ -215,7 +241,7 @@ public class telaProfessor extends javax.swing.JFrame {
             pnlBtnsAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBtnsAvaliacoesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btnPerfilDisciplina)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVoltar)
                 .addContainerGap(109, Short.MAX_VALUE))
@@ -224,7 +250,7 @@ public class telaProfessor extends javax.swing.JFrame {
             pnlBtnsAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBtnsAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnVoltar)
-                .addComponent(jButton1))
+                .addComponent(btnPerfilDisciplina))
         );
 
         btnIrAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
@@ -244,52 +270,53 @@ public class telaProfessor extends javax.swing.JFrame {
                         .addComponent(btnIrAvaliar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 73, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pblAvaliacoesLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pblAvaliacoesLayout.createSequentialGroup()
+                .addGap(273, 273, 273)
                 .addComponent(lblTitleAvaliacoes)
-                .addGap(220, 220, 220))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pblAvaliacoesLayout.setVerticalGroup(
             pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pblAvaliacoesLayout.createSequentialGroup()
-                .addGroup(pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnIrAvaliar)
-                    .addGroup(pblAvaliacoesLayout.createSequentialGroup()
-                        .addComponent(lblTitleAvaliacoes)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(scrlpnlavaliações, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(lblTitleAvaliacoes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrlpnlavaliações, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnIrAvaliar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
+
+        lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pessoa.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlFotoLayout = new javax.swing.GroupLayout(pnlFoto);
         pnlFoto.setLayout(pnlFotoLayout);
         pnlFotoLayout.setHorizontalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFotoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 21, Short.MAX_VALUE)
                 .addGroup(pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFotoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblFotoProfessor)
-                        .addGap(18, 18, 18)
+                        .addGap(23, 23, 23)
+                        .addComponent(lblFoto)
+                        .addGap(46, 46, 46)
                         .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pblAvaliacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pblAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         pnlFotoLayout.setVerticalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFotoLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblFotoProfessor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(pblAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(12, 12, 12))
         );
 
         lblImagemPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/pesquisa.png"))); // NOI18N
@@ -311,38 +338,53 @@ public class telaProfessor extends javax.swing.JFrame {
 
         grpPesquisa.add(rdbDisciplina);
         rdbDisciplina.setText("Disciplina");
+        rdbDisciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbDisciplinaActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Nome" }));
+        cmbPesquisa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Nome" }));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlPesquisaLayout = new javax.swing.GroupLayout(pnlPesquisa);
+        pnlPesquisa.setLayout(pnlPesquisaLayout);
+        pnlPesquisaLayout.setHorizontalGroup(
+            pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPesquisaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlPesquisaLayout.createSequentialGroup()
                         .addComponent(lblImagemPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(rdbPesquisaProfessor)
                         .addGap(18, 18, 18)
                         .addComponent(rdbDisciplina))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(cmbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnPesquisar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        pnlPesquisaLayout.setVerticalGroup(
+            pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPesquisaLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblImagemPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rdbPesquisaProfessor)
-                    .addComponent(rdbDisciplina))
+                    .addComponent(rdbDisciplina)
+                    .addComponent(btnPesquisar))
                 .addGap(0, 0, 0)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -351,16 +393,17 @@ public class telaProfessor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -370,12 +413,52 @@ public class telaProfessor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rdbPesquisaProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbPesquisaProfessorActionPerformed
-        // TODO add your handling code here:
+        cmbPesquisa.setEnabled(false);
+        pesquisaProfessor = true;   
+        pesquisaDisciplina = false;// TODO add your handling code here:
     }//GEN-LAST:event_rdbPesquisaProfessorActionPerformed
 
     private void txtPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaActionPerformed
-        // TODO add your handling code here:
+                // TODO add your handling code here:
     }//GEN-LAST:event_txtPesquisaActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        if (txtPesquisa.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Nada foi digitado para a pesquisa", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            if (pesquisaProfessor){
+                ProfessorDAO procuraProfessor = new ProfessorDAO();
+                ArrayList<Professor> listaProfessores = (ArrayList<Professor>) procuraProfessor.read();
+                String nomeProfessor = txtPesquisa.getText();
+                for (Professor professor : listaProfessores){
+                    if (professor.getNome().equals(nomeProfessor)){
+                        professorTela = professor;
+                        break;
+                    }
+                }
+            }
+            else if (pesquisaDisciplina){
+            DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
+            ArrayList <Disciplina> listaDisciplinas = (ArrayList<Disciplina>) procuraDisciplina.read();
+            if (cmbPesquisa.getSelectedIndex() ==0){
+                String codigoDisciplina = txtPesquisa.getText();
+                for (Disciplina disciplina : listaDisciplinas){
+                    if (disciplina.getCodigo().equals(codigoDisciplina)){
+                        disciplinaPesquisada = disciplina;
+                        break;
+                    }
+                }
+            }
+        }
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void rdbDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbDisciplinaActionPerformed
+        cmbPesquisa.setEnabled(true);
+        pesquisaDisciplina= true;
+        pesquisaProfessor = false;// TODO add your handling code here:
+    }//GEN-LAST:event_rdbDisciplinaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,20 +497,21 @@ public class telaProfessor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIrAvaliar;
+    private javax.swing.JButton btnPerfilDisciplina;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JComboBox<String> cmbPesquisa;
     private javax.swing.ButtonGroup grpPesquisa;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDepartamento;
     private javax.swing.JLabel lblEmail;
-    private javax.swing.JLabel lblFotoProfessor;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblImagemPesquisa;
+    private javax.swing.JLabel lblMedia;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblNota;
     private javax.swing.JLabel lblNumAvaliacoes;
     private javax.swing.JLabel lblTitleAvaliacoes;
+    private javax.swing.JLabel lblTitleMedia;
     private javax.swing.JLabel lblTitleNome;
     private javax.swing.JLabel lblTitleNota;
     private javax.swing.JLabel lblTitleNumAvaliacoes;
@@ -437,9 +521,11 @@ public class telaProfessor extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBtnsAvaliacoes;
     private javax.swing.JPanel pnlFoto;
     private javax.swing.JPanel pnlInformacoesProfessor;
+    private javax.swing.JPanel pnlPesquisa;
     private javax.swing.JRadioButton rdbDisciplina;
     private javax.swing.JRadioButton rdbPesquisaProfessor;
     private javax.swing.JScrollPane scrlpnlavaliações;
+    private javax.swing.JTable tblAvaliacoes;
     private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 }
