@@ -7,19 +7,25 @@ public class Aluno extends Pessoa{
     private String matricula;
     private String curso;
     private String senha;
-    private List<Avaliacao> avaliacoes;
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     public Aluno(){}
-    public Aluno(String nome, String departamento, String email, String matricula, String curso, String senha) {
+    public Aluno(String nome, String departamento, String email, String matricula, String curso, String senha){
         super(nome, departamento, email);
         this.matricula = matricula;
         this.curso = curso;
         this.senha = senha;
-        this.avaliacoes = new ArrayList<>();
-        id ++;
+    }
+    public Aluno(int id, String nome, String departamento, String email, String matricula, String curso, String senha) {
+        super(nome, departamento, email);
+        this.matricula = matricula;
+        this.curso = curso;
+        this.senha = senha;
+        //this.avaliacoes = new ArrayList<>();
+        this.id = id;
         
     }
-
+    
     public int getId() {
         return id;
     }

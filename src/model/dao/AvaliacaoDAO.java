@@ -65,6 +65,7 @@ public class AvaliacaoDAO {
         System.out.println(feedback + " " + like + " " + alu.getMatricula() + " " + prof.getId());
         Avaliacao avaliacao = new Avaliacao(feedback, like, alu, prof);
         
+        
         try {
             stmt = con.prepareStatement("INSERT INTO avaliacao (feedback, nota, professorID, alunoID) VALUES(?, ?, ?, ?)");
             stmt.setString(1, avaliacao.getFeedback()); 
