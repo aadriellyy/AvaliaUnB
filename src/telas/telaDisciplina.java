@@ -10,6 +10,7 @@ import static java.lang.Character.isDigit;
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.dao.DisciplinaDAO;
 import verificacao.MapeiaHorarios;
 
 /**
@@ -32,9 +33,7 @@ public class telaDisciplina extends javax.swing.JFrame {
      */
     public telaDisciplina() {
         initComponents();
-        cmbPesquisa.setVisible(false);
-        disciplinaTeste.addListaProfessores(professorTeste);
-        professorTeste.setHorariosDisciplinas("35M34", disciplinaTeste);
+        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();        
         inicializaHorario();
         carregarTabelaProfessores();
     }
@@ -193,7 +192,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         txtPesquisa = new javax.swing.JTextField();
         rdbPesquisaProfessor = new javax.swing.JRadioButton();
         rdbDisciplina = new javax.swing.JRadioButton();
-        cmbPesquisa = new javax.swing.JComboBox<>();
+        btnPesquisar = new javax.swing.JButton();
         pnlGradeHorária = new javax.swing.JPanel();
         lblGrade = new javax.swing.JLabel();
         scrlpnlGrade = new javax.swing.JScrollPane();
@@ -349,7 +348,7 @@ public class telaDisciplina extends javax.swing.JFrame {
                     .addComponent(lblCodigo)
                     .addComponent(lblTitleCarga)
                     .addComponent(lblCargaHoraria))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlRankingProfessores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -408,10 +407,10 @@ public class telaDisciplina extends javax.swing.JFrame {
             }
         });
 
-        cmbPesquisa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbPesquisa.addActionListener(new java.awt.event.ActionListener() {
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbPesquisaActionPerformed(evt);
+                btnPesquisarActionPerformed(evt);
             }
         });
 
@@ -423,27 +422,25 @@ public class telaDisciplina extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblImagemPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbPesquisa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPesquisa))
+                .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(rdbPesquisaProfessor)
                 .addGap(18, 18, 18)
                 .addComponent(rdbDisciplina)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(btnPesquisar)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         pnlPesquisaLayout.setVerticalGroup(
             pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPesquisaLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPesquisaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblImagemPesquisa)
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rdbPesquisaProfessor)
-                    .addComponent(rdbDisciplina))
-                .addGap(1, 1, 1)
-                .addComponent(cmbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(btnPesquisar)
+                    .addComponent(rdbDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         lblGrade.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
@@ -561,7 +558,7 @@ public class telaDisciplina extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlGradeHorária, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -588,31 +585,8 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdicionarGradeActionPerformed
 
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
-        cmbPesquisa.setVisible(true); 
-        cmbPesquisa.removeAllItems();
-        String textoDigitado = txtPesquisa.getText();
-        JOptionPane.showMessageDialog(null, textoDigitado);
-        if (!textoDigitado.equals("")){
-            if (pesquisaDisciplina){
-                for(Disciplina disc: Disciplina.getTodasDisciplinas()){
-                   if (disc.getNome().length()>=textoDigitado.length() && textoDigitado.equals(disc.getNome().substring(0, textoDigitado.length()))){
-                        cmbPesquisa.addItem(disc.getNome());
-                   }
-                }
-            }
-            else if (pesquisaProfessor){
-                for(Professor prof: Professor.getTodosProfessores()){
-                   if (textoDigitado.equals(prof.getNome().substring(0, textoDigitado.length()))){
-                        cmbPesquisa.addItem(prof.getNome());
-                   }
-                }
-            }
-        }
-    }//GEN-LAST:event_txtPesquisaKeyPressed
 
-    private void cmbPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPesquisaActionPerformed
-   // TODO add your handling code here:
-    }//GEN-LAST:event_cmbPesquisaActionPerformed
+    }//GEN-LAST:event_txtPesquisaKeyPressed
 
     private void rdbDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbDisciplinaActionPerformed
         pesquisaDisciplina= true;        // TODO add your handling code here:
@@ -627,6 +601,19 @@ public class telaDisciplina extends javax.swing.JFrame {
             btnPerfilProfessor.setEnabled(true);
         }// TODO add your handling code here:
     }//GEN-LAST:event_tblRankingMouseClicked
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        String nomePesquisado = txtPesquisa.getText();
+        if (nomePesquisado == null){
+            JOptionPane.showMessageDialog(null, "Nada foi digitado", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            if(pesquisaProfessor){
+                
+            }
+            
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -667,11 +654,11 @@ public class telaDisciplina extends javax.swing.JFrame {
     private javax.swing.JButton btnAdicionarGrade;
     private javax.swing.JButton btnAvaliarProfessor;
     private javax.swing.JButton btnPerfilProfessor;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvarGrade;
     private javax.swing.JButton btnVoltar;
     private javax.swing.ButtonGroup btngrpPesquisa;
-    private javax.swing.JComboBox<String> cmbPesquisa;
     private javax.swing.JLabel lbNomeDisciplina;
     private javax.swing.JLabel lblCargaHoraria;
     private javax.swing.JLabel lblCodigo;
