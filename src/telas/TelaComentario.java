@@ -1,10 +1,9 @@
+package telas;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-
+import classes.Avaliacao;
+import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,6 +17,14 @@ public class TelaComentario extends javax.swing.JFrame {
      */
     public TelaComentario() {
         initComponents();
+        btnNovoComentario.setEnabled(true);
+        btnEditarComentario.setEnabled(true);
+        btnCancelarComentario.setEnabled(false);
+        btnOkComentario.setEnabled(false);
+        btnExcluirComentario.setEnabled(false);
+        
+        txtComentario.setEnabled(false);
+        
     }
 
     /**
@@ -38,10 +45,14 @@ public class TelaComentario extends javax.swing.JFrame {
         lblInfoDepartamento = new javax.swing.JLabel();
         lblInfoCodigo = new javax.swing.JLabel();
         lblInfoCargaHoraria = new javax.swing.JLabel();
+        lblProfessor = new javax.swing.JLabel();
+        lblInfoProfessor = new javax.swing.JLabel();
         scrComentarios = new javax.swing.JScrollPane();
         lstListaComentarios = new javax.swing.JList<>();
         pnlAvaliaçãoDisciplina = new javax.swing.JPanel();
-        lblMedia = new javax.swing.JLabel();
+        lblNota = new javax.swing.JLabel();
+        txtNota = new javax.swing.JTextField();
+        btnOkNota = new javax.swing.JButton();
         sprSeparadorComentario = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         btnOkComentario = new javax.swing.JButton();
@@ -70,6 +81,8 @@ public class TelaComentario extends javax.swing.JFrame {
         lblCargaHorariaComentario.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         lblCargaHorariaComentario.setText("Carga Horária:");
 
+        lblProfessor.setText("Professor:");
+
         javax.swing.GroupLayout pnlInformacoesDisciplinaLayout = new javax.swing.GroupLayout(pnlInformacoesDisciplina);
         pnlInformacoesDisciplina.setLayout(pnlInformacoesDisciplinaLayout);
         pnlInformacoesDisciplinaLayout.setHorizontalGroup(
@@ -87,22 +100,32 @@ public class TelaComentario extends javax.swing.JFrame {
                     .addComponent(lblInfoDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblInfoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblInfoCargaHoraria, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                .addGap(116, 116, 116)
+                .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblProfessor)
+                    .addComponent(lblInfoProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlInformacoesDisciplinaLayout.setVerticalGroup(
             pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInformacoesDisciplinaLayout.createSequentialGroup()
+                .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblDisciplinaComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProfessor, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblInfoDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDisciplinaComentario)
-                    .addComponent(lblInfoDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblDepartamentoComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblInfoDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblCodigoComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblInfoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlInformacoesDisciplinaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblDepartamentoComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblInfoDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblCodigoComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblInfoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInformacoesDisciplinaLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lblInfoProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlInformacoesDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblCargaHorariaComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -122,8 +145,15 @@ public class TelaComentario extends javax.swing.JFrame {
 
         pnlAvaliaçãoDisciplina.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avaliação ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
 
-        lblMedia.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        lblMedia.setText("Média:");
+        lblNota.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        lblNota.setText("Nota: ");
+
+        btnOkNota.setText("OK");
+        btnOkNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkNotaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlAvaliaçãoDisciplinaLayout = new javax.swing.GroupLayout(pnlAvaliaçãoDisciplina);
         pnlAvaliaçãoDisciplina.setLayout(pnlAvaliaçãoDisciplinaLayout);
@@ -131,14 +161,24 @@ public class TelaComentario extends javax.swing.JFrame {
             pnlAvaliaçãoDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAvaliaçãoDisciplinaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblMedia)
+                .addComponent(lblNota)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(btnOkNota, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlAvaliaçãoDisciplinaLayout.setVerticalGroup(
             pnlAvaliaçãoDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAvaliaçãoDisciplinaLayout.createSequentialGroup()
-                .addComponent(lblMedia)
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addComponent(lblNota)
+                .addGap(0, 37, Short.MAX_VALUE))
+            .addGroup(pnlAvaliaçãoDisciplinaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlAvaliaçãoDisciplinaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOkNota))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Faça seu comentario aqui!", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
@@ -178,14 +218,29 @@ public class TelaComentario extends javax.swing.JFrame {
         btnNovoComentario.setFont(new java.awt.Font("Malgun Gothic", 0, 11)); // NOI18N
         btnNovoComentario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/comentario.png"))); // NOI18N
         btnNovoComentario.setText("Novo Comentario");
+        btnNovoComentario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoComentarioActionPerformed(evt);
+            }
+        });
 
         btnEditarComentario.setFont(new java.awt.Font("Malgun Gothic", 0, 11)); // NOI18N
         btnEditarComentario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/editarComentario.png"))); // NOI18N
         btnEditarComentario.setText("Editar");
+        btnEditarComentario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarComentarioActionPerformed(evt);
+            }
+        });
 
         btnCancelarComentario.setFont(new java.awt.Font("Malgun Gothic", 0, 11)); // NOI18N
         btnCancelarComentario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Cancelar.png"))); // NOI18N
         btnCancelarComentario.setText("Cancelar");
+        btnCancelarComentario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarComentarioActionPerformed(evt);
+            }
+        });
 
         btnExcluirComentario.setFont(new java.awt.Font("Malgun Gothic", 0, 11)); // NOI18N
         btnExcluirComentario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/excluirComentario.png"))); // NOI18N
@@ -239,7 +294,7 @@ public class TelaComentario extends javax.swing.JFrame {
                         .addComponent(btnEditarComentario)
                         .addComponent(btnCancelarComentario))
                     .addComponent(btnExcluirComentario))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -249,6 +304,49 @@ public class TelaComentario extends javax.swing.JFrame {
     private void txtComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComentarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtComentarioActionPerformed
+
+    private void btnNovoComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoComentarioActionPerformed
+        // TODO add your handling code here:
+        btnNovoComentario.setEnabled(false);
+        btnEditarComentario.setEnabled(false);
+        btnCancelarComentario.setEnabled(true);
+        btnOkComentario.setEnabled(true);
+        btnExcluirComentario.setEnabled(false);
+        
+       txtComentario.setEnabled(true);
+    }//GEN-LAST:event_btnNovoComentarioActionPerformed
+
+    private void btnEditarComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarComentarioActionPerformed
+        // TODO add your handling code here:
+        btnNovoComentario.setEnabled(false);
+        btnEditarComentario.setEnabled(false);
+        btnCancelarComentario.setEnabled(true);
+        btnOkComentario.setEnabled(true);
+        btnExcluirComentario.setEnabled(false);
+        
+        txtComentario.setEnabled(true);
+    }//GEN-LAST:event_btnEditarComentarioActionPerformed
+
+    private void btnCancelarComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarComentarioActionPerformed
+        // TODO add your handling code here:
+        btnNovoComentario.setEnabled(true);
+        btnEditarComentario.setEnabled(true);
+        btnCancelarComentario.setEnabled(false);
+        btnOkComentario.setEnabled(false);
+        btnExcluirComentario.setEnabled(false);
+        
+        txtComentario.setEnabled(false);
+    }//GEN-LAST:event_btnCancelarComentarioActionPerformed
+
+    private void btnOkNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkNotaActionPerformed
+        // TODO add your handling code here:
+        if(txtNota.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "nenhuma nota cadastrada", "mensagem", JOptionPane.PLAIN_MESSAGE);
+        }
+        else{
+            Avaliacao avalia;
+        }
+    }//GEN-LAST:event_btnOkNotaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,6 +390,7 @@ public class TelaComentario extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluirComentario;
     private javax.swing.JButton btnNovoComentario;
     private javax.swing.JButton btnOkComentario;
+    private javax.swing.JButton btnOkNota;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCargaHorariaComentario;
     private javax.swing.JLabel lblCodigoComentario;
@@ -301,12 +400,15 @@ public class TelaComentario extends javax.swing.JFrame {
     private javax.swing.JLabel lblInfoCodigo;
     private javax.swing.JLabel lblInfoDepartamento;
     private javax.swing.JLabel lblInfoDisciplina;
-    private javax.swing.JLabel lblMedia;
+    private javax.swing.JLabel lblInfoProfessor;
+    private javax.swing.JLabel lblNota;
+    private javax.swing.JLabel lblProfessor;
     private javax.swing.JList<String> lstListaComentarios;
     private javax.swing.JPanel pnlAvaliaçãoDisciplina;
     private javax.swing.JPanel pnlInformacoesDisciplina;
     private javax.swing.JScrollPane scrComentarios;
     private javax.swing.JSeparator sprSeparadorComentario;
     private javax.swing.JTextField txtComentario;
+    private javax.swing.JTextField txtNota;
     // End of variables declaration//GEN-END:variables
 }

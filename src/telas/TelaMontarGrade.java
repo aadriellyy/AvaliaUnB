@@ -1,3 +1,4 @@
+package telas;
 
 public class TelaMontarGrade extends javax.swing.JFrame {
 
