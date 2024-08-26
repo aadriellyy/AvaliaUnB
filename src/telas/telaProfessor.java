@@ -14,9 +14,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.font.TextAttribute;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.dao.DisciplinaDAO;
 import model.dao.ProfessorDAO;
 
@@ -25,14 +25,46 @@ import model.dao.ProfessorDAO;
  * @author pedro
  */
 public class telaProfessor extends javax.swing.JFrame {
-Disciplina disciplinaPesquisada = null;
+static Disciplina disciplinaPesquisada = null;
+static boolean disciplinaFoiProcurada = false;
 Professor professorTela = null;
 boolean pesquisaProfessor = false ;
 boolean pesquisaDisciplina = false;
+ProfessorDAO professorPesquisa = new ProfessorDAO();
+List<Professor> listaProfessores = professorPesquisa.read();
+
     /**
      * Creates new form telaProfessor
      */
+    public void carregaInformacoes(){
+        lblNome.setText(professorTela.getNome());
+        lblEmail.setText(professorTela.getEmail());
+        lblMedia.setText(String.valueOf(professorTela.mediaAvaliacao()));
+        lblNumAvaliacoes.setText(String.valueOf(professorTela.getListaAvaliacoes().size()));
+        lblDepartamento.setText(professorTela.getDepartamento());
+    }
+    
+    public void carregarTabelaAvaliacoes (){
+        DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Disciplina","Horário", "Média de avaliação"},0);
+        for (Disciplina disciplina : professorTela.getDisciplinas()){
+            String formataMediaAvaliacao;
+            if (professorTela.mediaAvaliacao(disciplina)==-1){
+                formataMediaAvaliacao= "Não há nenhuma avaliação cadastrada";
+            }
+            else{
+                formataMediaAvaliacao = String.valueOf(professorTela.mediaAvaliacao(disciplina));
+            }
+            Object linha [] = new Object[] {disciplina.getNome(),
+                                            professorTela.getHorario(disciplina),
+                                            formataMediaAvaliacao};
+            modelo.addRow(linha);
+        }
+        tblAvaliacoes.setModel(modelo);
+    }
+
     public telaProfessor() {
+
+        professorTela = listaProfessores.get(1);
         initComponents();
         Font font = lblEmail.getFont();
         Map attributes = font.getAttributes();
@@ -44,13 +76,15 @@ boolean pesquisaDisciplina = false;
         btnIrAvaliar.setEnabled (false);
         btnPesquisar.setEnabled(true);
         btnVoltar.setEnabled(true);
-        cmbPesquisa.setEnabled(false);
-        
+        cmbPesquisa.setEnabled(false);  
+        rdbDisciplina.setEnabled(true);
+        rdbPesquisaProfessor.setEnabled(true);
+        carregaInformacoes();
+        carregarTabelaAvaliacoes();
             
-        /*Professor professorLocal = Professor.resgataProfessorBanco();
-        lblNome.setText(professorLocal.getNome());*/
-    }
 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,11 +100,9 @@ boolean pesquisaDisciplina = false;
         lblTituloDepartamento = new javax.swing.JLabel();
         lblTitleNome = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
-        lblTitleNota = new javax.swing.JLabel();
         lblDepartamento = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         lblTituloDepartamento1 = new javax.swing.JLabel();
-        lblNota = new javax.swing.JLabel();
         lblTitleNumAvaliacoes = new javax.swing.JLabel();
         lblNumAvaliacoes = new javax.swing.JLabel();
         lblTitleMedia = new javax.swing.JLabel();
@@ -104,25 +136,16 @@ boolean pesquisaDisciplina = false;
 
         lblEmail.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(51, 102, 255));
-        lblEmail.setText("pedrolucaspn13@gmail.com");
         lblEmail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        lblTitleNota.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
-        lblTitleNota.setText("Nota");
 
         lblDepartamento.setBackground(new java.awt.Color(0, 255, 0));
         lblDepartamento.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
-        lblDepartamento.setText("Ciência da Computação");
 
         lblNome.setBackground(new java.awt.Color(0, 255, 0));
         lblNome.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
-        lblNome.setText("Pedro Lucas Pereira Neris");
 
         lblTituloDepartamento1.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTituloDepartamento1.setText("Email");
-
-        lblNota.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
-        lblNota.setText("☆☆☆☆☆");
 
         lblTitleNumAvaliacoes.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTitleNumAvaliacoes.setText("Nº de avaliações");
@@ -150,59 +173,52 @@ boolean pesquisaDisciplina = false;
                                     .addComponent(lblNome))
                                 .addGap(0, 36, Short.MAX_VALUE))
                             .addComponent(lblTitleNome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(15, 15, 15)
                         .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNota)
-                                    .addComponent(lblTitleNumAvaliacoes)))
-                            .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblTitleNota)))
-                        .addGap(33, 33, 33))
+                            .addComponent(lblNumAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTitleNumAvaliacoes))
+                        .addGap(48, 48, 48))
                     .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                        .addComponent(lblTituloDepartamento1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTituloDepartamento1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDepartamento))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTitleMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
-                        .addComponent(lblDepartamento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblNumAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123))
+                        .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitleMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15))
                     .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
                         .addComponent(lblEmail)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblMedia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlInformacoesProfessorLayout.setVerticalGroup(
             pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInformacoesProfessorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitleNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitleNota))
+                .addComponent(lblTitleNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNota))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTituloDepartamento)
                     .addComponent(lblTitleNumAvaliacoes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNumAvaliacoes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTituloDepartamento1)
-                    .addComponent(lblTitleMedia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmail)
-                    .addComponent(lblMedia))
-                .addGap(48, 48, 48))
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNumAvaliacoes)
+                    .addComponent(lblTituloDepartamento))
+                .addGroup(pnlInformacoesProfessorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTituloDepartamento1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblEmail)
+                        .addGap(48, 48, 48))
+                    .addGroup(pnlInformacoesProfessorLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(lblTitleMedia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMedia)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         lblTitleAvaliacoes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -210,17 +226,17 @@ boolean pesquisaDisciplina = false;
 
         tblAvaliacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Disciplina", "Horário", "Nota ", "Feedback", "Likes"
+                "Disciplina", "Horário", "Média de avaliação"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -426,31 +442,55 @@ boolean pesquisaDisciplina = false;
         if (txtPesquisa.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Nada foi digitado para a pesquisa", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+        else if (!pesquisaProfessor && !pesquisaDisciplina){
+            JOptionPane.showMessageDialog(null, "Selecione uma opção de pesquisa", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
         else {
             if (pesquisaProfessor){
-                ProfessorDAO procuraProfessor = new ProfessorDAO();
-                ArrayList<Professor> listaProfessores = (ArrayList<Professor>) procuraProfessor.read();
                 String nomeProfessor = txtPesquisa.getText();
+                boolean achou = false;
                 for (Professor professor : listaProfessores){
                     if (professor.getNome().equals(nomeProfessor)){
                         professorTela = professor;
+                        achou=true;
                         break;
-                    }
+                    } 
+                }
+                if (achou){
+                    carregaInformacoes();
+                    carregarTabelaAvaliacoes();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Não há nenhum professor com esse nome", "Erro", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             else if (pesquisaDisciplina){
-            DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
-            ArrayList <Disciplina> listaDisciplinas = (ArrayList<Disciplina>) procuraDisciplina.read();
-            if (cmbPesquisa.getSelectedIndex() ==0){
-                String codigoDisciplina = txtPesquisa.getText();
-                for (Disciplina disciplina : listaDisciplinas){
-                    if (disciplina.getCodigo().equals(codigoDisciplina)){
-                        disciplinaPesquisada = disciplina;
-                        break;
+                DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
+                ArrayList <Disciplina> listaDisciplinas = (ArrayList<Disciplina>) procuraDisciplina.read();
+                if (cmbPesquisa.getSelectedIndex() ==0){
+                    String codigoDisciplina = txtPesquisa.getText();
+                    for (Disciplina disciplina : listaDisciplinas){
+                        if (disciplina.getCodigo().equals(codigoDisciplina)){
+                            disciplinaPesquisada = disciplina;
+                            disciplinaFoiProcurada= true;
+                            new telaDisciplina().setVisible(true);
+                            break;
+                        }
                     }
                 }
+                else if (cmbPesquisa.getSelectedIndex()==1){
+                    String nomeDisciplina = txtPesquisa.getText();
+                    for (Disciplina disciplina : listaDisciplinas){
+                        if (disciplina.getNome().equals(nomeDisciplina)){
+                            disciplinaPesquisada = disciplina;
+                            disciplinaFoiProcurada= true;
+                            new telaDisciplina().setVisible(true);
+                            break;
+                        }
+                    }
+
+                }
             }
-        }
         }// TODO add your handling code here:
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -508,12 +548,10 @@ boolean pesquisaDisciplina = false;
     private javax.swing.JLabel lblImagemPesquisa;
     private javax.swing.JLabel lblMedia;
     private javax.swing.JLabel lblNome;
-    private javax.swing.JLabel lblNota;
     private javax.swing.JLabel lblNumAvaliacoes;
     private javax.swing.JLabel lblTitleAvaliacoes;
     private javax.swing.JLabel lblTitleMedia;
     private javax.swing.JLabel lblTitleNome;
-    private javax.swing.JLabel lblTitleNota;
     private javax.swing.JLabel lblTitleNumAvaliacoes;
     private javax.swing.JLabel lblTituloDepartamento;
     private javax.swing.JLabel lblTituloDepartamento1;

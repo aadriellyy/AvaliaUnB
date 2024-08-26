@@ -106,37 +106,28 @@
                                   </Group>
                                   <Component id="lblTitleNome" alignment="1" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblNota" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblTitleNumAvaliacoes" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="lblTitleNota" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="lblNumAvaliacoes" min="-2" pref="37" max="-2" attributes="0"/>
+                                  <Component id="lblTitleNumAvaliacoes" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblTituloDepartamento1" min="-2" pref="167" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblTituloDepartamento1" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
+                                  <Component id="lblDepartamento" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblTitleMedia" min="-2" pref="160" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblDepartamento" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblNumAvaliacoes" min="-2" pref="37" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblTitleMedia" min="-2" pref="160" max="-2" attributes="0"/>
+                                  <Component id="lblMedia" min="-2" pref="37" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblEmail" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblMedia" min="-2" pref="37" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -146,36 +137,35 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblTitleNome" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                          <Component id="lblTitleNota" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblTitleNome" min="-2" pref="22" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblNome" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                          <Component id="lblNota" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblTituloDepartamento" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTitleNumAvaliacoes" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblDepartamento" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                          <Component id="lblNumAvaliacoes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblTituloDepartamento1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTitleMedia" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblEmail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblMedia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblNumAvaliacoes" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTituloDepartamento" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblDepartamento" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblTituloDepartamento1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="lblEmail" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <Component id="lblTitleMedia" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblMedia" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -208,18 +198,9 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="66" red="33" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="pedrolucaspn13@gmail.com"/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblTitleNota">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Malgun Gothic" size="16" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Nota"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblDepartamento">
@@ -230,7 +211,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei UI" size="12" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ci&#xea;ncia da Computa&#xe7;&#xe3;o"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblNome">
@@ -241,7 +221,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Malgun Gothic" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Pedro Lucas Pereira Neris"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTituloDepartamento1">
@@ -250,14 +229,6 @@
                   <Font name="Malgun Gothic" size="16" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Email"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblNota">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft YaHei UI" size="18" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x2606;&#x2606;&#x2606;&#x2606;&#x2606;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTitleNumAvaliacoes">
@@ -351,26 +322,14 @@
                 <Component class="javax.swing.JTable" name="tblAvaliacoes">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="4">
+                      <Table columnCount="3" rowCount="4">
                         <Column editable="false" title="Disciplina" type="java.lang.Object"/>
                         <Column editable="false" title="Hor&#xe1;rio" type="java.lang.Object"/>
-                        <Column editable="false" title="Nota " type="java.lang.Object"/>
-                        <Column editable="true" title="Feedback" type="java.lang.Object"/>
-                        <Column editable="true" title="Likes" type="java.lang.Object"/>
+                        <Column editable="false" title="M&#xe9;dia de avalia&#xe7;&#xe3;o" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>

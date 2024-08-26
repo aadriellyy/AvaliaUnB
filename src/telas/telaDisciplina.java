@@ -25,23 +25,44 @@ public class telaDisciplina extends javax.swing.JFrame {
     static ArrayList <Disciplina> disciplinasAdicionadasGrade = new ArrayList<>();
     static ArrayList <Disciplina> disciplinasParaAdicionarGrade = new ArrayList <>();
     static ArrayList <ArrayList<String>> horarios = new ArrayList<>();
-    Disciplina disciplinaTeste = new Disciplina ("Técnicas de Programação 1", "Departamento de Ciência da Computação" ,"CIC0197", 60);
-    Professor professorTeste = new Professor ("Roberta Barroso de Oliveira", "roberta.barroso@unb.com.br", "Departamento de Ciência da Computação" );
-    
+    static int horasGrade=0;
+    Disciplina disciplinaTela = null;    
+    boolean pesquisouProfessor=false;
+    static Disciplina disciplinaPesquisada;
+    static Professor professorPesquisado;
+
     /**
      * Creates new form telaDisciplina
      */
     public telaDisciplina() {
+        DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
+        List<Disciplina> listaDisciplinas = procuraDisciplina.read();
+        //disciplinaTela = listaDisciplinas.get(0);
         initComponents();
-        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();        
-        inicializaHorario();
-        carregarTabelaProfessores();
+        if (telaProfessor.disciplinaFoiProcurada){
+            disciplinaTela= telaProfessor.disciplinaPesquisada;}
+        for (Professor professor : disciplinaTela.getListaProfessores()){
+            System.out.println(professor.getNome());
+        }
+        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();  
+        //procuraDisciplinas.teste();
+         List<Disciplina> listaLocal = procuraDisciplinas.read();
+            for (Disciplina disciplinaLoop: listaLocal){
+
+                JOptionPane.showMessageDialog(null, "entrou?"+disciplinaLoop.getListaProfessores().size());
+                for (Professor professorLoop: disciplinaLoop.getListaProfessores()){
+                    JOptionPane.showMessageDialog(null, professorLoop.getNome()+"entrou?");
+                    JOptionPane.showMessageDialog(null, professorLoop.getNome()+"que?");
+                } 
+            }
+            inicializaHorario();
+            carregarTabelaProfessores();
     }
-    
+
     public void carregarTabelaProfessores (){
          DefaultTableModel modeloProfessores = new DefaultTableModel(new Object[]{"Professor","Horário", "Avaliação"},0);
-         for (int i = 0; i <disciplinaTeste.getListaProfessores().size(); i++){
-             double avaliacaoProfessor = disciplinaTeste.getListaProfessores().get(i).mediaAvaliacao(disciplinaTeste);
+         for (int i = 0; i <disciplinaTela.getListaProfessores().size(); i++){
+             double avaliacaoProfessor = disciplinaTela.getListaProfessores().get(i).mediaAvaliacao(disciplinaTela);
              String avaliacaoFormatada= "";
              if (avaliacaoProfessor==-1){
                  avaliacaoFormatada = "Não há avaliação cadastrada";
@@ -49,8 +70,8 @@ public class telaDisciplina extends javax.swing.JFrame {
              else{
                  avaliacaoFormatada= String.valueOf(avaliacaoProfessor);
              }
-            Object [] linha = new Object [] {disciplinaTeste.getListaProfessores().get(i).getNome(),
-                                             disciplinaTeste.getListaProfessores().get(i).getHorario(disciplinaTeste),
+            Object [] linha = new Object [] {disciplinaTela.getListaProfessores().get(i).getNome(),
+                                             disciplinaTela.getListaProfessores().get(i).getHorario(disciplinaTela),
                                              avaliacaoFormatada};
             modeloProfessores.addRow(linha);
         }
@@ -61,10 +82,10 @@ public class telaDisciplina extends javax.swing.JFrame {
         btnRemover.setEnabled(false);
         btnSalvarGrade.setEnabled(false);
         btnVoltar.setEnabled(true);
-        lbNomeDisciplina.setText(disciplinaTeste.getNome());
-        lblCargaHoraria.setText(String.valueOf(disciplinaTeste.getCodigo()));
-        lblCodigo.setText(disciplinaTeste.getCodigo());
-        lblDepartamentoDisciplina.setText(disciplinaTeste.getDepartamento());
+        lbNomeDisciplina.setText(disciplinaTela.getNome());
+        lblCargaHoraria.setText(String.valueOf(disciplinaTela.getCodigo()));
+        lblCodigo.setText(disciplinaTela.getCodigo());
+        lblDepartamentoDisciplina.setText(disciplinaTela.getDepartamento());
     }
     
     public void carregarTabelaGrade (){
@@ -105,7 +126,7 @@ public class telaDisciplina extends javax.swing.JFrame {
 
     }
     
-        public void ajustarHorario(String horario, String disciplina){
+    public void ajustarHorario(String horario, String disciplina){
     String dia, horas, turno;
     dia = "";
     horas="";
@@ -155,7 +176,7 @@ public class telaDisciplina extends javax.swing.JFrame {
             carregarTabelaGrade();
         }
         catch (NullPointerException e ) {
-            System.out.println("digite um valor valido");
+            System.out.println("Digite um valor valido");
         }
     }
     }
@@ -401,6 +422,7 @@ public class telaDisciplina extends javax.swing.JFrame {
 
         btngrpPesquisa.add(rdbDisciplina);
         rdbDisciplina.setText("Disciplina");
+        rdbDisciplina.setToolTipText("Pesquise usando o código da disciplina");
         rdbDisciplina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdbDisciplinaActionPerformed(evt);
@@ -581,7 +603,15 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvaliarProfessorActionPerformed
 
     private void btnAdicionarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGradeActionPerformed
-        ajustarHorario(professorSelecionado.getHorario(disciplinaTeste), disciplinaTeste.getCodigo());// TODO add your handling code here:
+               if (horasGrade+disciplinaTela.getHoras()<=360){ 
+                    ajustarHorario(professorSelecionado.getHorario(disciplinaTela), disciplinaTela.getCodigo());
+                    horasGrade+=disciplinaTela.getHoras();
+               }
+               else{
+                   JOptionPane.showMessageDialog(null, "Máximo de horas atingido");
+                   throw new IllegalArgumentException ();
+               }
+                // TODO add your handling code here:
     }//GEN-LAST:event_btnAdicionarGradeActionPerformed
 
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
@@ -595,7 +625,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     private void tblRankingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRankingMouseClicked
         int linha = tblRanking.getSelectedRow();
         if (linha>=0 && linha <tblRanking.getRowCount()){
-            professorSelecionado = disciplinaTeste.getListaProfessores().get(linha);
+            professorSelecionado = disciplinaTela.getListaProfessores().get(linha);
             btnAdicionarGrade.setEnabled(true);
             btnAvaliarProfessor.setEnabled(true);   
             btnPerfilProfessor.setEnabled(true);
@@ -619,6 +649,7 @@ public class telaDisciplina extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

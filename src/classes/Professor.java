@@ -7,11 +7,10 @@ import java.util.Map;
 import verificacao.Horario;
 
 public class Professor extends Pessoa{
-    
     Map <Disciplina,String> horarios = new HashMap<>();     //um objeto do tipo Map com as chaves sendo as disciplinas que o professor oferta e os valores sendo os horários que o professor oferta aquela disciplina
     private ArrayList <Disciplina> listaDisciplinas;                    //lista de disciplinas do professor    
-//lista de disciplinas do professor    
-    static int id;
+    //lista de disciplinas do professor    
+    private int id;
     //lista de avaliações feitas pelo professor
     private ArrayList <Avaliacao> listaAvaliacoes;                      
     
@@ -20,16 +19,19 @@ public class Professor extends Pessoa{
         super(nome, departamento, email);
         this.listaAvaliacoes = new ArrayList<>();
         this.listaDisciplinas = new ArrayList<>();
+        id ++;
+        //Professor.todosProfessores.add(this);
     }   //construtor que inicializa os atributos
     
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
         return this;
     }
     
+    /*
     public void setId(int id) {
         this.id= id;
     }
-    
+    */
     public Map <Disciplina, String> getListaHorarios () { 
         return this.horarios;
     }
@@ -172,83 +174,10 @@ public class Professor extends Pessoa{
         return this.listaAvaliacoes;
 }
     
-
-    
-    /*public static void insereBanco(Professor prof){
-        try (Connection conn = MySQLConnection.getConnection()) { //testando conexao com o banco de dados
-                String sql = "INSERT INTO professores (nome, email, departamento, listaDisciplinas, listaAvaliacoes, listaHorarios) VALUES (?, ?, ?, ?, ?, ?)"; //comando para inserir os dados na tabela alunos
-                PreparedStatement stmt = conn.prepareStatement(sql); //variavel que fara a inserção dos dados na tabela
-                ArrayList <String> listaDisciplinasLocal = new ArrayList<>();
-                ArrayList <String> listaIdLocal = new ArrayList<>();
-                for (Disciplina disc : prof.getDisciplinas()){
-                    System.out.println(disc.getNome());
-                    listaDisciplinasLocal.add(disc.getCodigo());
-                }
-                for (Avaliacao avalia : prof.getListaAvaliacoes()){
-                    listaIdLocal.add(String.valueOf(avalia.getId()));
-                }
-                ArrayList <String> horariosDisciplinaLocal = new ArrayList<>();
-                for (Disciplina disciplina : prof.getListaHorarios().keySet()){
-                    String disciplinaLocal = disciplina.getCodigo();
-                    String horariosDaDisciplina = prof.getListaHorarios().get(disciplina);
-                    String disciplinaHorarioLocal = String.join(":", disciplinaLocal, horariosDaDisciplina);
-                    horariosDisciplinaLocal.add(disciplinaHorarioLocal);
-                }
-                String horariosDisciplinaBanco = String.join(",", horariosDisciplinaLocal);
-                String listaDisciplinasBanco = String.join(",", listaDisciplinasLocal);
-                String listaIdBanco = String.join(",", listaIdLocal);
-                stmt.setString(1,prof.getNome() );
-                stmt.setString(2, prof.getEmail());
-                stmt.setString(3, prof.getDepartamento());
-                stmt.setString(4, listaDisciplinasBanco);
-                stmt.setString(5, listaIdBanco);
-                stmt.setString(6, horariosDisciplinaBanco);
-                stmt.executeUpdate();
-            } catch (SQLException e) { //caso a conexão com o banco de dados falhe
-                e.printStackTrace();
-            }
-
+    public int getId(){
+        return this.id;
     }
     
-    public static Professor resgataProfessorBanco () {
-        String query = "SELECT * FROM professores LIMIT 2, 1"; //texto para consulta no banco de dados
-        Disciplina tp1 = new Disciplina("Técnicas de Programação 1", "Ciência da Computação", "CIC0001", 60);
-        Disciplina apc = new Disciplina ("Algoritmos e Programação de Computadores", "Ciência da Computação", "CIC0002", 90);
-        try(Connection conn = MySQLConnection.getConnection(); //tentando conexão com o banco de dados
-               PreparedStatement stmt = conn.prepareStatement(query)){
-            ResultSet rs = stmt.executeQuery(); //rs eh a linha referente a matricula selecionada
-            
-            if(rs.next()){ //caso a matricula exista no banco de dados
-                String nomeProfessor = rs.getString("nome");
-                String emailProfessor = rs.getString("email");
-                String departamentoProfessor = rs.getString("departamento");
-                Professor novoProfessor = new Professor (nomeProfessor, emailProfessor, departamentoProfessor);
-                String[] listaCodigosDisciplina = rs.getString("listaDisciplinas").split(",");
-                ArrayList<Disciplina> listaDisciplinasLocal = new ArrayList<>();
-                for (String codigo : listaCodigosDisciplina){
-                    listaDisciplinasLocal.add(Disciplina.acharDisciplina(codigo, 0));
-                }
-                novoProfessor.setListaDisciplinas(listaDisciplinasLocal);
-                String [] chavesValores = rs.getString("listaHorarios").split(",");
-                for (String chaveValor : chavesValores){
-                    String [] separaChaveValor = chaveValor.split(":");
-                    Disciplina disciplinaLocal = Disciplina.acharDisciplina(separaChaveValor[0], 0);
-                    String codigoHorario = separaChaveValor[1];
-                    novoProfessor.setHorariosDisciplinas(codigoHorario, disciplinaLocal);
-                }
-                return novoProfessor;
-                
-            }
-            else{ //caso a linha seja nula
-                JOptionPane.showMessageDialog(null, "Erro", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                return null;
-            }   
-        }
-        catch(SQLException e){ //caso a conexão com o banco de dados falhe:
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Erro ao consultar o banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    return null;
-    }*/
     
 }
+    

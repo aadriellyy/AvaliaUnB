@@ -396,6 +396,7 @@
               <ComponentRef name="btngrpPesquisa"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Disciplina"/>
+            <Property name="toolTipText" type="java.lang.String" value="Pesquise usando o c&#xf3;digo da disciplina"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdbDisciplinaActionPerformed"/>
