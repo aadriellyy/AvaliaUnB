@@ -11,6 +11,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.DisciplinaDAO;
+import model.dao.ProfessorDAO;
 import verificacao.MapeiaHorarios;
 
 /**
@@ -35,26 +36,21 @@ public class telaDisciplina extends javax.swing.JFrame {
      * Creates new form telaDisciplina
      */
     public telaDisciplina() {
-        DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
-        List<Disciplina> listaDisciplinas = procuraDisciplina.read();
-        //disciplinaTela = listaDisciplinas.get(0);
         initComponents();
+        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();  
+        ProfessorDAO procuraProfessor = new ProfessorDAO();
         if (telaProfessor.disciplinaFoiProcurada){
-            disciplinaTela= telaProfessor.disciplinaPesquisada;}
+            disciplinaTela= telaProfessor.disciplinaPesquisada;
+            procuraDisciplinas.criaListaDisciplina(disciplinaTela);
+            for (Professor prof : disciplinaTela.getListaProfessores()){
+               procuraProfessor.addHorario(disciplinaTela, prof);
+            }
+        }
         for (Professor professor : disciplinaTela.getListaProfessores()){
             System.out.println(professor.getNome());
         }
-        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();  
-        //procuraDisciplinas.teste();
          List<Disciplina> listaLocal = procuraDisciplinas.read();
-            for (Disciplina disciplinaLoop: listaLocal){
 
-                JOptionPane.showMessageDialog(null, "entrou?"+disciplinaLoop.getListaProfessores().size());
-                for (Professor professorLoop: disciplinaLoop.getListaProfessores()){
-                    JOptionPane.showMessageDialog(null, professorLoop.getNome()+"entrou?");
-                    JOptionPane.showMessageDialog(null, professorLoop.getNome()+"que?");
-                } 
-            }
             inicializaHorario();
             carregarTabelaProfessores();
     }
@@ -255,6 +251,11 @@ public class telaDisciplina extends javax.swing.JFrame {
 
         btnPerfilProfessor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/icone professor.png"))); // NOI18N
         btnPerfilProfessor.setText("Perfil do professor");
+        btnPerfilProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilProfessorActionPerformed(evt);
+            }
+        });
 
         btnAvaliarProfessor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
         btnAvaliarProfessor.setText("Avaliar");
@@ -603,7 +604,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvaliarProfessorActionPerformed
 
     private void btnAdicionarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGradeActionPerformed
-               if (horasGrade+disciplinaTela.getHoras()<=360){ 
+               if (horasGrade+disciplinaTela.getHoras()<=450){ 
                     ajustarHorario(professorSelecionado.getHorario(disciplinaTela), disciplinaTela.getCodigo());
                     horasGrade+=disciplinaTela.getHoras();
                }
@@ -623,9 +624,10 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_rdbDisciplinaActionPerformed
 
     private void tblRankingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRankingMouseClicked
-        int linha = tblRanking.getSelectedRow();
+               int linha = tblRanking.getSelectedRow();
         if (linha>=0 && linha <tblRanking.getRowCount()){
             professorSelecionado = disciplinaTela.getListaProfessores().get(linha);
+           
             btnAdicionarGrade.setEnabled(true);
             btnAvaliarProfessor.setEnabled(true);   
             btnPerfilProfessor.setEnabled(true);
@@ -644,6 +646,16 @@ public class telaDisciplina extends javax.swing.JFrame {
             
         }// TODO add your handling code here:
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnPerfilProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilProfessorActionPerformed
+
+         int linha = tblRanking.getSelectedRow();
+        if (linha>=0 && linha <tblRanking.getRowCount()){
+            professorPesquisado = disciplinaTela.getListaProfessores().get(linha);
+            pesquisouProfessor= true;
+            new telaProfessor().setVisible(true);
+        }
+    }//GEN-LAST:event_btnPerfilProfessorActionPerformed
 
     /**
      * @param args the command line arguments

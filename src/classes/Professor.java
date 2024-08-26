@@ -178,11 +178,5 @@ public class Professor extends Pessoa{
         return this.id;
     }
     
-    
-    public int getId(){
-        return this.id;
-    }
-    
-    
 }
     

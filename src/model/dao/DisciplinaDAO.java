@@ -39,23 +39,6 @@ public class DisciplinaDAO {
                                 
                 Disciplina disciplina = new Disciplina(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("codigo"), Integer.parseInt(rs.getString("horas")));
-                try{
-                    String [] listaProfessores = rs.getString("listaProfessores").split(",");
-                    ProfessorDAO procuraProfessores = new ProfessorDAO();
-                    /*for (String nomeProfessor : listaProfessores){
-                        for (Professor professor : procuraProfessores.read()){
-                            if (nomeProfessor.equals(professor.getNome())){
-                                disciplina.addListaProfessores(professor);
-                                break;
-                            }
-                        }
-                    }*/
-                    
-                    
-                }
-                catch (NullPointerException e){
-                    
-                }
                 disciplinas.add(disciplina);
             }
             
@@ -98,7 +81,48 @@ public class DisciplinaDAO {
         }
         
     }
-    
+   
+
+   public void criaListaDisciplina (Disciplina disciplina){ 
+       Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        String [] nomeProfessores = null;
+         try {
+            stmt = con.prepareStatement("SELECT * FROM disciplinas");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                if (rs.getString("codigo").equals(disciplina.getCodigo())){
+                    nomeProfessores = rs.getString("listaProfessores").split(",");
+                    break;
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DisciplinaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+       try{
+            ProfessorDAO procuraProfessores = new ProfessorDAO();
+            DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
+            for (String nomeProf : nomeProfessores){
+                for (Professor prof : procuraProfessores.read()){
+                    if (prof.getNome().equals(nomeProf)){
+                        disciplina.addListaProfessores(prof);
+                        
+                    }
+                }
+            }
+        }
+       
+       catch (NullPointerException e){
+           JOptionPane.showMessageDialog(null,"Não há nenhum professor cadastrado nessa disciplina");
+       }
+   }
+   
+        
     public void teste(){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao

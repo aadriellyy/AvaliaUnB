@@ -447,10 +447,10 @@ List<Professor> listaProfessores = professorPesquisa.read();
         }
         else {
             if (pesquisaProfessor){
-                String nomeProfessor = txtPesquisa.getText();
+                String nomeProfessor = txtPesquisa.getText().toLowerCase();
                 boolean achou = false;
                 for (Professor professor : listaProfessores){
-                    if (professor.getNome().equals(nomeProfessor)){
+                    if (professor.getNome().toLowerCase().equals(nomeProfessor)){
                         professorTela = professor;
                         achou=true;
                         break;
