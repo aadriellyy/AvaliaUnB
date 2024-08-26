@@ -130,15 +130,15 @@ public class telaLogin extends javax.swing.JFrame {
         }
     }
     
-    public static boolean autenticar(String matricula, String senha){
-        
+    public static Aluno autenticar(String matricula, String senha){
         AlunoDAO dao = new AlunoDAO();
         for(Aluno aluno: dao.read()){
-            if(aluno.getMatricula().equals(matricula)&& aluno.getSenha().equals(senha)){
-                return true;
+            if(aluno.getSenha().equals(senha) && aluno.getMatricula().equals(matricula)){
+                System.out.println(aluno.getId());
+                return aluno;
             }
         }  
-        return false;
+        return null;
     }
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -153,9 +153,11 @@ public class telaLogin extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(null, "Todos os campos devem ser inseridos", "erro", JOptionPane.INFORMATION_MESSAGE );
        }
        else{
-        if(autenticar(matricula, senha)){
+        Aluno aluno = autenticar(matricula, senha);
+        if(aluno != null){
             this.setVisible(false);
-            new TelaAvaliacao().setVisible(true);
+            //new TelaAvaliacao(matricula).setVisible(true);
+            new TelaAluno(aluno).setVisible(true);
         }
         else{
             JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "erro", JOptionPane.INFORMATION_MESSAGE );

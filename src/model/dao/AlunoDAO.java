@@ -6,6 +6,8 @@ package model.dao;
 
 import Connection.ConnectionFactory;
 import classes.Aluno;
+import classes.Avaliacao;
+import classes.Professor;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -15,6 +17,16 @@ import javax.swing.JOptionPane;
 public class AlunoDAO {
     
     //CRUD DE ALUNO
+    private Aluno aluno;
+    
+    public void setAluno(Aluno aluno){
+        this.aluno = aluno;
+    }
+    
+    public Aluno getAluno(){
+        return this.aluno;
+    }
+    
     public void create(Aluno aluno){
         
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
@@ -54,7 +66,7 @@ public class AlunoDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                Aluno aluno = new Aluno(rs.getString("nome"), rs.getString("departamento"),
+                Aluno aluno = new Aluno(rs.getInt("id"), rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"), rs.getString("matricula"), rs.getString("curso"), rs.getString("senha"));
                 
                 alunos.add(aluno);
@@ -92,7 +104,94 @@ public class AlunoDAO {
             JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
+        }       
+    }
+    
+    public Professor buscarProfessor(int id){
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        
+        Professor prof = null;
+        List<Professor> professores = new ArrayList<>();
+        
+        try {
+            stmt = con.prepareStatement("SELECT * FROM professor");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
+                         rs.getString("email"));        
+                professores.add(professor);
+            }   
+            for(Professor profe: professores){
+                if(profe.getId() == id){
+                    prof = profe;
+                }
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
         }
+      
+        return prof;
+        
+    }
+    
+    public Aluno agrupAvaliacao(Aluno aluno){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        int id = aluno.getId();
+        
+        ResultSet rs = null;
+        List<Avaliacao> avaliacao = new ArrayList<>();
+        
+        try {
+            stmt = con.prepareStatement("SELECT * FROM avaliacao");
+            rs = stmt.executeQuery();          
+          
+            while(rs.next()){
+                if(rs.getInt("alunoID") == id){
+                    int profId = rs.getInt("professorID");
+                    Professor prof = this.buscarProfessor(profId);
+                    Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getInt("nota"), aluno, prof);
+                    aluno.adicionaAvaliacao(avalia);
+                }
+            }   
+            
+            return aluno;
+        }
+        
+        catch (SQLException ex){
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }       
+        
+        return null;
+        
+    }
+    
+    public void delete(Avaliacao avalia){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = con.prepareStatement("DELETE FROM avaliacao WHERE id = ?");
+            stmt.setInt(1, avalia.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            
+        } catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao deletar" + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
         
     }
     

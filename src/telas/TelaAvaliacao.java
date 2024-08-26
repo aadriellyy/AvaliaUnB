@@ -4,6 +4,14 @@
  */
 package telas;
 
+import classes.Aluno;
+import classes.Professor;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import model.dao.AlunoDAO;
+import model.dao.AvaliacaoDAO;
+
 /**
  *
  * @author limaa
@@ -13,11 +21,18 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     /**
      * Creates new form TelaAvaliacao
      */
-    public TelaAvaliacao() {
+    private String matriculaAluno;
+    public TelaAvaliacao(){
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, false, false, false, false, false);
-        this.habilitarTxt(true, false, false, false, false, false);
+        this.inicial();
+    }
+    
+    public TelaAvaliacao(String matricula) {
+        initComponents();
+        this.limpar();
+        this.inicial();
+        this.matriculaAluno = matricula;
     }
 
     /**
@@ -55,7 +70,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         txtFeedback = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelarAvaliacao = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
         lblNome5 = new javax.swing.JLabel();
         lblNome6 = new javax.swing.JLabel();
         txtNotaAvaliacao = new javax.swing.JTextField();
@@ -299,14 +313,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             }
         });
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/excluir-avaliacao.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-
         lblNome5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome5.setText("Feedback:");
 
@@ -337,13 +343,11 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                         .addComponent(txtFeedback)
                         .addContainerGap())
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addGap(221, 221, 221)
                         .addComponent(btnSalvar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExcluir)
-                        .addGap(151, 151, 151)
+                        .addGap(46, 46, 46)
                         .addComponent(btnCancelarAvaliacao)
-                        .addGap(58, 58, 58))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         lblAvaliacaoLayout.setVerticalGroup(
             lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,7 +362,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(lblAvaliacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
-                    .addComponent(btnExcluir)
                     .addComponent(btnCancelarAvaliacao))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
@@ -394,9 +397,14 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeProfessorActionPerformed
 
+    private void inicial(){
+        this.limpar();
+        this.habilitarBtn(true, true, false, false, false, false, false);
+        this.habilitarTxt(true, false, false, false, false, false);
+    }
     
     private void habilitarBtn(boolean ok, boolean buscar, boolean avaliar, boolean cancelarPesquisa, 
-            boolean exibirAvaliacao, boolean salvar, boolean excluir, boolean cancelarAvaliacao){
+            boolean exibirAvaliacao, boolean salvar, boolean cancelarAvaliacao){
      
         this.btnOk.setEnabled(ok);
         this.btnBuscar.setEnabled(buscar);
@@ -404,7 +412,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         this.btnCancelarPesquisa.setEnabled(cancelarPesquisa);
         this.btnExibir.setEnabled(exibirAvaliacao);
         this.btnSalvar.setEnabled(salvar);
-        this.btnExcluir.setEnabled(excluir);
         this.btnCancelarAvaliacao.setEnabled(cancelarAvaliacao);       
     }
     
@@ -438,15 +445,18 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_lsMateriasMouseClicked
 
     private void btnAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarActionPerformed
-        // TODO add your handling code here:
+        this.habilitarTxt(false, false, false, false, true, true);
+        this.habilitarBtn(false, false, false, false, false, true, true);
     }//GEN-LAST:event_btnAvaliarActionPerformed
 
     private void btnCancelarPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPesquisaActionPerformed
-        // TODO add your handling code here:
+        this.inicial();
     }//GEN-LAST:event_btnCancelarPesquisaActionPerformed
 
     private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
-        // TODO add your handling code here:
+        this.limpar();
+        this.setVisible(false);
+        new telaProfessor().setVisible(true);
     }//GEN-LAST:event_btnExibirActionPerformed
 
     private void txtNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaActionPerformed
@@ -458,7 +468,21 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        
+        String nomeProfessor = this.txtNomePesquisa.getText();
+        AvaliacaoDAO dao = new AvaliacaoDAO();
+        Professor prof = dao.buscarProfessor(nomeProfessor);
+        if(prof != null){
+            //quando existir a media de nota da classe professor
+            //this.txtNota.setText(prof.getNota());
+            this.txtNomeProfessor.setText(prof.getNome());
+            this.txtDepartamento.setText(prof.getDepartamento());
+            this.habilitarBtn(true, false, true, true, true, false, false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Professor(a) não encontrado(a)");
+        }
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
@@ -470,16 +494,39 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFeedbackActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+        
+        AvaliacaoDAO dao = new AvaliacaoDAO();
+        Professor prof = dao.buscarProfessor(this.txtNomeProfessor.getText());
+        AlunoDAO daoAluno = new AlunoDAO();
+        List<Aluno> alunos = new ArrayList<>();
+        
+        Aluno aluno = new Aluno();
+        alunos = daoAluno.read();
+        String feedback = this.txtFeedback.getText();
+        int nota = Integer.parseInt(this.txtNotaAvaliacao.getText());
+        
+        for(Aluno alu: alunos){
+            if (alu.getMatricula().equals(this.getMatricula())){
+                aluno= alu;
+            }
+        }
+        
+        if(feedback.equals(" ") || this.txtNotaAvaliacao.getText().equals(" ") || aluno.getId() == 0){
+            JOptionPane.showMessageDialog(null, "A nota e feedback devem ser preenchidos!");
+        }
+        else{
+            dao.create(feedback, nota, aluno, prof);
+        }
+        this.inicial();
+        
+        
+        
+        
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnCancelarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAvaliacaoActionPerformed
-        // TODO add your handling code here:
+        this.inicial();
     }//GEN-LAST:event_btnCancelarAvaliacaoActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void txtNotaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaAvaliacaoActionPerformed
         // TODO add your handling code here:
@@ -488,6 +535,11 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public String getMatricula(){
+        return this.matriculaAluno;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -515,6 +567,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+               
                 new TelaAvaliacao().setVisible(true);
             }
         });
@@ -525,7 +578,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelarAvaliacao;
     private javax.swing.JButton btnCancelarPesquisa;
-    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnExibir;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnSalvar;
