@@ -62,16 +62,12 @@ public class DisciplinaDAO {
                 listaProfessores.add(professor.getNome());
             }
             String professoresFormat =String.join(",", listaProfessores);
-            //JOptionPane.showMessageDialog(null, professoresFormat);
             stmt.setString(1, professoresFormat);
             stmt.setString(2, disciplina.getCodigo());
-            //JOptionPane.showMessageDialog(null, stmt);
-            //JOptionPane.showMessageDialog(null,disciplina.getListaProfessores().size());
 
             //executando a sql
             stmt.executeUpdate();
 
-            //JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
             
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,10 +104,17 @@ public class DisciplinaDAO {
             ProfessorDAO procuraProfessores = new ProfessorDAO();
             DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
             for (String nomeProf : nomeProfessores){
-                for (Professor prof : procuraProfessores.read()){
-                    if (prof.getNome().equals(nomeProf)){
-                        disciplina.addListaProfessores(prof);
-                        
+                boolean jaFeito=false;
+                for (Professor profDisciplina : disciplina.getListaProfessores()){
+                    if (profDisciplina.getNome().equals(nomeProf)){
+                      jaFeito = true;  
+                    }
+                }
+                if (!jaFeito){
+                    for (Professor prof : procuraProfessores.read()){
+                        if (prof.getNome().equals(nomeProf)){
+                            disciplina.addListaProfessores(prof);
+                        }
                     }
                 }
             }
@@ -122,25 +125,7 @@ public class DisciplinaDAO {
        }
    }
    
-        
-    public void teste(){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-        PreparedStatement stmt = null;  //preparando a sql para execucao
-        ResultSet rs = null;
-         try{
-            stmt = con.prepareStatement("SELECT * FROM disciplinas");
-            rs= stmt.executeQuery();
-            while (rs.next()){
-                JOptionPane.showMessageDialog(null, rs.getString("listaProfessores"));}
-             }
-         catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
-        }finally{
-            ConnectionFactory.closeConnection(con, stmt,rs);
-        }
     }
 
-}
 
 

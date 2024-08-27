@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.DisciplinaDAO;
 import model.dao.ProfessorDAO;
+import static telas.telaProfessor.disciplinaFoiProcurada;
+import static telas.telaProfessor.disciplinaPesquisada;
 import verificacao.MapeiaHorarios;
 
 /**
@@ -23,14 +25,15 @@ public class telaDisciplina extends javax.swing.JFrame {
     boolean pesquisaProfessor = false;
     boolean pesquisaDisciplina = false;
     Professor professorSelecionado;
-    static ArrayList <Disciplina> disciplinasAdicionadasGrade = new ArrayList<>();
+    static ArrayList <String> disciplinasAdicionadasGrade = new ArrayList<>();
     static ArrayList <Disciplina> disciplinasParaAdicionarGrade = new ArrayList <>();
     static ArrayList <ArrayList<String>> horarios = new ArrayList<>();
     static int horasGrade=0;
     Disciplina disciplinaTela = null;    
-    boolean pesquisouProfessor=false;
-    static Disciplina disciplinaPesquisada;
+    static boolean pesquisouProfessor=false;
     static Professor professorPesquisado;
+    DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
+    List <Disciplina> listaDisciplinas = procuraDisciplina.read();
 
     /**
      * Creates new form telaDisciplina
@@ -41,18 +44,15 @@ public class telaDisciplina extends javax.swing.JFrame {
         ProfessorDAO procuraProfessor = new ProfessorDAO();
         if (telaProfessor.disciplinaFoiProcurada){
             disciplinaTela= telaProfessor.disciplinaPesquisada;
-            procuraDisciplinas.criaListaDisciplina(disciplinaTela);
-            for (Professor prof : disciplinaTela.getListaProfessores()){
-               procuraProfessor.addHorario(disciplinaTela, prof);
-            }
+        
         }
-        for (Professor professor : disciplinaTela.getListaProfessores()){
-            System.out.println(professor.getNome());
+        procuraDisciplinas.criaListaDisciplina(disciplinaTela);
+        for (Professor prof : disciplinaTela.getListaProfessores()){
+            procuraProfessor.addHorario(disciplinaTela, prof);
         }
-         List<Disciplina> listaLocal = procuraDisciplinas.read();
-
-            inicializaHorario();
-            carregarTabelaProfessores();
+         carregarTabelaProfessores();   
+         inicializaHorario();
+         carregaInformacoes();
     }
 
     public void carregarTabelaProfessores (){
@@ -78,12 +78,14 @@ public class telaDisciplina extends javax.swing.JFrame {
         btnRemover.setEnabled(false);
         btnSalvarGrade.setEnabled(false);
         btnVoltar.setEnabled(true);
+        
+    }
+    public void carregaInformacoes(){
         lbNomeDisciplina.setText(disciplinaTela.getNome());
         lblCargaHoraria.setText(String.valueOf(disciplinaTela.getCodigo()));
         lblCodigo.setText(disciplinaTela.getCodigo());
         lblDepartamentoDisciplina.setText(disciplinaTela.getDepartamento());
     }
-    
     public void carregarTabelaGrade (){
         DefaultTableModel modelo = new DefaultTableModel(new Object[]{"-","Segunda","Terça","Quarta","Quinta","Sexta", "Sábado"},0);
 
@@ -147,7 +149,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         }
     horas = horas+ horario.charAt(horario.length()-1);
         
-
+    if (!disciplinasAdicionadasGrade.contains(disciplina)){
     for (int i = 0; i<horas.length(); i++){
         Integer linha = null;
          if (turno.equals("m") || turno.equals("M")){
@@ -166,15 +168,25 @@ public class telaDisciplina extends javax.swing.JFrame {
                 break;
             }
             else{
-                horarios.get(linha).set(Integer.parseInt(dia.substring(x, x+1))-1, disciplina);
+                    horarios.get(linha).set(Integer.parseInt(dia.substring(x, x+1))-1, disciplina);
+                    //disciplinasAdicionadasGrade.add(disciplina);
+                 }
+                
             }
-        }        
             carregarTabelaGrade();
-        }
+            disciplinasAdicionadasGrade.add(disciplina);
+        }        
+        
+        
         catch (NullPointerException e ) {
-            System.out.println("Digite um valor valido");
+            JOptionPane.showMessageDialog(null, "Não foi possível adicionar a disciplina à grade");
         }
     }
+    
+    }
+    else {
+            JOptionPane.showMessageDialog(null, "Disciplina já adicionada a grade");
+            }
     }
 
     /**
@@ -210,6 +222,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         rdbPesquisaProfessor = new javax.swing.JRadioButton();
         rdbDisciplina = new javax.swing.JRadioButton();
         btnPesquisar = new javax.swing.JButton();
+        cmbPesquisa = new javax.swing.JComboBox<>();
         pnlGradeHorária = new javax.swing.JPanel();
         lblGrade = new javax.swing.JLabel();
         scrlpnlGrade = new javax.swing.JScrollPane();
@@ -370,7 +383,7 @@ public class telaDisciplina extends javax.swing.JFrame {
                     .addComponent(lblCodigo)
                     .addComponent(lblTitleCarga)
                     .addComponent(lblCargaHoraria))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addComponent(pnlRankingProfessores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -430,6 +443,7 @@ public class telaDisciplina extends javax.swing.JFrame {
             }
         });
 
+        btnPesquisar.setMnemonic('P');
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -437,33 +451,40 @@ public class telaDisciplina extends javax.swing.JFrame {
             }
         });
 
+        cmbPesquisa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Nome" }));
+
         javax.swing.GroupLayout pnlPesquisaLayout = new javax.swing.GroupLayout(pnlPesquisa);
         pnlPesquisa.setLayout(pnlPesquisaLayout);
         pnlPesquisaLayout.setHorizontalGroup(
             pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPesquisaLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(3, 3, 3)
                 .addComponent(lblImagemPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(rdbPesquisaProfessor)
                 .addGap(18, 18, 18)
-                .addComponent(rdbDisciplina)
+                .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rdbDisciplina))
                 .addGap(18, 18, 18)
                 .addComponent(btnPesquisar)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         pnlPesquisaLayout.setVerticalGroup(
             pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPesquisaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pnlPesquisaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblImagemPesquisa)
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblImagemPesquisa)
                     .addComponent(rdbPesquisaProfessor)
-                    .addComponent(btnPesquisar)
-                    .addComponent(rdbDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(rdbDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPesquisar))
+                .addGap(0, 0, 0)
+                .addComponent(cmbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         lblGrade.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
@@ -567,23 +588,23 @@ public class telaDisciplina extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlGradeHorária, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlGradeHorária, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 12, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlDadosDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(pnlGradeHorária, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -635,15 +656,65 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_tblRankingMouseClicked
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        String nomePesquisado = txtPesquisa.getText();
-        if (nomePesquisado == null){
-            JOptionPane.showMessageDialog(null, "Nada foi digitado", "Erro", JOptionPane.ERROR_MESSAGE);
+        if (txtPesquisa.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Nada foi digitado para a pesquisa", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (!pesquisaProfessor && !pesquisaDisciplina){
+            JOptionPane.showMessageDialog(null, "Selecione uma opção de pesquisa", "Erro", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            if(pesquisaProfessor){
-                
+            if (pesquisaDisciplina){
+                String disciplinaProcurada = txtPesquisa.getText().toLowerCase();
+                boolean achou = false;
+                if (cmbPesquisa.getSelectedIndex()==0){
+                    for (Disciplina disc : listaDisciplinas){
+                        if (disc.getCodigo().toLowerCase().equals(disciplinaProcurada)){
+                            disciplinaTela=disc;
+                            procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                            
+                            achou=true;
+                            break;
+                        } 
+                    }
+                }
+                else if (cmbPesquisa.getSelectedIndex()==1){
+                   for (Disciplina disc : listaDisciplinas){
+                        if (disc.getNome().toLowerCase().equals(disciplinaProcurada)){
+                            disciplinaTela=disc;
+                            procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                            achou=true;
+                            break;
+                        } 
+                    }  
+                }
+                if (achou){
+                    ProfessorDAO procurarProfessor = new ProfessorDAO();
+                    for (Professor prof : disciplinaTela.getListaProfessores()){
+                        procurarProfessor.addHorario(disciplinaTela, prof);
+                        }
+
+                    carregaInformacoes();
+                    carregarTabelaProfessores();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Não há nenhum professor com esse nome", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                }
+                txtPesquisa.setText("");
             }
-            
+            else if (pesquisaProfessor){
+                ProfessorDAO procuraProfessor = new ProfessorDAO();
+                List <Professor> listaProfessores = procuraProfessor.read();
+                String nomeProfessor= txtPesquisa.getText();
+                for (Professor prof : listaProfessores){
+                    if (prof.getNome().equals(nomeProfessor)){
+                        professorPesquisado=prof;
+                        pesquisouProfessor=true;
+                        new telaProfessor().setVisible(true);
+                        break;
+                    }
+                }
+
+            }
         }// TODO add your handling code here:
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -702,6 +773,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvarGrade;
     private javax.swing.JButton btnVoltar;
     private javax.swing.ButtonGroup btngrpPesquisa;
+    private javax.swing.JComboBox<String> cmbPesquisa;
     private javax.swing.JLabel lbNomeDisciplina;
     private javax.swing.JLabel lblCargaHoraria;
     private javax.swing.JLabel lblCodigo;

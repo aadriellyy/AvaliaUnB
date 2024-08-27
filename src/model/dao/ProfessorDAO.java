@@ -35,19 +35,11 @@ public class ProfessorDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                String [] listaCodigosDisciplinas= rs.getString("listaDisciplinas").split(",");
                 DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();
                 ArrayList <Disciplina> listaDisciplinasGeral = (ArrayList <Disciplina>) procuraDisciplinas.read();
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"));
-                for (Disciplina disciplina : listaDisciplinasGeral){
-                    for (String codigo : listaCodigosDisciplinas){
-                        if (disciplina.getCodigo().equals(codigo)){
-                            professor.addDisciplina(disciplina);
-                            break;
-                        }
-                    }
-                }
+
 
                 String [] paresChaveValor = rs.getString("listaHorarios").split(";");
                 for (String par : paresChaveValor){
@@ -77,6 +69,41 @@ public class ProfessorDAO {
         return professores;
     }
     
+    public void buscaProfessor (Professor professor){
+        
+    }
+    public void update (Professor professor, String idAvaliacao){
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        String [] listaAvaliacoes = null;
+        try {
+            stmt = con.prepareStatement("SELECT * FROM professores");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                if (rs.getString("nome").equals(professor.getNome())){
+                    listaAvaliacoes = rs.getString("listaAvaliacoes").split(",");
+                    break;
+                }
+            }
+        String [] adicionaListaAvaliacoes = new String[listaAvaliacoes.length];
+        adicionaListaAvaliacoes [listaAvaliacoes.length-1]= idAvaliacao;
+        String novaListaAvaliacoes = String.join(",", adicionaListaAvaliacoes);
+        con = ConnectionFactory.getConnection(); //abrindo conexao
+        stmt = null;
+        stmt = con.prepareStatement("UPDATE professores SET listaAvaliacoes = ? WHERE nome = ?");
+        stmt.setString(1, novaListaAvaliacoes);
+        stmt.setString(2, professor.getNome());
+        //executando a sql
+        stmt.executeUpdate();
+         }
+         catch (SQLException ex) {
+            Logger.getLogger(DisciplinaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+    }
     
     public Professor achaProfessor(String nome){
         ProfessorDAO procuraProfessor = new ProfessorDAO();
@@ -126,6 +153,10 @@ public class ProfessorDAO {
             
         }
          
+    }
+    
+    public void criaListaAvaliacoes(Professor prof){
+        
     }
     public void criaListaHorarios (Professor prof){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao

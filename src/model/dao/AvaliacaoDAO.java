@@ -57,6 +57,47 @@ public class AvaliacaoDAO {
         
     }
     
+    public List<Avaliacao> read(){
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        AlunoDAO procuraAluno = new AlunoDAO();
+        ProfessorDAO procuraProfessor = new ProfessorDAO();
+        
+        List<Avaliacao> avaliacoes = new ArrayList<>();
+        
+        try {
+            stmt = con.prepareStatement("SELECT * FROM avaliacao");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                Aluno alunoAvaliacao = null;
+                Professor profAvaliacao = null;
+                for (Aluno aluno : procuraAluno.read()){
+                    if (Integer.parseInt(rs.getString("alunoID"))==aluno.getId()){
+                        alunoAvaliacao = aluno;
+                        break;
+                    }
+                }
+                for (Professor prof : procuraProfessor.read()){
+                    if (prof.getId()==Integer.parseInt(rs.getString("professorID"))){
+                        profAvaliacao= prof;
+                        break;
+                    }
+                }
+                Avaliacao avaliacao;
+                avaliacao = new Avaliacao(rs.getString("feedback"), rs.getInt("nota"), alunoAvaliacao, profAvaliacao);
+                avaliacoes.add(avaliacao);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return avaliacoes;
+    }
     public void create(String feedback, int like, Aluno aluno, Professor professor){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao

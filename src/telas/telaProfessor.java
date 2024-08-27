@@ -42,6 +42,12 @@ List<Professor> listaProfessores = professorPesquisa.read();
         lblMedia.setText(String.valueOf(professorTela.mediaAvaliacao()));
         lblNumAvaliacoes.setText(String.valueOf(professorTela.getListaAvaliacoes().size()));
         lblDepartamento.setText(professorTela.getDepartamento());
+        btnIrAvaliar.setEnabled(false);
+        btnPerfilDisciplina.setEnabled(false);
+        btnPesquisar.setEnabled(true);
+        btnVoltar.setEnabled(true);
+        cmbPesquisa.setEnabled(false);
+        
     }
     
     public void carregarTabelaAvaliacoes (){
@@ -63,9 +69,13 @@ List<Professor> listaProfessores = professorPesquisa.read();
     }
 
     public telaProfessor() {
-
-        professorTela = listaProfessores.get(1);
+        professorTela= listaProfessores.get(5);
+        if (telaDisciplina.pesquisouProfessor){
+            professorTela= telaDisciplina.professorPesquisado;
+        }
         initComponents();
+        carregaInformacoes();
+        carregarTabelaAvaliacoes();
         Font font = lblEmail.getFont();
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -79,8 +89,6 @@ List<Professor> listaProfessores = professorPesquisa.read();
         cmbPesquisa.setEnabled(false);  
         rdbDisciplina.setEnabled(true);
         rdbPesquisaProfessor.setEnabled(true);
-        carregaInformacoes();
-        carregarTabelaAvaliacoes();
             
 
     }
@@ -151,12 +159,9 @@ List<Professor> listaProfessores = professorPesquisa.read();
         lblTitleNumAvaliacoes.setText("Nº de avaliações");
 
         lblNumAvaliacoes.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 12)); // NOI18N
-        lblNumAvaliacoes.setText("0");
 
         lblTitleMedia.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTitleMedia.setText("Média de avaliações");
-
-        lblMedia.setText("0");
 
         javax.swing.GroupLayout pnlInformacoesProfessorLayout = new javax.swing.GroupLayout(pnlInformacoesProfessor);
         pnlInformacoesProfessor.setLayout(pnlInformacoesProfessorLayout);
@@ -249,7 +254,11 @@ List<Professor> listaProfessores = professorPesquisa.read();
         btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
         btnVoltar.setText("Voltar");
 
+        btnPerfilDisciplina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/perfil disciplina icon.png"))); // NOI18N
         btnPerfilDisciplina.setText("Perfil da disciplina");
+
+        btnIrAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
+        btnIrAvaliar.setText("Avaliar");
 
         javax.swing.GroupLayout pnlBtnsAvaliacoesLayout = new javax.swing.GroupLayout(pnlBtnsAvaliacoes);
         pnlBtnsAvaliacoes.setLayout(pnlBtnsAvaliacoesLayout);
@@ -258,19 +267,19 @@ List<Professor> listaProfessores = professorPesquisa.read();
             .addGroup(pnlBtnsAvaliacoesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnPerfilDisciplina)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(btnIrAvaliar)
+                .addGap(18, 18, 18)
                 .addComponent(btnVoltar)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBtnsAvaliacoesLayout.setVerticalGroup(
             pnlBtnsAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBtnsAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnVoltar)
-                .addComponent(btnPerfilDisciplina))
+                .addComponent(btnPerfilDisciplina)
+                .addComponent(btnIrAvaliar))
         );
-
-        btnIrAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
-        btnIrAvaliar.setText("Avaliar");
 
         javax.swing.GroupLayout pblAvaliacoesLayout = new javax.swing.GroupLayout(pblAvaliacoes);
         pblAvaliacoes.setLayout(pblAvaliacoesLayout);
@@ -278,32 +287,27 @@ List<Professor> listaProfessores = professorPesquisa.read();
             pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pblAvaliacoesLayout.createSequentialGroup()
                 .addGroup(pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrlpnlavaliações)
                     .addGroup(pblAvaliacoesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scrlpnlavaliações))
-                    .addGroup(pblAvaliacoesLayout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(btnIrAvaliar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 73, Short.MAX_VALUE)))
+                        .addGroup(pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pblAvaliacoesLayout.createSequentialGroup()
+                                .addGap(290, 290, 290)
+                                .addComponent(lblTitleAvaliacoes))
+                            .addGroup(pblAvaliacoesLayout.createSequentialGroup()
+                                .addGap(129, 129, 129)
+                                .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 126, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(pblAvaliacoesLayout.createSequentialGroup()
-                .addGap(273, 273, 273)
-                .addComponent(lblTitleAvaliacoes)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pblAvaliacoesLayout.setVerticalGroup(
             pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pblAvaliacoesLayout.createSequentialGroup()
                 .addComponent(lblTitleAvaliacoes)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(scrlpnlavaliações, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(pblAvaliacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIrAvaliar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(pnlBtnsAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pessoa.png"))); // NOI18N
@@ -313,26 +317,27 @@ List<Professor> listaProfessores = professorPesquisa.read();
         pnlFotoLayout.setHorizontalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFotoLayout.createSequentialGroup()
-                .addGap(0, 21, Short.MAX_VALUE)
-                .addGroup(pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlFotoLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pblAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFotoLayout.createSequentialGroup()
+                        .addGap(64, 64, 64)
                         .addComponent(lblFoto)
-                        .addGap(46, 46, 46)
-                        .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pblAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
         pnlFotoLayout.setVerticalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFotoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(pnlInformacoesProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(pblAvaliacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addGap(17, 17, 17))
         );
 
         lblImagemPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/pesquisa.png"))); // NOI18N
@@ -362,6 +367,7 @@ List<Professor> listaProfessores = professorPesquisa.read();
 
         cmbPesquisa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Nome" }));
 
+        btnPesquisar.setMnemonic('P');
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -409,12 +415,12 @@ List<Professor> listaProfessores = professorPesquisa.read();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 5, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,28 +473,33 @@ List<Professor> listaProfessores = professorPesquisa.read();
             else if (pesquisaDisciplina){
                 DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
                 ArrayList <Disciplina> listaDisciplinas = (ArrayList<Disciplina>) procuraDisciplina.read();
+                boolean achou = false;
                 if (cmbPesquisa.getSelectedIndex() ==0){
-                    String codigoDisciplina = txtPesquisa.getText();
+                    String codigoDisciplina = txtPesquisa.getText().toLowerCase();
                     for (Disciplina disciplina : listaDisciplinas){
-                        if (disciplina.getCodigo().equals(codigoDisciplina)){
+                        if (disciplina.getCodigo().toLowerCase().equals(codigoDisciplina)){
                             disciplinaPesquisada = disciplina;
                             disciplinaFoiProcurada= true;
                             new telaDisciplina().setVisible(true);
+                            achou= true;
                             break;
                         }
                     }
                 }
                 else if (cmbPesquisa.getSelectedIndex()==1){
-                    String nomeDisciplina = txtPesquisa.getText();
+                    String nomeDisciplina = txtPesquisa.getText().toLowerCase();
                     for (Disciplina disciplina : listaDisciplinas){
-                        if (disciplina.getNome().equals(nomeDisciplina)){
+                        if (disciplina.getNome().toLowerCase().equals(nomeDisciplina)){
                             disciplinaPesquisada = disciplina;
                             disciplinaFoiProcurada= true;
                             new telaDisciplina().setVisible(true);
+                            achou=true;
                             break;
                         }
                     }
-
+                }
+                if (!achou){
+                    JOptionPane.showMessageDialog(null, "Nenhuma disciplina encontrada");
                 }
             }
         }// TODO add your handling code here:
