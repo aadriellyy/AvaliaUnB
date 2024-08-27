@@ -89,12 +89,12 @@ public class DisciplinaDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                if (rs.getString("codigo").equals(disciplina.getCodigo())){
+                if (rs.getString("codigo").equals(disciplina.getCodigo())){  
                     nomeProfessores = rs.getString("listaProfessores").split(",");
                     break;
                 }
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DisciplinaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
@@ -124,8 +124,27 @@ public class DisciplinaDAO {
            JOptionPane.showMessageDialog(null,"Não há nenhum professor cadastrado nessa disciplina");
        }
    }
-   
+
+    public Disciplina achaDisciplina (String codigo){
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        
+        Disciplina disc = null;
+        List<Disciplina> disciplinas = this.read();
+        for (Disciplina disciplina : disciplinas){
+            if (disciplina.getCodigo().equals(codigo)){
+                disc= disciplina;
+            }
+        }
+        
+        
+      
+        return disc;
+        
     }
+    }
+
 
 
 

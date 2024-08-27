@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import verificacao.Horario;
 
 public class Professor extends Pessoa{
@@ -27,11 +28,11 @@ public class Professor extends Pessoa{
         return this;
     }
     
-    /*
+    
     public void setId(int id) {
         this.id= id;
     }
-    */
+    
     public Map <Disciplina, String> getListaHorarios () { 
         return this.horarios;
     }
@@ -51,25 +52,16 @@ public class Professor extends Pessoa{
     }
     
     public String getHorario (Disciplina disciplina) { //retorna o horário de uma determinada disciplina passada como argumento
-        if (this.listaDisciplinas.contains(disciplina)){ //verifica se a disciplina passada como argumento é ministrada pelo professor
             return this.horarios.get(disciplina);
-        }
-        else{
-            throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
-        }
+       
     }
     
     public void setHorariosDisciplinas (String horario, Disciplina disciplina) {
         
         try {
             Horario.verificaHorario(horario);
-            if (this.listaDisciplinas.contains(disciplina)){ //verifica se a disciplina passada como argumento é ministrada pelo professor
-                this.horarios.put(disciplina, horario);        
-            }
+                this.horarios.put(disciplina, horario);
 
-            else{
-                throw new Illegal­Argument­Exception ("O professor não ministra esta disciplina");
-            }
         }
         catch (IllegalArgumentException e){
             
