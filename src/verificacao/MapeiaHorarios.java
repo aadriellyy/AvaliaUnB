@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class MapeiaHorarios {
         public static HashMap <Integer, String> mapearHorarios = new HashMap<>();
-        public MapeiaHorarios(){
+        public static void inicializa(){
         mapearHorarios.put(0, "08:00 - 08:55");
         mapearHorarios.put(1, "08:55 - 09:50");
         mapearHorarios.put(2, "10:00 - 10:55");

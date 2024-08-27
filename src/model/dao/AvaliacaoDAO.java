@@ -87,6 +87,7 @@ public class AvaliacaoDAO {
                 }
                 Avaliacao avaliacao;
                 avaliacao = new Avaliacao(rs.getString("feedback"), rs.getInt("nota"), alunoAvaliacao, profAvaliacao);
+                avaliacao.setId (rs.getInt("id"));
                 avaliacoes.add(avaliacao);
             }
             

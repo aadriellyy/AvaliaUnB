@@ -2,6 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 import model.dao.DisciplinaDAO;
 
 /**
@@ -99,19 +100,19 @@ public class Disciplina {
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
         ArrayList <Double> avaliacoes = new ArrayList<Double>();
         ArrayList <Professor> rankingProfessores = new ArrayList <Professor>();
-        for (Professor i : listaProfessores) {
-            avaliacoes.add(i.mediaAvaliacao(this));
+        for (Professor i : this.listaProfessores) {
+            avaliacoes.add(i.mediaAvaliacao());
         }
         Collections.sort(avaliacoes);
         Collections.reverse(avaliacoes);
         for (Double avaliacao: avaliacoes) {
-            for  (Professor professor : listaProfessores){
-                if (professor.mediaAvaliacao(this) == avaliacao){
+            for  (Professor professor : this.listaProfessores){
+                if (professor.mediaAvaliacao() == avaliacao && !rankingProfessores.contains(professor)){
                     rankingProfessores.add(professor);
-                    break;
                 }
             }         
         }
+
         return rankingProfessores;
     }
     
