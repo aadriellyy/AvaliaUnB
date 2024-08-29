@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
 import model.dao.AvaliacaoDAO;
+import model.dao.ProfessorDAO;
 
 /**
  *
@@ -22,6 +23,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
      * Creates new form TelaAvaliacao
      */
     private String matriculaAluno;
+    private String professorPesquisado;
     public TelaAvaliacao(){
         initComponents();
         this.limpar();
@@ -456,7 +458,14 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
         this.limpar();
         this.setVisible(false);
-        new telaProfessor().setVisible(true);
+        String nomeProfessor = this.txtNomeProfessor.getText();
+        try{
+            AvaliacaoDAO dao = new AvaliacaoDAO();
+            Professor prof = dao.buscarProfessor(professorPesquisado);
+            new telaProfessor(prof).setVisible(true);}
+        catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Não foi possível abrir o perfil do professor", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnExibirActionPerformed
 
     private void txtNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaActionPerformed
@@ -472,10 +481,13 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         String nomeProfessor = this.txtNomePesquisa.getText();
         AvaliacaoDAO dao = new AvaliacaoDAO();
         Professor prof = dao.buscarProfessor(nomeProfessor);
+        ProfessorDAO iniciaProfessor = new ProfessorDAO();
         if(prof != null){
+            iniciaProfessor.criaListaAvaliacoes(prof);
             //quando existir a media de nota da classe professor
-            //this.txtNota.setText(prof.getNota());
+            this.txtNota.setText(String.valueOf(prof.mediaAvaliacao()));
             this.txtNomeProfessor.setText(prof.getNome());
+            professorPesquisado= prof.getNome();
             this.txtDepartamento.setText(prof.getDepartamento());
             this.habilitarBtn(true, false, true, true, true, false, false);
         }
@@ -503,7 +515,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         Aluno aluno = new Aluno();
         alunos = daoAluno.read();
         String feedback = this.txtFeedback.getText();
-        int nota = Integer.parseInt(this.txtNotaAvaliacao.getText());
+        float nota = Float.parseFloat(this.txtNotaAvaliacao.getText());
         
         for(Aluno alu: alunos){
             if (alu.getMatricula().equals(this.getMatricula())){
@@ -515,7 +527,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A nota e feedback devem ser preenchidos!");
         }
         else{
-            dao.create(feedback, nota, aluno, prof);
+            dao.create(feedback, nota,0, aluno, prof);
         }
         this.inicial();
         

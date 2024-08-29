@@ -2,6 +2,8 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
+import model.dao.DisciplinaDAO;
 
 /**
  *
@@ -13,7 +15,6 @@ public class Disciplina {
     private String codigo;          //código da disciplina
     private int horas;              //carga horária da disciplina
     private ArrayList <Professor> listaProfessores;   //lista dos professores que ofertam a disciplina
-    private static ArrayList <Disciplina> todasDisciplinas = new ArrayList <>();  //lista com todas as disciplinas ofertadas
 
     public Disciplina (String nome, String departamento, String codigo, int horas) { //usar enum para departamento?
         this.nome= nome;
@@ -25,7 +26,6 @@ public class Disciplina {
         else {
             throw new IllegalArgumentException("A carga horária da disciplina não pode ser um valor negativo");
         }
-        todasDisciplinas.add(this); //adiciona o objeto criado a lista com todos os objetos
         listaProfessores = new ArrayList <>();
        }      //construtor que inicializa a lista de professores vazia e exige os demais atributos
    
@@ -35,7 +35,6 @@ public class Disciplina {
         this.codigo = codigo;
         this.horas= horas;
         this.listaProfessores= listaProfessores;
-        todasDisciplinas.add(this);   //adiciona o objeto criado a lista com todos os objetos
         for (Professor prof : listaProfessores) {
             if (!listaProfessores.isEmpty()){ //verifica se a lista de professores passada como argumento é vazia
             prof.addDisciplina(this);
@@ -99,19 +98,19 @@ public class Disciplina {
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina
         ArrayList <Double> avaliacoes = new ArrayList<Double>();
         ArrayList <Professor> rankingProfessores = new ArrayList <Professor>();
-        for (Professor i : listaProfessores) {
-            avaliacoes.add(i.mediaAvaliacao(this));
+        for (Professor i : this.listaProfessores) {
+            avaliacoes.add(i.mediaAvaliacao());
         }
         Collections.sort(avaliacoes);
         Collections.reverse(avaliacoes);
         for (Double avaliacao: avaliacoes) {
-            for  (Professor professor : listaProfessores){
-                if (professor.mediaAvaliacao(this) == avaliacao){
+            for  (Professor professor : this.listaProfessores){
+                if (professor.mediaAvaliacao() == avaliacao && !rankingProfessores.contains(professor)){
                     rankingProfessores.add(professor);
-                    break;
                 }
             }         
         }
+
         return rankingProfessores;
     }
     
@@ -123,27 +122,5 @@ public class Disciplina {
         }
         return listaMelhoresProfessores;
     }
-    
-    public static Disciplina acharDisciplina (String procura, int escolha ){ //procura tanto pelo código ou pelo nome: se escolha for igual a 0, procura pelo código, e se escolha for igual a 1, procura pelo nome
-        if (escolha ==0){
-            for (Disciplina disc : todasDisciplinas) {
-                if (disc.getCodigo().equals(procura)){
-                    return disc;         
-                }
-            }
-        }
         
-        else if (escolha==1){
-            for (Disciplina disc : todasDisciplinas) {
-                if (disc.getNome().equals(procura)){
-                    return disc;
-                }
-           } 
-        }
-        throw new IllegalArgumentException ("Disciplina não encontrada");
-    }
-    
-    public static ArrayList<Disciplina> getTodasDisciplinas (){
-        return Disciplina.todasDisciplinas;
-    }
 }
