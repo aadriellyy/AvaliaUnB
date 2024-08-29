@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
 import model.dao.AvaliacaoDAO;
+import model.dao.ProfessorDAO;
 
 /**
  *
@@ -480,7 +481,9 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         String nomeProfessor = this.txtNomePesquisa.getText();
         AvaliacaoDAO dao = new AvaliacaoDAO();
         Professor prof = dao.buscarProfessor(nomeProfessor);
+        ProfessorDAO iniciaProfessor = new ProfessorDAO();
         if(prof != null){
+            iniciaProfessor.criaListaAvaliacoes(prof);
             //quando existir a media de nota da classe professor
             this.txtNota.setText(String.valueOf(prof.mediaAvaliacao()));
             this.txtNomeProfessor.setText(prof.getNome());
