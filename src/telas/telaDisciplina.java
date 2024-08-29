@@ -28,10 +28,9 @@ public class telaDisciplina extends javax.swing.JFrame {
     static ArrayList <ArrayList<String>> horarios = new ArrayList<>();
     static int horasGrade=0;
     Disciplina disciplinaTela = null;    
-    static boolean pesquisouProfessor=false;
-    static Professor professorPesquisado;
     DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
     List <Disciplina> listaDisciplinas = procuraDisciplina.read();
+    ProfessorDAO procuraProfessor = new ProfessorDAO();
 
     /**
      * Creates new form telaDisciplina
@@ -40,9 +39,21 @@ public class telaDisciplina extends javax.swing.JFrame {
         MapeiaHorarios.inicializa();
         inicializaHorario();
         initComponents();
-         carregaInformacoes();
+        carregaInformacoes();
     }
 
+    public telaDisciplina (Disciplina disc){
+        disciplinaTela= disc;
+        try {
+            MapeiaHorarios.inicializa();
+            inicializaHorario();
+            initComponents();
+            carregaInformacoes();
+            carregarTabelaGrade();}
+        catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Não foi possível exibir o perfil da disciplina", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     public void carregarTabelaProfessores (){
          DefaultTableModel modeloProfessores = new DefaultTableModel(new Object[]{"Professor","Horário", "Avaliação"},0);
          ArrayList<Professor> professoresRankeados = disciplinaTela.melhoresProfessores();
@@ -68,15 +79,8 @@ public class telaDisciplina extends javax.swing.JFrame {
         btnVoltar.setEnabled(true);
         
     }
-    public void carregaInformacoes(){
-        DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();  
-        ProfessorDAO procuraProfessor = new ProfessorDAO();
-        if (telaProfessor.disciplinaFoiProcurada){
-            disciplinaTela= telaProfessor.disciplinaPesquisada;
-            telaProfessor.disciplinaFoiProcurada= false;
-        }
-
-        procuraDisciplinas.criaListaDisciplina(disciplinaTela);
+    public void carregaInformacoes(){        
+        procuraDisciplina.criaListaDisciplina(disciplinaTela);
         for (Professor prof : disciplinaTela.getListaProfessores()){
             procuraProfessor.addHorario(disciplinaTela, prof);
             procuraProfessor.criaListaAvaliacoes(prof);
@@ -85,6 +89,7 @@ public class telaDisciplina extends javax.swing.JFrame {
         lblCargaHoraria.setText(String.valueOf(disciplinaTela.getCodigo()));
         lblCodigo.setText(disciplinaTela.getCodigo());
         lblDepartamentoDisciplina.setText(disciplinaTela.getDepartamento());
+        lblHoras.setText(String.valueOf(horasGrade));
         btnAvaliarProfessor.setEnabled(false);
         btnAdicionarGrade.setEnabled(false);
         btnPerfilProfessor.setEnabled(false);
@@ -95,7 +100,8 @@ public class telaDisciplina extends javax.swing.JFrame {
         rdbDisciplina.setEnabled(true);
         rdbPesquisaProfessor.setEnabled(true);
         btnPerfilDisciplina.setEnabled(false);
-                 carregarTabelaProfessores();   
+        carregarTabelaProfessores();  
+        
     }
     public void carregarTabelaGrade (){
         DefaultTableModel modelo = new DefaultTableModel(new Object[]{"-","Segunda","Terça","Quarta","Quinta","Sexta", "Sábado"},0);
@@ -120,6 +126,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     }
     
     public void inicializaHorario (){
+        //if (horarios.isEmpty()){
         for (int i=0; i <14; i++){
         ArrayList<String> adicionarHorario= new ArrayList ();
         adicionarHorario.add(MapeiaHorarios.mapearHorarios.get(i));
@@ -129,82 +136,82 @@ public class telaDisciplina extends javax.swing.JFrame {
         adicionarHorario.add("");
         adicionarHorario.add("");
         adicionarHorario.add("");
-        horarios.add(adicionarHorario);
-    }
+        horarios.add(adicionarHorario);}
+    //}
 
     }
     
     public void ajustarHorario(String horariosPassados, String disciplina){
-    String [] listaHorarios = horariosPassados.split(" ");
-    boolean adicionou = false;
-if (!disciplinasAdicionadasGrade.contains(disciplina)){    
-for (String horario : listaHorarios){
-    boolean jaAdicionado = false;
-    adicionou = false;
-    String dia, horas, turno;
-    dia = "";
-    horas="";
-    turno = "";
-    int count = 0;
-    Character carac = horario.charAt(count);
-    while (count < horario.length() && isDigit(carac)){
-            dia= dia+carac;
-            count+=1;
-            carac= horario.charAt(count);
-        }
-    while (count < horario.length() && Character.isAlphabetic(carac)){
-        turno= turno+carac;
-        count+=1;
-        carac= horario.charAt(count);
-    }
-    
-    while (count < horario.length()-1 && isDigit(carac)){
-            horas= horas+carac;
-            count+=1;
-            carac= horario.charAt(count);
-        }
-    horas = horas+ horario.charAt(horario.length()-1);
-        
-    
-    for (int i = 0; i<horas.length(); i++){
-        //jaAdicionado = false;
-        Integer linha = null;
-         if (turno.equals("m") || turno.equals("M")){
-            linha =Integer.parseInt(horas.substring(i,i+1))-1;
-         }
-         else if (turno.equals("t") || turno.equals("T")){
-            linha =Integer.parseInt(horas.substring(i,i+1))+4;
-         }
-        else if (turno.equals("n") || turno.equals("N")){
-             linha =Integer.parseInt(horas.substring(i,i+1))+9;
-        }
-        try {
-            for (int x = 0; x<dia.length(); x++){
-                if (!horarios.get(linha).get(Integer.parseInt(dia.substring(x, x+1))-1).equals("") && !jaAdicionado){
-                    JOptionPane.showMessageDialog(null, "Conflito de horários, escolha outro horário");
-                    jaAdicionado = true;
-                    break;
+        String [] listaHorarios = horariosPassados.split(" ");
+        boolean adicionou = false;
+        if (!disciplinasAdicionadasGrade.contains(disciplina)){    
+            for (String horario : listaHorarios){
+                boolean jaAdicionado = false;
+                adicionou = false;
+                String dia, horas, turno;
+                dia = "";
+                horas="";
+                turno = "";
+                int count = 0;
+                Character carac = horario.charAt(count);
+                while (count < horario.length() && isDigit(carac)){
+                        dia= dia+carac;
+                        count+=1;
+                        carac= horario.charAt(count);
+                    }
+                while (count < horario.length() && Character.isAlphabetic(carac)){
+                    turno= turno+carac;
+                    count+=1;
+                    carac= horario.charAt(count);
+                }
+
+                while (count < horario.length()-1 && isDigit(carac)){
+                        horas= horas+carac;
+                        count+=1;
+                        carac= horario.charAt(count);
+                    }
+                horas = horas+ horario.charAt(horario.length()-1);
+
+
+                for (int i = 0; i<horas.length(); i++){
+                    //jaAdicionado = false;
+                    Integer linha = null;
+                     if (turno.equals("m") || turno.equals("M")){
+                        linha =Integer.parseInt(horas.substring(i,i+1))-1;
+                     }
+                     else if (turno.equals("t") || turno.equals("T")){
+                        linha =Integer.parseInt(horas.substring(i,i+1))+4;
+                     }
+                    else if (turno.equals("n") || turno.equals("N")){
+                         linha =Integer.parseInt(horas.substring(i,i+1))+9;
+                    }
+                    try {
+                        for (int x = 0; x<dia.length(); x++){
+                            if (!horarios.get(linha).get(Integer.parseInt(dia.substring(x, x+1))-1).equals("") && !jaAdicionado){
+                                JOptionPane.showMessageDialog(null, "Conflito de horários, escolha outro horário");
+                                jaAdicionado = true;
+                                break;
+
+                            }
+                            else if (horarios.get(linha).get(Integer.parseInt(dia.substring(x, x+1))-1).equals("")){
+                                    horarios.get(linha).set(Integer.parseInt(dia.substring(x, x+1))-1, disciplina);
+                                    adicionou = true;
+                                    //disciplinasAdicionadasGrade.add(disciplina);
+                            }
+                        }
+                        jaAdicionado= true;
+
+                        carregarTabelaGrade();
 
                 }
-                else if (horarios.get(linha).get(Integer.parseInt(dia.substring(x, x+1))-1).equals("")){
-                        horarios.get(linha).set(Integer.parseInt(dia.substring(x, x+1))-1, disciplina);
-                        adicionou = true;
-                        //disciplinasAdicionadasGrade.add(disciplina);
+
+                    catch (NullPointerException e ) {
+                        JOptionPane.showMessageDialog(null, "Não foi possível adicionar a disciplina à grade");
+                    }
                 }
-            }
-            jaAdicionado= true;
-        
-            carregarTabelaGrade();
-            
-    }
-        
-        catch (NullPointerException e ) {
-            JOptionPane.showMessageDialog(null, "Não foi possível adicionar a disciplina à grade");
+
+            }  
         }
-    }
-    
-    }  
-    }
     else if (disciplinasAdicionadasGrade.contains(disciplina)){
             JOptionPane.showMessageDialog(null, "Disciplina já adicionada a grade");
             }
@@ -567,10 +574,15 @@ for (String horario : listaHorarios){
         });
 
         btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
-        btnVoltar.setText("Voltar");
+        btnVoltar.setText("Tela Inicial");
 
         btnPerfilDisciplina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/perfil disciplina icon.png"))); // NOI18N
         btnPerfilDisciplina.setText("Perfil da disciplina");
+        btnPerfilDisciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilDisciplinaActionPerformed(evt);
+            }
+        });
 
         lblTitleDisciplinaEscolhida.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblTitleDisciplinaEscolhida.setText("Disciplina escolhida:");
@@ -587,7 +599,7 @@ for (String horario : listaHorarios){
         pnlBotoesGradeLayout.setHorizontalGroup(
             pnlBotoesGradeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBotoesGradeLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRemover)
                 .addGap(18, 18, 18)
                 .addComponent(btnVoltar)
@@ -610,10 +622,9 @@ for (String horario : listaHorarios){
                     .addComponent(lblTitleDisciplinaEscolhida))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlBotoesGradeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblDisciplinaEscolhida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlBotoesGradeLayout.createSequentialGroup()
-                        .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                    .addComponent(lblDisciplinaEscolhida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlBotoesGradeLayout.createSequentialGroup()
                 .addGroup(pnlBotoesGradeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPerfilDisciplina)
@@ -715,7 +726,7 @@ for (String horario : listaHorarios){
     }//GEN-LAST:event_rdbDisciplinaActionPerformed
 
     private void tblRankingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRankingMouseClicked
-               int linha = tblRanking.getSelectedRow();
+        int linha = tblRanking.getSelectedRow();
         if (linha>=0 && linha <tblRanking.getRowCount()){
             professorSelecionado = disciplinaTela.getListaProfessores().get(linha);
            
@@ -739,9 +750,11 @@ for (String horario : listaHorarios){
                 if (cmbPesquisa.getSelectedIndex()==0){
                     for (Disciplina disc : listaDisciplinas){
                         if (disc.getCodigo().toLowerCase().equals(disciplinaProcurada)){
-                            disciplinaTela=disc;
-                            procuraDisciplina.criaListaDisciplina(disciplinaTela);
-                            carregaInformacoes();
+
+                            new telaDisciplina(disc).setVisible(true);
+                            
+                            //procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                            //carregaInformacoes();
                             achou=true;
                             break;
                         } 
@@ -750,21 +763,23 @@ for (String horario : listaHorarios){
                 else if (cmbPesquisa.getSelectedIndex()==1){
                    for (Disciplina disc : listaDisciplinas){
                         if (disc.getNome().toLowerCase().equals(disciplinaProcurada)){
-                            disciplinaTela=disc;
-                            procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                            //disciplinaTela=disc;
+                            //procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                            new telaDisciplina(disc).setVisible(true);
+                            dispose();
                             achou=true;
                             break;
                         } 
                     }  
                 }
                 if (achou){
-                    ProfessorDAO procurarProfessor = new ProfessorDAO();
+                    /*ProfessorDAO procurarProfessor = new ProfessorDAO();
                     for (Professor prof : disciplinaTela.getListaProfessores()){
                         procurarProfessor.addHorario(disciplinaTela, prof);
                         }
 
                     carregaInformacoes();
-                    carregarTabelaProfessores();
+                    carregarTabelaProfessores();*/
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Não há nenhuma disciplina com esse código", "Erro", JOptionPane.INFORMATION_MESSAGE);
@@ -778,11 +793,11 @@ for (String horario : listaHorarios){
                 String nomeProfessor= txtPesquisa.getText();
                 for (Professor prof : listaProfessores){
                     if (prof.getNome().equals(nomeProfessor)){
-                        professorPesquisado=prof;
-                        pesquisouProfessor=true;
+                        Professor professorPesquisado=prof;
                         achou = true;
-                        new telaProfessor().setVisible(true);
-                        break;
+                        new telaProfessor(professorPesquisado).setVisible(true);
+                        this.setVisible(false);
+                        dispose();
                     }
                 }
                 if (!achou){
@@ -797,9 +812,8 @@ for (String horario : listaHorarios){
 
          int linha = tblRanking.getSelectedRow();
         if (linha>=0 && linha <tblRanking.getRowCount()){
-            professorPesquisado = disciplinaTela.getListaProfessores().get(linha);
-            pesquisouProfessor= true;
-            new telaProfessor().setVisible(true);
+            Professor professorPesquisado = disciplinaTela.getListaProfessores().get(linha);
+            new telaProfessor(professorPesquisado).setVisible(true);
         }
     }//GEN-LAST:event_btnPerfilProfessorActionPerformed
 
@@ -832,7 +846,7 @@ for (String horario : listaHorarios){
          int coluna = tblGrade.getSelectedColumn();
             if (coluna>0 && coluna <tblGrade.getColumnCount()){
                 String valor = (String) tblGrade.getValueAt(indice, coluna);  
-                if (!valor.equals("")){
+                if (!valor.equals("") && null!=valor){
                     btnRemover.setEnabled(true);
                     btnPerfilDisciplina.setEnabled(true);
                 }
@@ -844,6 +858,24 @@ for (String horario : listaHorarios){
             }
         }        // TODO add your handling code here:
     }//GEN-LAST:event_tblGradeMouseClicked
+
+    private void btnPerfilDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilDisciplinaActionPerformed
+       int indice= tblGrade.getSelectedRow();
+        int coluna = tblGrade.getSelectedColumn();
+        if (coluna>0){
+            String celula = (String) tblGrade.getValueAt(indice, coluna);
+            if (!celula.equals("")){
+                Disciplina disc = procuraDisciplina.achaDisciplina(celula); 
+                new telaDisciplina(disc).setVisible(true);
+                dispose();                          
+                disciplinaTela = disc;
+                procuraDisciplina.criaListaDisciplina(disciplinaTela);
+                carregaInformacoes();
+            }
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPerfilDisciplinaActionPerformed
 
     /**
      * @param args the command line arguments

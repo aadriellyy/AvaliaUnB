@@ -6,11 +6,14 @@ package telas;
 
 import classes.Aluno;
 import classes.Avaliacao;
+import classes.Professor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.AlunoDAO;
+import model.dao.AvaliacaoDAO;
+import model.dao.ProfessorDAO;
 
 /**
  *
@@ -73,6 +76,7 @@ public class TelaAluno extends javax.swing.JFrame{
     private void carregarTabelaAvaliacao(){
         DefaultTableModel modelo = new DefaultTableModel(new Object[] {"ID", "Professor (a)", "Feedback", "Nota"},0);
         AlunoDAO dao = new AlunoDAO();
+
         
         List <Avaliacao> listaAvaliacao = dao.agrupAvaliacao(this.aluno).getAvaliacoes();
                 
@@ -259,7 +263,7 @@ public class TelaAluno extends javax.swing.JFrame{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(88, Short.MAX_VALUE)
+                        .addContainerGap(86, Short.MAX_VALUE)
                         .addComponent(btnNovaAvaliacao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnNovo)
