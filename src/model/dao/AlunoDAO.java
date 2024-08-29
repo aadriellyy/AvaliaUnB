@@ -113,27 +113,32 @@ public class AlunoDAO {
         ResultSet rs = null;
         
         Professor prof = null;
+        ProfessorDAO procuraProfessor = new ProfessorDAO();
         List<Professor> professores = new ArrayList<>();
         
-        try {
-            stmt = con.prepareStatement("SELECT * FROM professor");
+        /*try {
+            /*stmt = con.prepareStatement("SELECT * FROM professores");
             rs = stmt.executeQuery();
             
             while(rs.next()){
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
-                         rs.getString("email"));        
+                         rs.getString("email")); 
+                professor.setId(rs.getInt(id));
                 professores.add(professor);
-            }   
-            for(Professor profe: professores){
+            }   */
+            professores= procuraProfessor.read();
+            prof = procuraProfessor.achaProfessor(id);
+            /*for(Professor profe: professores){
                 if(profe.getId() == id){
                     prof = profe;
                 }
-            }    
+            }
+        
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
-        }
+        }*/
       
         return prof;
         
@@ -155,7 +160,8 @@ public class AlunoDAO {
                 if(rs.getInt("alunoID") == id){
                     int profId = rs.getInt("professorID");
                     Professor prof = this.buscarProfessor(profId);
-                    Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getInt("nota"), aluno, prof);
+                    Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getFloat("nota"), aluno, prof);
+                    avalia.setId(rs.getInt("id"));
                     aluno.adicionaAvaliacao(avalia);
                 }
             }   

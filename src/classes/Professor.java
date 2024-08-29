@@ -111,63 +111,40 @@ public class Professor extends Pessoa{
         else {
             double notas= 0;
             for (Avaliacao avaliacao : this.listaAvaliacoes) {
-                notas+=avaliacao.getLike();
+                notas+=avaliacao.getNota();
             } 
             return notas/this.listaAvaliacoes.size();
         }
     }
-    
-    public double mediaAvaliacao(Disciplina disciplina){ //retorna a media de avaliação do professor para uma determinada disciplina
-        if (this.listaAvaliacoes.isEmpty()) {
-            return -1;
-        }
-        else {
-            double notas=0;
-            int numAvaliacoes=0;
-            for (Avaliacao avaliacao : this.listaAvaliacoes) {
-                if (avaliacao.getDisciplina().equals(disciplina)){
-                    notas+=avaliacao.getLike();
-                    numAvaliacoes++;
-                }
-            } 
-            if (numAvaliacoes==0){
-                return -1;
-            }
-            else{
-                return notas/numAvaliacoes;
-            }
-        }
-    }
-    
-    public ArrayList<Avaliacao> rankearAvaliacao (ArrayList<Avaliacao> listaAvaliacoes){ //ordena as avaliacoes do professor de acordo com a quantidade de likes
+        
+    public ArrayList<Avaliacao> rankearAvaliacao (){ //ordena as avaliacoes do professor de acordo com a quantidade de likes
         ArrayList<Avaliacao> listaRankeada = new ArrayList<>();
         ArrayList <Integer> listaLikes = new ArrayList<>();
-        for (Avaliacao avaliacao: listaAvaliacoes){
+        for (Avaliacao avaliacao: this.listaAvaliacoes){
             listaLikes.add(avaliacao.getLike());
         }
         Collections.sort(listaLikes);
         Collections.reverse(listaLikes);
         for (int like : listaLikes){
-            for (Avaliacao avaliacao: listaAvaliacoes){
-                if (avaliacao.getLike()==like){
+            for (Avaliacao avaliacao: this.listaAvaliacoes){
+                if (avaliacao.getLike()==like && !listaRankeada.contains(avaliacao)){
                     listaRankeada.add(avaliacao);
-                    break;
                 }
             }
         }
         return listaRankeada;
     }
     
-    public ArrayList <Professor> mostraTodos () { //retorna todos os professores presentes no banco de dados
-        return null;
-    }
-    
     public ArrayList <Avaliacao> getListaAvaliacoes () {
         return this.listaAvaliacoes;
-}
+    }
     
     public int getId(){
         return this.id;
+    }
+    
+    public void limpaAvaliacoes(){
+        this.listaAvaliacoes.clear();
     }
     
 }

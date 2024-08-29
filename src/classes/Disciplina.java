@@ -93,8 +93,6 @@ public class Disciplina {
                 professor.addDisciplina(this);
             }
         }
-        DisciplinaDAO atualizaDisciplina = new DisciplinaDAO();
-        atualizaDisciplina.update(this);
     }
     
     public ArrayList <Professor> melhoresProfessores() {    //retorna uma lista com um ranking dos melhores professores de acordo com a média de avaliação de cada professor naquela disciplina

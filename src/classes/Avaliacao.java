@@ -11,11 +11,13 @@ public class Avaliacao {
     private List<Comentario> comentarios;
     private Professor professor;
     private final Disciplina disciplina = null;
+    private float nota;
 
     //construtor
-    public Avaliacao (String feedback, int like, Aluno aluno, Professor prof){
+    public Avaliacao (String feedback, float nota, Aluno aluno, Professor prof){
         this.feedback = feedback;
-        this.like = like;
+        this.nota = nota;
+        this.like = 0;
         this.aluno = aluno;
         id ++;
         this.professor = prof;
@@ -60,6 +62,14 @@ public class Avaliacao {
         return this.like;
     }
 
+    public float getNota(){
+        return this.nota;
+    }
+    
+    public void setNota(float nota){
+        this.nota= nota;
+    }
+    
     public Aluno getAluno(){
         return this.aluno;
     }

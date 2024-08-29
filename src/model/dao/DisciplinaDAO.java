@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
  * @author pedro
  */
 public class DisciplinaDAO {
-    public List<Disciplina> read(){
+    public List<Disciplina> read(){ //método para criar uma lista com todos os objetos do tipo Disciplina através dos dados do banco
         
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
-        ResultSet rs = null;
+        ResultSet rs = null; 
         
         List<Disciplina> disciplinas = new ArrayList<>();
         
@@ -36,10 +36,9 @@ public class DisciplinaDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                                
                 Disciplina disciplina = new Disciplina(rs.getString("nome"), rs.getString("departamento"),
-                         rs.getString("codigo"), Integer.parseInt(rs.getString("horas")));
-                disciplinas.add(disciplina);
+                         rs.getString("codigo"), (rs.getInt("horas"))); //instancia o objeto da disciplina
+                disciplinas.add(disciplina); //adiciona alista de disciplinas
             }
             
         } catch (SQLException ex) {
@@ -51,8 +50,7 @@ public class DisciplinaDAO {
         return disciplinas;
     }
     
-        public void update(Disciplina disciplina){
-        
+    public void update(Disciplina disciplina){ //metodo para atualizar os dados da disciplina no banco de dados       
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
@@ -68,14 +66,13 @@ public class DisciplinaDAO {
             //executando a sql
             stmt.executeUpdate();
 
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
-        }
-        
+        }     
     }
    
 
@@ -85,7 +82,7 @@ public class DisciplinaDAO {
         ResultSet rs = null;
         String [] nomeProfessores = null;
          try {
-            stmt = con.prepareStatement("SELECT * FROM disciplinas");
+            stmt = con.prepareStatement("SELECT * FROM disciplinas"); //seleciona todas as linhas da tabela de disciplinas do banco de dados
             rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -102,48 +99,35 @@ public class DisciplinaDAO {
         }
        try{
             ProfessorDAO procuraProfessores = new ProfessorDAO();
-            DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
             for (String nomeProf : nomeProfessores){
-                boolean jaFeito=false;
-                for (Professor profDisciplina : disciplina.getListaProfessores()){
-                    if (profDisciplina.getNome().equals(nomeProf)){
-                      jaFeito = true;  
-                    }
-                }
-                if (!jaFeito){
-                    for (Professor prof : procuraProfessores.read()){
-                        if (prof.getNome().equals(nomeProf)){
-                            disciplina.addListaProfessores(prof);
-                        }
-                    }
+                ArrayList <String> listaNomeProfessores = new ArrayList<>();
+                for (Professor prof : disciplina.getListaProfessores()){
+                    listaNomeProfessores.add(prof.getNome());
+                }      
+                if (!listaNomeProfessores.contains(nomeProf)){
+                    disciplina.addListaProfessores(procuraProfessores.achaProfessor(nomeProf));
+
                 }
             }
-        }
+       }
        
        catch (NullPointerException e){
            JOptionPane.showMessageDialog(null,"Não há nenhum professor cadastrado nessa disciplina");
        }
    }
 
-    public Disciplina achaDisciplina (String codigo){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-        PreparedStatement stmt = null;  //preparando a sql para execucao
-        ResultSet rs = null;
-        
+    public Disciplina achaDisciplina (String codigo){ //metodo para achar uma disciplina atraves de um codigo passado
         Disciplina disc = null;
-        List<Disciplina> disciplinas = this.read();
+        List<Disciplina> disciplinas = this.read(); //cria todos os objetos de Disciplina a partir dos dados do banco
         for (Disciplina disciplina : disciplinas){
-            if (disciplina.getCodigo().equals(codigo)){
+            if (disciplina.getCodigo().equals(codigo)){ //se o codigo do objeto de disciplina for igual ao codigo passado, 
                 disc= disciplina;
+                return disc;
             }
-        }
-        
-        
-      
-        return disc;
-        
+        }      
+        return disc;       
     }
-    }
+}
 
 
 

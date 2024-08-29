@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.dao.AlunoDAO;
 
 /**
  *
@@ -36,29 +35,14 @@ public class ProfessorDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                DisciplinaDAO procuraDisciplinas = new DisciplinaDAO();
-                ArrayList <Disciplina> listaDisciplinasGeral = (ArrayList <Disciplina>) procuraDisciplinas.read();
+                if (rs.getString("listaDisciplinas")!=null){
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"));
                 professor.setId(rs.getInt("id"));
 
-                /*String [] paresChaveValor = rs.getString("listaHorarios").split(";");
-                for (String par : paresChaveValor){
-                    String [] chaveValorSeparados = par.split(":");
-                    Disciplina disciplinaChave = null;
-                    for (Disciplina disciplina : listaDisciplinasGeral){
-                        if (disciplina.getCodigo().equals(chaveValorSeparados[0])){
-                            disciplinaChave = disciplina;
-                            break;
-                        }
-                    }
-                    try {
-                        professor.setHorariosDisciplinas(chaveValorSeparados[1],disciplinaChave);
-                    }
-                    catch (NullPointerException e){             
-                    }
-                }*/
+                
                 professores.add(professor);
+            }
             }
             
         } catch (SQLException ex) {
@@ -70,9 +54,7 @@ public class ProfessorDAO {
         return professores;
     }
     
-    public void buscaProfessor (Professor professor){
-        
-    }
+
     public void update (Professor professor, String idAvaliacao){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -116,18 +98,18 @@ public class ProfessorDAO {
         }
     }
     
-    public Professor achaProfessor(String nome){
+    public Professor achaProfessor(String nome){ //método para achar professor através do nome
         ProfessorDAO procuraProfessor = new ProfessorDAO();
                 for (Professor prof : procuraProfessor.read()){
                     if (prof.getNome().equals(nome)){
                     return prof;
                 }
             }
-    return null;
+        return null;
     }   
     
     public void addHorario(Disciplina disc, Professor prof){
-         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaHorarios = null;
@@ -148,17 +130,13 @@ public class ProfessorDAO {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
          try{
-           DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
-           List<Disciplina> listaDisciplinas = procuraDisciplina.read();
            for (String par : listaHorarios){
                String [] chaveValor= par.split(":");
                if (disc.getCodigo().equals(chaveValor[0])){
                     prof.setHorariosDisciplinas(chaveValor[1], disc);
                     break;       
                }
-
-           }
-               
+           }               
         }
         catch (NullPointerException e){
             
@@ -169,20 +147,26 @@ public class ProfessorDAO {
     public void criaListaAvaliacoes(Professor prof){
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
+        ArrayList<Integer> listaIdsAvaliacoes= new ArrayList<>();
+        for (Avaliacao avalia : prof.getListaAvaliacoes()){
+            listaIdsAvaliacoes.add(avalia.getId());
+        }
         int id = prof.getId();
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("SELECT * FROM avaliaunb.avaliacao");
             rs = stmt.executeQuery();          
                 while(rs.next()){
-                if(rs.getString("professorID")!=null && rs.getInt("professorID") == id  ){
-                    int alunoId = rs.getInt("alunoID");
-                    Aluno aluno = this.buscarAluno(alunoId);
-                    Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getInt("nota"), aluno, prof);
-                    avalia.setId(rs.getInt("id"));
-                    prof.recebeAvaliacao(avalia);
-                    this.update(prof, String.valueOf(avalia.getId()));
-                }
+                    if(rs.getString("professorID")!=null && rs.getInt("professorID") == id  ){
+                        int idAvaliacao = rs.getInt("id");
+                        if (!listaIdsAvaliacoes.contains(idAvaliacao)){
+                            int alunoId = rs.getInt("alunoID");
+                            Aluno aluno = this.buscarAluno(alunoId);
+                            Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getFloat("nota"), aluno, prof);
+                            avalia.setId(rs.getInt("id"));
+                            prof.recebeAvaliacao(avalia);
+                        }
+                    }
                 
                 }
             }   
@@ -224,10 +208,8 @@ public class ProfessorDAO {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
-        }
-      
-        return aluno;
-        
+        }     
+        return aluno;        
     }
     
     public void criaListaHorarios (Professor prof){
@@ -270,8 +252,8 @@ public class ProfessorDAO {
         }
 
     }
-public void criaListaDisciplinas(Professor prof){
-      Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+    public void criaListaDisciplinas(Professor prof){ //método que cria a lista de disciplinas de um professor
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaDisciplinas = null;
@@ -284,8 +266,7 @@ public void criaListaDisciplinas(Professor prof){
                     break;
                 }
             }
-            
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             Logger.getLogger(DisciplinaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
@@ -302,10 +283,22 @@ public void criaListaDisciplinas(Professor prof){
                     }
 
            }
-               
+
         }
         catch (NullPointerException e){
-            
+
         }
+    }
+    
+    public Professor achaProfessor (int id) {
+        ProfessorDAO procuraProfessor = new ProfessorDAO();
+                for (Professor prof : procuraProfessor.read()){
+                    if (prof.getId() == id){
+                    return prof;
+                }
+            }
+        return null;
+    }   
+
 }
-}
+
