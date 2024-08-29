@@ -4,14 +4,22 @@
  */
 package verificacao;
 
+import classes.Disciplina;
+import classes.Professor;
 import static java.lang.Character.isDigit;
 import java.util.*;
+import javax.swing.JOptionPane;
+import model.dao.DisciplinaDAO;
+import model.dao.ProfessorDAO;
 
 /**
  *
  * @author pedro
  */
 public class Horario {
+    ProfessorDAO procuraProfessor = new ProfessorDAO();
+    
+    
     public static void verificaHorario (String horario){
         if (horario.equals("")){
             throw new IllegalArgumentException ("Horário vazio");
@@ -129,5 +137,6 @@ public class Horario {
                         throw new IllegalArgumentException ("Informado horário inválido"); 
             }  
         }
-    } 
+    }
+
 }

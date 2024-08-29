@@ -9,7 +9,7 @@ package verificacao;
  * @author pedro
  */
 public class VerificaEmail {
-    public boolean verifica (String texto){
+    public static boolean verifica (String texto){
         String [] listaCaracteres = texto.split(" ");
         if (listaCaracteres.length>1){
             return false;

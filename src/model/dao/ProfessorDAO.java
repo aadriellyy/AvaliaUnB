@@ -35,7 +35,7 @@ public class ProfessorDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                if (rs.getString("listaDisciplinas")!=null){
+                if (rs.getString("listaDisciplinas")!=null){ //verifica se o professor possui alguma disciplina cadastrada
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"));
                 professor.setId(rs.getInt("id"));
@@ -53,7 +53,7 @@ public class ProfessorDAO {
         
         return professores;
     }
-    
+
 
     public void update (Professor professor, String idAvaliacao){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao

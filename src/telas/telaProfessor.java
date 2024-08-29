@@ -5,6 +5,7 @@
 package telas;
 
 
+import classes.Aluno;
 import classes.Avaliacao;
 import classes.Disciplina;
 import java.sql.*;
@@ -27,14 +28,13 @@ import model.dao.ProfessorDAO;
  * @author pedro
  */
 public class telaProfessor extends javax.swing.JFrame {
-static Disciplina disciplinaPesquisada = null;
-static boolean disciplinaFoiProcurada = false;
 Professor professorTela = null;
 boolean pesquisaProfessor = false ;
 boolean pesquisaDisciplina = false;
 ProfessorDAO professorPesquisa = new ProfessorDAO();
 List<Professor> listaProfessores = professorPesquisa.read();
 ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
+Aluno alunoTela= null;
 
     /**
      * Creates new form telaProfessor
@@ -59,7 +59,12 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
     }
     
     public void carregarTabelaDisciplinas (){
-        DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Disciplina","Código","Horário"},0);
+        DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Disciplina","Código","Horário"},0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         for (Disciplina disciplina : professorTela.getDisciplinas()){
             if (!disciplinasAdicionadas.contains(disciplina.getNome())){           
             Object linha [] = new Object[] {disciplina.getNome(),
@@ -74,17 +79,28 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
     }
     
      public void carregarTabelaAvaliacoes (){        
-        DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Feedback","Nota","Aluno","Like"},0);
+        DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Feedback","Nota","Like"},0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+        return false;
+                }
+
+        };
         for (Avaliacao avalia : professorTela.rankearAvaliacao()){
            
             Object linha [] = new Object[] {avalia.getFeedback(),
                                             avalia.getNota(),
-                                            avalia.getAluno().getNome(),
                                             avalia.getLike()
                                             };
             modelo.addRow(linha);        
         }
+
         tblAvaliacoes.setModel(modelo);
+        tblAvaliacoes.getColumnModel().getColumn(0).setPreferredWidth(35);
+        tblAvaliacoes.getColumnModel().getColumn(1).setPreferredWidth(5);
+        tblAvaliacoes.getColumnModel().getColumn(2).setPreferredWidth(5);
+
+
     }
 
 
@@ -114,8 +130,9 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
         }    
     }
     
-    public telaProfessor(Professor prof) {
+    public telaProfessor(Professor prof,Aluno aluno) {
         professorTela=prof;
+        alunoTela= aluno;
         initComponents();
         try{
             carregaInformacoes();
@@ -490,7 +507,12 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
         jScrollPane1.setViewportView(tblAvaliacoes);
 
         btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
-        btnVoltar.setText("Voltar");
+        btnVoltar.setText("Tela Inicial");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
 
         lblTitleListaAvaliacoes.setFont(new java.awt.Font("Malgun Gothic", 1, 16)); // NOI18N
         lblTitleListaAvaliacoes.setText("Lista de avaliações");
@@ -527,7 +549,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                         .addComponent(btnVoltar)
                         .addGap(18, 18, 18)
                         .addComponent(btnLike)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -535,7 +557,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                 .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTitleListaAvaliacoes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -543,7 +565,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLike, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18))
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -573,20 +595,16 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                 for (Professor professor : listaProfessores){
                     if (professor.getNome().toLowerCase().equals(nomeProfessor)){
                         achou=true;
-                        new telaProfessor(professor).setVisible(true);
+                        new telaProfessor(professor,alunoTela).setVisible(true);
                         this.setVisible(false);
                         dispose();
                     } 
                 }
-                if (achou){
-                   /*disciplinasAdicionadas.clear();
-                    carregaInformacoes();
-                    carregarTabelaDisciplinas();
-                    carregarTabelaAvaliacoes();*/
-                }
-                else {
+                if (!achou){
                     JOptionPane.showMessageDialog(null, "Nenhum professor encontrado", "", JOptionPane.INFORMATION_MESSAGE);
+
                 }
+
             }
             else if (pesquisaDisciplina){
                 DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
@@ -596,7 +614,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                     String codigoDisciplina = txtPesquisa.getText().toLowerCase();
                     for (Disciplina disciplina : listaDisciplinas){
                         if (disciplina.getCodigo().toLowerCase().equals(codigoDisciplina)){
-                            new telaDisciplina(disciplina).setVisible(true);
+                            new telaDisciplina(disciplina,alunoTela).setVisible(true);
                             this.setVisible(false);
                             dispose();
                             achou= true;
@@ -608,7 +626,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
                     String nomeDisciplina = txtPesquisa.getText().toLowerCase();
                     for (Disciplina disciplina : listaDisciplinas){
                         if (disciplina.getNome().toLowerCase().equals(nomeDisciplina)){
-                            new telaDisciplina(disciplina).setVisible(true);
+                            new telaDisciplina(disciplina,alunoTela).setVisible(true);
                             this.setVisible(false);
                             dispose();
                             achou=true;
@@ -646,7 +664,7 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
         DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
         try {
             Disciplina disc = procuraDisciplina.achaDisciplina(celula);
-            new telaDisciplina(disc).setVisible(true);
+            new telaDisciplina(disc,alunoTela).setVisible(true);
             this.setVisible(false);
             dispose();
         }
@@ -679,6 +697,12 @@ ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
             btnLike.setEnabled(true);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_tblAvaliacoesMouseClicked
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        this.setVisible(false);
+        new TelaAluno(alunoTela).setVisible(true);
+        dispose();// TODO add your handling code here:
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
