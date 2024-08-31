@@ -4,14 +4,24 @@ import java.util.*;
 
 public class Comentario {
     private int id;
-    private String comentario;
+    private String texto;
     private Date dateCreated;
-
+    private Avaliacao avaliacao;
     //Construtores
     public Comentario(){}
-    public Comentario(int id, String comentario, Date dateCreated) {
+    
+    
+    
+    public Comentario(int id, String texto, Date dateCreated, Avaliacao avaliacao) {
         this.id = id;
-        this.comentario = comentario;
+        this.texto = texto;
+        this.dateCreated = dateCreated;
+        this.avaliacao = avaliacao;
+    }
+    
+    public Comentario(int id, String texto, Date dateCreated){
+        this.id = id;
+        this.texto = texto;
         this.dateCreated = dateCreated;
     }
 
@@ -24,12 +34,12 @@ public class Comentario {
         this.id = id;
     }
 
-    public String getComentario() {
-        return comentario;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Date getDateCreated() {
@@ -40,7 +50,11 @@ public class Comentario {
         this.dateCreated = dateCreated;
     }
     
-    //metodo
+    public Avaliacao getAvaliacao(){
+        return avaliacao;
+    }
+    
+    //metodo pro bd
     public void comentar(int avaliacaoId){
         
     }

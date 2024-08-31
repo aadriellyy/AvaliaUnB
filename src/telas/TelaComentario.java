@@ -15,7 +15,25 @@ public class TelaComentario extends javax.swing.JFrame {
     /**
      * Creates new form Comentario
      */
-    public TelaComentario() {
+    public TelaComentario(Avaliacao avaliacao) {
+         int id = avaliacao.getId();
+
+        //habilitar os botões
+        initComponents();
+        btnNovoComentario.setEnabled(true);
+        btnEditarComentario.setEnabled(true);
+        btnCancelarComentario.setEnabled(false);
+        btnOkComentario.setEnabled(false);
+        btnExcluirComentario.setEnabled(false);
+       //habilitar o campo de texto
+        txtComentario.setEnabled(false);
+        
+        //setar dia e hora
+        Calendar c = Calendar.getInstance();
+        //System.out.println("data e hora atual " + c.getTime());
+    }
+    
+    public TelaComentario(){
         initComponents();
         btnNovoComentario.setEnabled(true);
         btnEditarComentario.setEnabled(true);
@@ -24,7 +42,6 @@ public class TelaComentario extends javax.swing.JFrame {
         btnExcluirComentario.setEnabled(false);
         
         txtComentario.setEnabled(false);
-        
     }
 
     /**
