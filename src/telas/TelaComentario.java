@@ -30,6 +30,8 @@ public class TelaComentario extends javax.swing.JFrame {
         
         //setar dia e hora
         Calendar c = Calendar.getInstance();
+        
+        
         //System.out.println("data e hora atual " + c.getTime());
     }
     
