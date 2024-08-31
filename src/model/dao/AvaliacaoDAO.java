@@ -100,6 +100,7 @@ public class AvaliacaoDAO {
         
         return avaliacoes;
     }
+    
     public void create(String feedback, float nota, int like, Aluno aluno, Professor professor){
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -134,13 +135,14 @@ public class AvaliacaoDAO {
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
          try {
-            stmt = con.prepareStatement("UPDATE avaliacao SET like=? WHERE id=?");
+            stmt = con.prepareStatement("UPDATE avaliacao SET likes=? WHERE id=?");
             try{
             stmt.setInt(1, avalia.getLike()); 
             stmt.setInt(2, avalia.getId());
-            //JOptionPane.showMessageDialog(null, "Avaliação salva com sucesso!");    
             //executando a sql
-            stmt.executeUpdate();}
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Avaliação salva com sucesso!");    
+            }
             catch (NullPointerException e){
                 
             }

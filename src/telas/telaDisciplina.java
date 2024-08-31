@@ -12,6 +12,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.DisciplinaDAO;
+import model.dao.GradeDAO;
 import model.dao.ProfessorDAO;
 import verificacao.MapeiaHorarios;
 
@@ -31,8 +32,7 @@ public class telaDisciplina extends javax.swing.JFrame {
     DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
     List <Disciplina> listaDisciplinas = procuraDisciplina.read();
     ProfessorDAO procuraProfessor = new ProfessorDAO();
-    ArrayList <String> listaHorariosDisciplinas = new ArrayList<>();
-    String updateGrade;
+    static ArrayList <String> listaHorariosDisciplinas = new ArrayList<>();
 
     /**
      * Creates new form telaDisciplina
@@ -131,17 +131,10 @@ public class telaDisciplina extends javax.swing.JFrame {
             modelo.addRow(linha);
         }
         tblGrade.setModel(modelo);
-
-        tblGrade.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tblGrade.getColumnModel().getColumn(1).setPreferredWidth(10);
-        tblGrade.getColumnModel().getColumn(2).setPreferredWidth(30);
-        tblGrade.getColumnModel().getColumn(3).setPreferredWidth(10);
-        tblGrade.getColumnModel().getColumn(4).setPreferredWidth(10);
-        tblGrade.getColumnModel().getColumn(5).setPreferredWidth(20);
     }
     
     public void inicializaHorario (){
-        //if (horarios.isEmpty()){
+        if (horarios.isEmpty()){
         for (int i=0; i <14; i++){
         ArrayList<String> adicionarHorario= new ArrayList ();
         adicionarHorario.add(MapeiaHorarios.mapearHorarios.get(i));
@@ -152,13 +145,10 @@ public class telaDisciplina extends javax.swing.JFrame {
         adicionarHorario.add("");
         adicionarHorario.add("");
         horarios.add(adicionarHorario);}
-    //}
+    }
 
     }
     
-    public void desvendarHorario (String horario){
-        
-    }
     public void ajustarHorario(String horariosPassados, String disciplina){
         String [] listaHorarios = horariosPassados.split(" ");
         boolean adicionou = false;
@@ -234,6 +224,8 @@ public class telaDisciplina extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Disciplina já adicionada a grade");
             }
     if (adicionou && !disciplinasAdicionadasGrade.contains(disciplina)){
+            String novoHorario = disciplinaTela.getCodigo()+":"+professorSelecionado.getHorario(disciplinaTela);
+            listaHorariosDisciplinas.add(novoHorario);
             disciplinasAdicionadasGrade.add(disciplina);
             horasGrade+=procuraDisciplina.achaDisciplina(disciplina).getHoras();
         }        
@@ -612,6 +604,11 @@ public class telaDisciplina extends javax.swing.JFrame {
 
         btnSalvarGrade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/icone salvar grade.png"))); // NOI18N
         btnSalvarGrade.setText("Salvar grade");
+        btnSalvarGrade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarGradeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlBotoesGradeLayout = new javax.swing.GroupLayout(pnlBotoesGrade);
         pnlBotoesGrade.setLayout(pnlBotoesGradeLayout);
@@ -703,7 +700,7 @@ public class telaDisciplina extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlGradeHorária, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(pnlGradeHorária, javax.swing.GroupLayout.PREFERRED_SIZE, 880, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
@@ -742,16 +739,14 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvaliarProfessorActionPerformed
 
     private void btnAdicionarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGradeActionPerformed
-               if (horasGrade+disciplinaTela.getHoras()<=450){ 
-                    ajustarHorario(professorSelecionado.getHorario(disciplinaTela), disciplinaTela.getCodigo());
-                    lblHoras.setText(String.valueOf(horasGrade));
-                    String novoHorario = disciplinaTela.getCodigo()+" "+professorSelecionado.getHorario(disciplinaTela);
-                    listaHorariosDisciplinas.add(novoHorario);
-                    
-               }
-               else{
-                   JOptionPane.showMessageDialog(null, "Máximo de horas atingido");
-               }
+        if (horasGrade+disciplinaTela.getHoras()<=450){ 
+            ajustarHorario(professorSelecionado.getHorario(disciplinaTela), disciplinaTela.getCodigo());
+            tblGrade.clearSelection();
+            lblHoras.setText(String.valueOf(horasGrade));
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Máximo de horas atingido");
+        }
                 // TODO add your handling code here:
     }//GEN-LAST:event_btnAdicionarGradeActionPerformed
 
@@ -873,6 +868,14 @@ public class telaDisciplina extends javax.swing.JFrame {
                 }
             }
         }
+        String disciplinaRemover = null;
+        for (String horario : listaHorariosDisciplinas){
+            if (horario.contains(celula)){
+                disciplinaRemover = horario;
+            }
+        }
+        listaHorariosDisciplinas.remove(disciplinaRemover);
+        JOptionPane.showMessageDialog(null, listaHorariosDisciplinas);
         disciplinasAdicionadasGrade.remove(celula);
         horasGrade-= procuraDisciplina.achaDisciplina(celula).getHoras();
         }
@@ -923,6 +926,13 @@ public class telaDisciplina extends javax.swing.JFrame {
         this.setVisible(false);
         new TelaAluno(alunoTela).setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_btnTelaInicialActionPerformed
+
+    private void btnSalvarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarGradeActionPerformed
+        GradeDAO salvarGrade = new GradeDAO();
+        String atualizarGrade= String.join(",", listaHorariosDisciplinas);
+        salvarGrade.update(atualizarGrade, this.horasGrade, 8);
+        JOptionPane.showMessageDialog(null, "Grade salva com sucesso");        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarGradeActionPerformed
 
     /**
      * @param args the command line arguments

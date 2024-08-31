@@ -41,6 +41,10 @@ public class Disciplina {
             }
         }
       }    //construtor que passa uma lista com professores como argumento
+
+    public Disciplina() {
+         // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     public String getNome () {
         return this.nome;

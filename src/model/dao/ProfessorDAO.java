@@ -164,6 +164,7 @@ public class ProfessorDAO {
                             Aluno aluno = this.buscarAluno(alunoId);
                             Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getFloat("nota"), aluno, prof);
                             avalia.setId(rs.getInt("id"));
+                            avalia.setLike(rs.getInt("likes"));
                             prof.recebeAvaliacao(avalia);
                         }
                     }
@@ -223,6 +224,7 @@ public class ProfessorDAO {
             while(rs.next()){
                 if (rs.getInt("id")==(prof.getId())){
                     listaHorarios = rs.getString("listaHorarios").split(";");
+                    JOptionPane.showMessageDialog(null, "listaHorarios");
                     break;
                 }
             }

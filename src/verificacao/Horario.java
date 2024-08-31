@@ -16,11 +16,12 @@ import model.dao.ProfessorDAO;
  *
  * @author pedro
  */
-public class Horario {
+public class Horario implements Verificadores {
     ProfessorDAO procuraProfessor = new ProfessorDAO();
     
     
-    public static void verificaHorario (String horario){
+    @Override
+    public boolean verifica (String horario){
         if (horario.equals("")){
             throw new IllegalArgumentException ("Horário vazio");
         }
@@ -137,6 +138,7 @@ public class Horario {
                         throw new IllegalArgumentException ("Informado horário inválido"); 
             }  
         }
+        return true;
     }
 
 }

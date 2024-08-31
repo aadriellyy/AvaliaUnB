@@ -29,6 +29,12 @@ public class Professor extends Pessoa{
         this.listaAvaliacoes = new ArrayList<>();
         id++;
     }
+    
+    public Professor(){
+        
+    }
+    
+
     public Professor getId (int id, ArrayList <Disciplina> listaDisciplinas, String departamento ) { //retorna o id do professor procurando esses dados no banco de dados
         return this;
     }
@@ -61,11 +67,17 @@ public class Professor extends Pessoa{
        
     }
     
+    public void setHorariosDisciplinas (Map <Disciplina, String> listaHorarios){
+        this.horarios = listaHorarios;
+    }
+    
     public void setHorariosDisciplinas (String horario, Disciplina disciplina) {
         
         try {
-            Horario.verificaHorario(horario);
+            Horario verificadorHorario = new Horario();
+            if (verificadorHorario.verifica(horario)){
                 this.horarios.put(disciplina, horario);
+            }
 
         }
         catch (IllegalArgumentException e){
@@ -150,6 +162,12 @@ public class Professor extends Pessoa{
     
     public void limpaAvaliacoes(){
         this.listaAvaliacoes.clear();
+    }
+    public void limpaDisciplinas(){
+        this.listaDisciplinas.clear();
+    }
+    public void limpaHorarios(){
+        this.horarios.clear();
     }
     
 }
