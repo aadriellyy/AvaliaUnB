@@ -4,19 +4,27 @@
  */
 package telas;
 
+import Connection.ConnectionFactory;
 import classes.Aluno;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class telaLogin extends javax.swing.JFrame {
     
     /**
      * Creates new form telaLogin
      */
+    
+    private Aluno aluno;
+    private static String matriculaLogada;
     public telaLogin() {
         initComponents();
+        this.txtSenha.setText("");
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +63,7 @@ public class telaLogin extends javax.swing.JFrame {
             .addGap(0, 29, Short.MAX_VALUE)
         );
 
+        btnEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/voltar.png"))); // NOI18N
         btnEntrar.setText("Entrar");
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +71,7 @@ public class telaLogin extends javax.swing.JFrame {
             }
         });
 
+        btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/novo.png"))); // NOI18N
         btnCadastrar.setText("Cadastre-se");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,49 +87,57 @@ public class telaLogin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(190, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(btnCadastrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(212, 212, 212)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblSenha)
+                    .addComponent(lblMatricula))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2)
-                    .addComponent(lblMatricula)
-                    .addComponent(lblSenha)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(btnCadastrar)
-                            .addGap(96, 96, 96)
-                            .addComponent(btnEntrar))))
-                .addGap(180, 180, 180))
+                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(233, 233, 233))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(186, 186, 186)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(lblMatricula)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addComponent(lblSenha)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblMatricula)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSenha)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
-                    .addComponent(btnEntrar))
+                    .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private static String matriculaLogada;
+
     
     public static boolean matricula(String matriculaAtual){
         if(matriculaAtual.equals(matriculaLogada)){
@@ -134,7 +152,6 @@ public class telaLogin extends javax.swing.JFrame {
         AlunoDAO dao = new AlunoDAO();
         for(Aluno aluno: dao.read()){
             if(aluno.getSenha().equals(senha) && aluno.getMatricula().equals(matricula)){
-                System.out.println(aluno.getId());
                 return aluno;
             }
         }  
@@ -171,7 +188,7 @@ public class telaLogin extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -201,6 +218,98 @@ public class telaLogin extends javax.swing.JFrame {
                 new telaLogin().setVisible(true);
             }
         });
+        
+        Connection con = null;
+        Statement stmt = null;
+            try {
+                con = ConnectionFactory.getInitialConnection();
+                stmt = con.createStatement();
+                
+                // Primeiro, criar o banco de dados, se necessário
+                String createDatabaseSQL = "CREATE DATABASE IF NOT EXISTS avaliaunb;";
+                stmt.executeUpdate(createDatabaseSQL);
+                
+                 // Fechar a conexão inicial
+                stmt.close();
+                ConnectionFactory.closeConnection(con);
+
+                // Conectar ao banco de dados recém-criado
+                con = ConnectionFactory.getDatabaseConnection();
+                stmt = con.createStatement();
+
+                // Em seguida, selecionar o banco de dados
+                String useDatabaseSQL = "USE avaliaunb;";
+                stmt.executeUpdate(useDatabaseSQL);
+
+                // Criação da tabela aluno
+                String createAlunoTableSQL = """
+                    CREATE TABLE IF NOT EXISTS aluno (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        nome VARCHAR(100),
+                        email VARCHAR(100),
+                        senha VARCHAR(100),
+                        curso VARCHAR(100),
+                        departamento VARCHAR(100),
+                        matricula VARCHAR(50) UNIQUE KEY
+                    );
+                """;
+                stmt.executeUpdate(createAlunoTableSQL);
+
+                // Criação da tabela professor
+                String createProfessoresTableSQL = """
+                    CREATE TABLE IF NOT EXISTS professores (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        nome VARCHAR(100),
+                        email VARCHAR(100),
+                        departamento VARCHAR(100),
+                        listaDisciplinas VARCHAR(150),
+                        listaAvaliacoes VARCHAR(150),
+                        listaHorarios VARCHAR(400)
+                    );
+                """;
+                stmt.executeUpdate(createProfessoresTableSQL);
+
+                // Criação da tabela avaliacao
+                String createAvaliacaoTableSQL = """
+                    CREATE TABLE IF NOT EXISTS avaliacao (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        feedback TEXT,
+                        nota INT,
+                        professorID INT,
+                        alunoID INT,
+                        FOREIGN KEY (professorID) REFERENCES professores(id),
+                        FOREIGN KEY (alunoID) REFERENCES aluno(id)
+                    );
+                """;
+                stmt.executeUpdate(createAvaliacaoTableSQL);
+
+                // Criação da tabela disciplina
+                String createDisciplinaTableSQL = """
+                    CREATE TABLE IF NOT EXISTS disciplina (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        nome VARCHAR(100),
+                        codigo VARCHAR(15), 
+                        departamento VARCHAR (45),
+                        horas INT,
+                        listaProfessores VARCHAR (500)                  
+                    );
+                """;
+                stmt.executeUpdate(createDisciplinaTableSQL);
+                
+            }
+            catch(SQLException ex){
+                Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+            }finally{
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                ConnectionFactory.closeConnection(con);
+            }  
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

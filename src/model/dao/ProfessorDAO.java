@@ -24,8 +24,9 @@ import javax.swing.JOptionPane;
  * @author pedro
  */
 public class ProfessorDAO {
+    
     public List<Professor> read(){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         List<Professor> professores = new ArrayList<>();
@@ -56,7 +57,7 @@ public class ProfessorDAO {
     
 
     public void update (Professor professor, String idAvaliacao){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaAvaliacoes = null;
@@ -79,7 +80,7 @@ public class ProfessorDAO {
             String [] adicionaListaAvaliacoes = new String[listaAvaliacoes.length];
             adicionaListaAvaliacoes [listaAvaliacoes.length-1]= idAvaliacao;
             String novaListaAvaliacoes = String.join(",", adicionaListaAvaliacoes);
-            con = ConnectionFactory.getConnection(); //abrindo conexao
+            con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
             stmt = null;
             stmt = con.prepareStatement("UPDATE professores SET listaAvaliacoes = ? WHERE nome = ?");
             stmt.setString(1, novaListaAvaliacoes);
@@ -109,7 +110,7 @@ public class ProfessorDAO {
     }   
     
     public void addHorario(Disciplina disc, Professor prof){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaHorarios = null;
@@ -145,7 +146,7 @@ public class ProfessorDAO {
     }
     
     public void criaListaAvaliacoes(Professor prof){
-        Connection con = ConnectionFactory.getConnection();
+        Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
         ArrayList<Integer> listaIdsAvaliacoes= new ArrayList<>();
         for (Avaliacao avalia : prof.getListaAvaliacoes()){
@@ -154,7 +155,7 @@ public class ProfessorDAO {
         int id = prof.getId();
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("SELECT * FROM avaliaunb.avaliacao");
+            stmt = con.prepareStatement("SELECT * FROM avaliacao");
             rs = stmt.executeQuery();          
                 while(rs.next()){
                     if(rs.getString("professorID")!=null && rs.getInt("professorID") == id  ){
@@ -182,7 +183,7 @@ public class ProfessorDAO {
     
     
     public Aluno buscarAluno(int id){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         
@@ -190,7 +191,7 @@ public class ProfessorDAO {
         List<Aluno> alunos = new ArrayList<>();
         
         try {
-            stmt = con.prepareStatement("SELECT * FROM alunos");
+            stmt = con.prepareStatement("SELECT * FROM aluno");
             rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -213,7 +214,7 @@ public class ProfessorDAO {
     }
     
     public void criaListaHorarios (Professor prof){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaHorarios = null;
@@ -253,7 +254,7 @@ public class ProfessorDAO {
 
     }
     public void criaListaDisciplinas(Professor prof){ //método que cria a lista de disciplinas de um professor
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] listaDisciplinas = null;

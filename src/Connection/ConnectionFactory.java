@@ -10,19 +10,29 @@ import java.util.logging.Logger;
 
 public class ConnectionFactory {
     
-    private static final String DRIVER = "com.mysql.jdbc.Driver"; //interface do JDBC
-    private static final String URL = "jdbc:mysql://localhost:3306/avaliaunb";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; //interface do JDBC
+    private static final String URL = "jdbc:mysql://localhost:3306";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/avaliaunb";
     private static final String USER = "root";
     private static final String PASS = "292620yda";
     
-    public static Connection getConnection(){
-        //construtor da conexao com o banco de dados, herdado do driver jdbc
-        try{
-            Class.forName(DRIVER);
+    
+    
+    public static Connection getInitialConnection() {
+        try {
             return DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException | SQLException ex) {
-            throw new RuntimeException("Erro no conexão com o banco de dados");
-        }        
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro na conexão inicial com o MySQL", ex);
+        }
+    }
+
+    // Método para se conectar ao banco de dados após ele ter sido criado
+    public static Connection getDatabaseConnection() {
+        try {
+            return DriverManager.getConnection(DATABASE_URL, USER, PASS);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro na conexão com o banco de dados", ex);
+        }
     }
     
     public static void closeConnection(Connection con){
