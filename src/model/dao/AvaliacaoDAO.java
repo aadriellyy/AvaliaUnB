@@ -4,10 +4,6 @@
  */
 package model.dao;
 
-import Connection.ConnectionFactory;
-import classes.Aluno;
-import classes.Avaliacao;
-import classes.Professor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import Connection.ConnectionFactory;
+import classes.Aluno;
+import classes.Avaliacao;
+import classes.Professor;
 
 /**
  *
@@ -102,14 +104,8 @@ public class AvaliacaoDAO {
         
         return avaliacoes;
     }
-<<<<<<< HEAD
     public void create(Avaliacao avaliacao){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
-=======
-    
-    public void create(String feedback, float nota, int like, Aluno aluno, Professor professor){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
->>>>>>> fa74c4d0b8d22a5f455192f38366c5c5a13af816
         PreparedStatement stmt = null;  //preparando a sql para execucao
         Aluno alu = avaliacao.getAluno();
         Professor prof = avaliacao.getProfessor();
@@ -142,16 +138,8 @@ public class AvaliacaoDAO {
             stmt.setInt(1, avalia.getLike()); 
             stmt.setInt(2, avalia.getId());
             //executando a sql
-<<<<<<< HEAD
             stmt.executeUpdate();}
             catch (NullPointerException e){       
-=======
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Avaliação salva com sucesso!");    
-            }
-            catch (NullPointerException e){
-                
->>>>>>> fa74c4d0b8d22a5f455192f38366c5c5a13af816
             }
 
         } catch (SQLException ex) {

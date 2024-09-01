@@ -29,7 +29,7 @@ public class GradeDAO  {
 
     public ArrayList<Integer> readIDs(){
         ArrayList<Integer> listaIDs = new ArrayList<>();
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         try {
@@ -49,7 +49,7 @@ public class GradeDAO  {
     }
     
     public ArrayList<ArrayList<String>> achaGrade(int idAluno){ //método para achar professor através do nome
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         ArrayList<ArrayList<String>> horariosGrade = null;
@@ -132,7 +132,7 @@ public class GradeDAO  {
     //}
 
     public void create (String novoHorario, int horas, int alunoID){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] horarioSeparado = novoHorario.split(":");
@@ -156,7 +156,7 @@ public class GradeDAO  {
     }
     
     public int readHoras(int alunoID){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         int horas=0;
@@ -254,7 +254,7 @@ public class GradeDAO  {
 
     public ArrayList<String> acharDisciplinasAdicionadas(int idAluno){
         ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] horariosDisciplinas = null;
@@ -287,7 +287,7 @@ public class GradeDAO  {
      }
    
     public void update (String novosHorarios, int horas, int idAluno){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         AlunoDAO procuraAluno = new AlunoDAO();

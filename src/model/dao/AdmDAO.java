@@ -48,7 +48,7 @@ public class AdmDAO {
             listaProfessores.remove(professorExcluir);
             disc.setListaProfessores(listaProfessores);
             String novosProfessores = String.join(",", nomeProfessores);
-            Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+            Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
             PreparedStatement stmt = null;  //preparando a sql para execucao
             try {
                 stmt = con.prepareStatement("UPDATE disciplinas SET listaProfessores = ?  WHERE codigo = ?");
@@ -90,7 +90,7 @@ public class AdmDAO {
         prof.setHorariosDisciplinas(listaHorarios);
         String novosHorarios = String.join(",", novaListaHorarios);
         String novasDisciplinas = String.join(",", novaListaDisciplinas);
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("UPDATE professores SET listaDisciplinas = ?,listaHorarios=? WHERE id = ?");
@@ -109,7 +109,7 @@ public class AdmDAO {
     }
 
     public void addDisciplina(String codigoDisciplina, String horario, int idProfessor){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
         try {
@@ -151,7 +151,7 @@ public class AdmDAO {
     }
     
     public void addProfessor(String nomeProfessor, Disciplina disc){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         String codigoDisc = disc.getCodigo();
         ResultSet rs = null;
@@ -189,7 +189,7 @@ public class AdmDAO {
     
     public void editarProfessor (Professor prof){
         int idProfessor = prof.getId();
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ArrayList<String> listaDisciplinas = new ArrayList<>();
         ArrayList<String> listaHorarios = new ArrayList<>();
@@ -217,7 +217,7 @@ public class AdmDAO {
     }
     
     public void editarHorarioProfessor (Professor prof, String codigoDisciplina, String novoHorario){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
         try {
@@ -263,7 +263,7 @@ public class AdmDAO {
     }
     
     public void deleteDisciplina(Disciplina disc){ 
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from avaliacao WHERE codigo = ?");
@@ -278,7 +278,7 @@ public class AdmDAO {
         }  
     }
     public void deleteAvaliacao (Avaliacao avalia){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from avaliacao WHERE id = ?");
@@ -294,7 +294,7 @@ public class AdmDAO {
     }
 
     public void createProfessor (Professor prof, String listaDisciplinas, String listaHorarios){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement("INSERT INTO professores (nome,email, departamento, listaDisciplinas, listaHorarios) VALUES (?,?,?,?,?)");
@@ -315,7 +315,7 @@ public class AdmDAO {
         }  
     }
     public void deleteProfessor(Professor prof){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from professores WHERE id = ?");
