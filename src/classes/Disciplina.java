@@ -42,7 +42,7 @@ public class Disciplina {
         }
       }    //construtor que passa uma lista com professores como argumento
 
-    public Disciplina() {
+    public Disciplina() { //construtor vazio
          // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
@@ -90,7 +90,8 @@ public class Disciplina {
     public void setListaProfessores(ArrayList<Professor> listaProfessores){
         this.listaProfessores= listaProfessores;
     }
-    public void addListaProfessores (Professor professor){
+    
+    public void addListaProfessores (Professor professor){ //adiciona um professor a lista de professores
         if (!this.listaProfessores.contains(professor)){
             this.listaProfessores.add(professor);
             if (!professor.getDisciplinas().contains(this)){
@@ -125,6 +126,10 @@ public class Disciplina {
             listaMelhoresProfessores.add(professor.getNome());
         }
         return listaMelhoresProfessores;
+    }
+    
+    public void limpaProfessores(){  //método para limpar a lista de professores da disciplina
+        this.listaProfessores.clear();
     }
         
 }

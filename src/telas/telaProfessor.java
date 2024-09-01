@@ -19,6 +19,7 @@ import java.awt.font.TextAttribute;
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.dao.AlunoDAO;
 import model.dao.AvaliacaoDAO;
 import model.dao.DisciplinaDAO;
 import model.dao.ProfessorDAO;
@@ -110,6 +111,9 @@ Aluno alunoTela= null;
 
     public telaProfessor() {              
         professorTela= listaProfessores.get(5);
+        AlunoDAO procuraAluno = new AlunoDAO();
+        List<Aluno> listaAlunos = procuraAluno.read();
+        alunoTela=listaAlunos.get(5);
         initComponents();
         try{
         carregaInformacoes();
@@ -210,6 +214,8 @@ Aluno alunoTela= null;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Perfil do professor");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/teacher icon.png")).getImage());
+        setResizable(false);
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(707, 800));
 

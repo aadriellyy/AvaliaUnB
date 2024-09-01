@@ -24,7 +24,7 @@ import java.sql.ResultSet;
  */
 public class AdmDAO {
     
-    public void tiraProfessorLista(String codigoDisciplina, String nomeProfessor){
+    public void tiraProfessorLista(String codigoDisciplina, String nomeProfessor){ //método para excluir um professor da lista de professores de uma disciplina
         DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
         Disciplina disc= null;
         for (Disciplina disciplina : procuraDisciplina.read()){
@@ -53,9 +53,8 @@ public class AdmDAO {
             try {
                 stmt = con.prepareStatement("UPDATE disciplinas SET listaProfessores = ?  WHERE codigo = ?");
                 stmt.setString(1, novosProfessores);
-                stmt.setString(2, disc.getCodigo());
-                //executando a sql
-                stmt.executeUpdate();    
+                stmt.setString(2, disc.getCodigo()); 
+                stmt.executeUpdate();                       //executando a sql 
             } catch (SQLException ex) {
                 Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Erro ao excluir avaliação!" + ex);
@@ -69,7 +68,7 @@ public class AdmDAO {
                 
     }
     
-    public void tiraDisciplinaLista(Professor prof, String codigoDisciplina){
+    public void tiraDisciplinaLista(Professor prof, String codigoDisciplina){ //método para tirar a disciplina passada como argumennto da lista de um professor
         ArrayList<Disciplina> listaDisciplinas = prof.getDisciplinas();
         ArrayList<String> novaListaHorarios = new ArrayList<>();
         ArrayList<String> novaListaDisciplinas = new ArrayList<>();
@@ -108,7 +107,7 @@ public class AdmDAO {
         
     }
 
-    public void addDisciplina(String codigoDisciplina, String horario, int idProfessor){
+    public void addDisciplina(String codigoDisciplina, String horario, int idProfessor){ //adiciona disciplina a lista de um professor, juntamente do horário que o professor leciona a disciplina
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
@@ -125,8 +124,24 @@ public class AdmDAO {
                 }
 
             }
-            disciplinas= disciplinas+","+codigoDisciplina;
-            horarios = horarios + ";" + codigoDisciplina + ":"+horario;
+            if (disciplinas!=null && disciplinas.equals("")){
+                disciplinas= codigoDisciplina;
+            }
+            else if (disciplinas==null){
+                disciplinas=codigoDisciplina;
+            }
+            else{
+                disciplinas= disciplinas+","+codigoDisciplina;
+            }
+            if (horarios!=null && horarios.equals("")){
+                horarios = codigoDisciplina + ":"+horario;
+            }
+            else if(horarios==null){
+                horarios = codigoDisciplina + ":"+horario;
+            }
+            else{
+                horarios = horarios + ";" + codigoDisciplina + ":"+horario;
+            }
             try {
                 stmt = con.prepareStatement("UPDATE professores SET listaDisciplinas = ?, listaHorarios = ? where id=?");
                 stmt.setString(1, disciplinas);
@@ -137,20 +152,41 @@ public class AdmDAO {
                 Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Erro ao adicionar disciplina!" + ex);
             }finally{
-            ConnectionFactory.closeConnection(con, stmt);
-        } 
-            //executando a sql
-            stmt.executeUpdate();    
+                ConnectionFactory.closeConnection(con, stmt);
+            }  
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao adicionar disciplina!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
-        } 
-        
+        }         
     }
     
-    public void addProfessor(String nomeProfessor, Disciplina disc){
+    public void editarDisciplina (Disciplina disc, String codigo){ //edita os dados de uma disciplina no banco de dados de acordo com os atributos do objeto de Disciplina passado como parâmetro
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;
+        ArrayList<String> listaProfessores = new ArrayList<>();
+        for (Professor prof : disc.getListaProfessores()){
+            listaProfessores.add(prof.getNome());
+        }
+        String novaListaProfessores = String.join(",", listaProfessores);
+         try {
+                stmt = con.prepareStatement("UPDATE disciplinas SET nome= ?, codigo=?, departamento=?, horas=?, listaProfessores=?  where codigo=?");
+                stmt.setString(1, disc.getNome());
+                stmt.setString(2, disc.getCodigo());
+                stmt.setString(3, disc.getDepartamento());
+                stmt.setInt(4, disc.getHoras());
+                stmt.setString(5, novaListaProfessores);
+                stmt.setString(6, codigo);
+                stmt.executeUpdate();               
+            }catch (SQLException ex) {
+                Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Erro ao editar professor!" + ex);
+            }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        } 
+    }
+    public void addProfessor(String nomeProfessor, Disciplina disc){ //adiciona professor a lista de uma disciplina no banco de dados
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         String codigoDisc = disc.getCodigo();
@@ -187,25 +223,22 @@ public class AdmDAO {
         } 
     }
     
-    public void editarProfessor (Professor prof){
+    public void editarProfessor (Professor prof, String listaHorarios){ //edita os dados de um professor no banco de dados de acordo com os atributos do objeto de Professor passsado como parâmetro
         int idProfessor = prof.getId();
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ArrayList<String> listaDisciplinas = new ArrayList<>();
-        ArrayList<String> listaHorarios = new ArrayList<>();
         for (Disciplina disc : prof.getDisciplinas()){
             listaDisciplinas.add(disc.getCodigo());
-            listaHorarios.add(disc.getCodigo()+ ":"+ prof.getHorario(disc));
         }
         String novaListaDisciplinas = String.join(",", listaDisciplinas);
-        String novaListaHorarios = String.join(";", listaHorarios);
          try {
                 stmt = con.prepareStatement("UPDATE professores SET nome= ?, email=?, departamento=?, listaDisciplinas=?, listaHorarios=?  where id=?");
                 stmt.setString(1, prof.getNome());
                 stmt.setString(2, prof.getEmail());
                 stmt.setString(3, prof.getDepartamento());
                 stmt.setString(4, novaListaDisciplinas);
-                stmt.setString(5, novaListaHorarios);
+                stmt.setString(5, listaHorarios);
                 stmt.setInt(6, idProfessor);
                 stmt.executeUpdate();               
             }catch (SQLException ex) {
@@ -216,7 +249,7 @@ public class AdmDAO {
         } 
     }
     
-    public void editarHorarioProfessor (Professor prof, String codigoDisciplina, String novoHorario){
+    public void editarHorarioProfessor (Professor prof, String codigoDisciplina, String novoHorario){ //edita o horario que um professor ministra uma disciplina no banco de dados
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
@@ -262,11 +295,11 @@ public class AdmDAO {
         } 
     }
     
-    public void deleteDisciplina(Disciplina disc){ 
+    public void deleteDisciplina(Disciplina disc){ //exclui uma disciplina do banco de dados
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
-            stmt = con.prepareStatement("DELETE from avaliacao WHERE codigo = ?");
+            stmt = con.prepareStatement("DELETE from disciplinas WHERE codigo = ?");
             stmt.setString(1, disc.getCodigo());
             //executando a sql
             stmt.executeUpdate();    
@@ -277,7 +310,7 @@ public class AdmDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }  
     }
-    public void deleteAvaliacao (Avaliacao avalia){
+    public void deleteAvaliacao (Avaliacao avalia){ //exclui uma avaliação do banco de dados
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
@@ -293,7 +326,7 @@ public class AdmDAO {
         }  
     }
 
-    public void createProfessor (Professor prof, String listaDisciplinas, String listaHorarios){
+    public void createProfessor (Professor prof, String listaDisciplinas, String listaHorarios){ //insere um novo professor no banco de dados 
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         try {
@@ -314,7 +347,30 @@ public class AdmDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }  
     }
-    public void deleteProfessor(Professor prof){
+    
+    public void createDisciplina (Disciplina disc, String listaProfessores){ //insere uma nova disciplina no banco de dados
+        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement("INSERT INTO disciplinas (nome,codigo,departamento,horas,listaProfessores) VALUES (?,?,?,?,?)");
+            stmt.setString (1, disc.getNome());
+            stmt.setString(2,  disc.getCodigo());
+            stmt.setString(3, disc.getDepartamento());
+            stmt.setInt (4, disc.getHoras());
+            stmt.setString (5, listaProfessores);
+            //executando a sql
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Disciplina criada com sucesso!");
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao criar disciplina!" + ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }  
+    }
+    
+    public void deleteProfessor(Professor prof){ //exclui um professor do banco de dados
         Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {

@@ -9,11 +9,9 @@ import verificacao.Horario;
 
 public class Professor extends Pessoa{
     Map <Disciplina,String> horarios = new HashMap<>();     //um objeto do tipo Map com as chaves sendo as disciplinas que o professor oferta e os valores sendo os horários que o professor oferta aquela disciplina
-    private ArrayList <Disciplina> listaDisciplinas;                    //lista de disciplinas do professor    
-    //lista de disciplinas do professor    
-    private int id;
-    //lista de avaliações feitas pelo professor
-    private ArrayList <Avaliacao> listaAvaliacoes;                      
+    private ArrayList <Disciplina> listaDisciplinas;        //lista de disciplinas do professor    
+    private int id;                                         //id do professor
+    private ArrayList <Avaliacao> listaAvaliacoes;          //lista de avaliações feitas pelo professor                   
     
 
     public Professor(String nome, String departamento, String email){
@@ -21,14 +19,14 @@ public class Professor extends Pessoa{
         this.listaAvaliacoes = new ArrayList<>();
         this.listaDisciplinas = new ArrayList<>();
         id ++;
-    }   //construtor que inicializa os atributos
+    }   //construtor que inicializa os atributos, passando a lista de discipllinas vazia
     
     public Professor (String nome, String departamento, String email, ArrayList<Disciplina> listaDisciplinas){
         super(nome, departamento, email);
         this.listaDisciplinas= listaDisciplinas;
         this.listaAvaliacoes = new ArrayList<>();
         id++;
-    }
+    }//construtor que inicializa os atributos, incluindo a lista de disciplina
     
     public Professor(){
         

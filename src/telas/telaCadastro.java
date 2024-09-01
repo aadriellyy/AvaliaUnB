@@ -7,6 +7,12 @@ package telas;
 import classes.Aluno;
 import javax.swing.JOptionPane;
 import model.dao.AlunoDAO;
+import verificacao.VerificaEmail;
+import verificacao.VerificaMatricula;
+import verificacao.VerificaNome;
+import java.sql.SQLException;
+import java.util.List;
+
 
 /**
  *
@@ -49,6 +55,7 @@ public class telaCadastro extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/cadastro icon.png")).getImage());
 
         lblNome.setText("Nome:");
 
@@ -186,24 +193,44 @@ public class telaCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-String nome = txtNome.getText();
+        AlunoDAO procuraAluno = new AlunoDAO();
+        List<Aluno> listaAlunos = procuraAluno.read();
+        String nome = txtNome.getText();
         String matricula = txtMatricula.getText();
         String curso = txtCurso.getText();
         String departamento = txtDepartamento.getText();
         String email = txtEmail.getText();
         String senha = txtSenha.getText();
-        
+        VerificaNome verificadorNome = new VerificaNome();
+        VerificaEmail verificadorEmail = new VerificaEmail();
+        VerificaMatricula verificadorMatricula = new VerificaMatricula();
+        boolean valido = verificadorNome.verifica(nome) && verificadorEmail.verifica(email) && verificadorMatricula.verifica(matricula);
         //verifica se todos os campos estao preenchidos
-        if(nome.equals("") || matricula.equals("") || curso.equals("") || departamento.equals("") || email.equals("") || senha.equals("")){
-            JOptionPane.showMessageDialog(null, "Todos os campos devem ser inseridos!", "erro", JOptionPane.INFORMATION_MESSAGE );
+        if(nome.equals("") || matricula.equals("") || curso.equals("") || departamento.equals("") || email.equals("") || senha.equals("")
+            || !valido){
+            JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos corretamente!", "erro", JOptionPane.INFORMATION_MESSAGE );
         }
         else{
-            Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha); //instancia um novo objeto aluno
-            AlunoDAO dao = new AlunoDAO();
-            dao.create(aluno); 
-            this.setVisible(false);
-            new telaLogin().setVisible(true);
+            boolean alunoJaCadastrado = false;
+            for (Aluno aluno : listaAlunos){
+                if (aluno.getMatricula().equals(matricula)){
+                    alunoJaCadastrado = true;
+                    break;
+                }
+            }
+            if (alunoJaCadastrado){
+                JOptionPane.showMessageDialog(null, "Já existe um aluno com essa matrícula");
+            }
+            else {
+                Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha); //instancia um novo objeto aluno
+                AlunoDAO dao = new AlunoDAO();
+                dao.create(aluno); 
+                this.setVisible(false);
+                new telaLogin().setVisible(true);
+            }
         }
+        
+
         
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCadastrarActionPerformed

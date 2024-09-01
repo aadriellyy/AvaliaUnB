@@ -224,7 +224,6 @@ public class ProfessorDAO {
             while(rs.next()){
                 if (rs.getInt("id")==(prof.getId())){
                     listaHorarios = rs.getString("listaHorarios").split(";");
-                    JOptionPane.showMessageDialog(null, "listaHorarios");
                     break;
                 }
             }

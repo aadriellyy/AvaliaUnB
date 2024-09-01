@@ -76,13 +76,13 @@ public class DisciplinaDAO {
     }
    
 
-   public void criaListaDisciplina (Disciplina disciplina){ 
+   public void criaListaDisciplina (Disciplina disciplina){ //metodo que procura a lista de professores do objeto de Disciplina passada como parâmetro  
        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] nomeProfessores = null;
          try {
-            stmt = con.prepareStatement("SELECT * FROM disciplinas"); //seleciona todas as linhas da tabela de disciplinas do banco de dados
+            stmt = con.prepareStatement("SELECT * FROM disciplinas"); 
             rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -112,15 +112,14 @@ public class DisciplinaDAO {
        }
        
        catch (NullPointerException e){
-           JOptionPane.showMessageDialog(null,"Não há nenhum professor cadastrado nessa disciplina");
        }
    }
 
     public Disciplina achaDisciplina (String codigo){ //metodo para achar uma disciplina atraves de um codigo passado
         Disciplina disc = null;
-        List<Disciplina> disciplinas = this.read(); //cria todos os objetos de Disciplina a partir dos dados do banco
+        List<Disciplina> disciplinas = this.read();
         for (Disciplina disciplina : disciplinas){
-            if (disciplina.getCodigo().equals(codigo)){ //se o codigo do objeto de disciplina for igual ao codigo passado, 
+            if (disciplina.getCodigo().equals(codigo)){ 
                 disc= disciplina;
                 return disc;
             }
