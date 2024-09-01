@@ -7,13 +7,12 @@ package telas;
 import classes.Aluno;
 import classes.Avaliacao;
 import classes.Professor;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.AlunoDAO;
 import model.dao.AvaliacaoDAO;
-import model.dao.ProfessorDAO;
+
 
 /**
  *
@@ -34,7 +33,7 @@ public class TelaAluno extends javax.swing.JFrame{
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, false, false, true, true);
         this.habilitarTexto(false, false, false, false, false, false);
         //listaAvaliacao = new ArrayList();
         this.carregarTabelaAvaliacao();
@@ -48,12 +47,11 @@ public class TelaAluno extends javax.swing.JFrame{
         //inicializa os componentes da tela, limpa os campos e habilita ou desabilita campos de texto e botoes
         initComponents();
         this.limpar();
-        this.habilitarBtn(true, true, false, true, false, true, false);
+        this.habilitarBtn(true, true, false, false, true, true, true);
         this.habilitarTexto(false, false, false, false, false, false);
         this.aluno = aluno;
         //listaAvaliacao = new ArrayList();
-        this.carregarTabelaAvaliacao();
-       
+        this.carregarTabelaAvaliacao();       
          
     }
 
@@ -64,7 +62,6 @@ public class TelaAluno extends javax.swing.JFrame{
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
     }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -109,15 +106,15 @@ public class TelaAluno extends javax.swing.JFrame{
         this.txtSenha.setEnabled(senha);
     }
     
-    private void habilitarBtn(boolean voltar, boolean novo, boolean cancelar, boolean pesquisar, boolean salvar, boolean excluir, boolean ok){ //metodo para habilitar botoes
-        this.btnNovaAvaliacao.setEnabled(voltar);
-        this.btnNovo.setEnabled(novo);
-        //this.btnEditar.setEnabled(editar);
+    private void habilitarBtn(boolean novaAvaliacao, boolean editar, boolean cancelar, boolean salvarEdicao, boolean excluir,boolean editarPerfil, boolean editarAvaliacao){ //metodo para habilitar botoes
+        this.btnNovaAvaliacao.setEnabled(novaAvaliacao);
+        this.btnEditar.setEnabled(editar);
         this.btnCancelar.setEnabled(cancelar);
-        this.btnPesquisar.setEnabled(pesquisar);
-        this.btnSalvar.setEnabled(salvar);
+        this.btnSalvarEdicao.setEnabled(salvarEdicao);
         this.btnExcluir.setEnabled(excluir);
-        this.btnOk.setEnabled(ok);
+        this.btnEditar.setVisible(editarPerfil);
+        this.btnEditAvaliacao.setVisible(editarAvaliacao);
+        //this.btnEditar.setEnabled(editar);
     }
     
     private void limpar(){ //metodo para limpar campos de texto
@@ -142,13 +139,10 @@ public class TelaAluno extends javax.swing.JFrame{
         lblMatricula = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         txtMatricula = new javax.swing.JTextField();
-        btnNovo = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnPesquisar = new javax.swing.JButton();
-        btnSalvar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
+        btnSalvarEdicao = new javax.swing.JButton();
         btnNovaAvaliacao = new javax.swing.JButton();
-        btnOk = new javax.swing.JButton();
         txtDepartamento = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         txtDepartament = new javax.swing.JTextField();
@@ -158,6 +152,8 @@ public class TelaAluno extends javax.swing.JFrame{
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAvaliacoes = new javax.swing.JTable();
+        btnExcluir = new javax.swing.JButton();
+        btnEditAvaliacao = new javax.swing.JButton();
 
         jPasswordField1.setText("jPasswordField1");
 
@@ -189,11 +185,11 @@ public class TelaAluno extends javax.swing.JFrame{
             }
         });
 
-        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/novo.png"))); // NOI18N
-        btnNovo.setText("Novo");
-        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/novo.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNovoActionPerformed(evt);
+                btnEditarActionPerformed(evt);
             }
         });
 
@@ -205,27 +201,11 @@ public class TelaAluno extends javax.swing.JFrame{
             }
         });
 
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-pesquisar.png"))); // NOI18N
-        btnPesquisar.setText("Pesquisar");
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvarEdicao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-salvar.png"))); // NOI18N
+        btnSalvarEdicao.setText("Salvar");
+        btnSalvarEdicao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarActionPerformed(evt);
-            }
-        });
-
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-salvar.png"))); // NOI18N
-        btnSalvar.setText("Salvar");
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-excluir.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
+                btnSalvarEdicaoActionPerformed(evt);
             }
         });
 
@@ -234,14 +214,6 @@ public class TelaAluno extends javax.swing.JFrame{
         btnNovaAvaliacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovaAvaliacaoActionPerformed(evt);
-            }
-        });
-
-        btnOk.setBackground(new java.awt.Color(0, 204, 51));
-        btnOk.setText("OK");
-        btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOkActionPerformed(evt);
             }
         });
 
@@ -263,16 +235,13 @@ public class TelaAluno extends javax.swing.JFrame{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(86, Short.MAX_VALUE)
+                        .addContainerGap(84, Short.MAX_VALUE)
                         .addComponent(btnNovaAvaliacao)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnNovo)
+                        .addGap(304, 304, 304)
+                        .addComponent(btnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPesquisar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalvar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(jLabel1)
@@ -288,16 +257,13 @@ public class TelaAluno extends javax.swing.JFrame{
                             .addComponent(lblSenha)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                                .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)))))
-                .addGap(18, 18, 18)
+                                .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMatricula))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnExcluir)))
+                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMatricula)
+                    .addComponent(btnSalvarEdicao))
+                .addGap(28, 28, 28))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,8 +277,7 @@ public class TelaAluno extends javax.swing.JFrame{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOk))
+                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblCurso)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,11 +299,9 @@ public class TelaAluno extends javax.swing.JFrame{
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPesquisar)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnExcluir)
+                    .addComponent(btnSalvarEdicao)
                     .addComponent(btnCancelar)
-                    .addComponent(btnNovo)
+                    .addComponent(btnEditar)
                     .addComponent(btnNovaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -372,21 +335,46 @@ public class TelaAluno extends javax.swing.JFrame{
         });
         jScrollPane1.setViewportView(tblAvaliacoes);
 
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/excluir-avaliacao.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnEditAvaliacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/editar-avaliacao.png"))); // NOI18N
+        btnEditAvaliacao.setText("Editar");
+        btnEditAvaliacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditAvaliacaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEditAvaliacao)
+                .addGap(30, 30, 30)
+                .addComponent(btnExcluir)
+                .addGap(26, 26, 26))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 19, Short.MAX_VALUE)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnEditAvaliacao))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -413,35 +401,6 @@ public class TelaAluno extends javax.swing.JFrame{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        //esse metodo realiza a busca do perfil do aluno pela matricula inserida. sao buscados os dados referidos a matricula no banco de dados, caso a matricula nao exista a consulta retorna uma mensagem de erro
-        String matricula = txtMatricula.getText();  //pega a matricula digitada no campo de texto
-        
-        if(matricula.equals("")){ //caso tenham clicado no botao sem digitar nenhuma matricula
-            JOptionPane.showMessageDialog(null, "A matrícula deve ser informada!", "erro", JOptionPane.INFORMATION_MESSAGE );
-            return;
-        }
-        AlunoDAO dao = new AlunoDAO();
-        boolean validar = false;
-        for(Aluno aluno : dao.read()){
-            if(aluno.getMatricula().equals(matricula)){
-                validar = true;
-                this.txtNome.setText(aluno.getNome());
-                this.txtCurso.setText(aluno.getCurso());
-                this.txtDepartament.setText(aluno.getDepartamento());
-                this.txtEmail.setText(aluno.getEmail());
-            }
-        }
-        if(!validar){
-            JOptionPane.showMessageDialog(null, "A matrícula informada não existe no sitema!", "erro", JOptionPane.INFORMATION_MESSAGE);
-        }
-      
-        this.txtMatricula.selectAll();
-        this.txtMatricula.requestFocus();
-        
-        //carregarTabelaAvaliacao();
-    }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnNovaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaAvaliacaoActionPerformed
         this.limpar();
@@ -471,60 +430,46 @@ public class TelaAluno extends javax.swing.JFrame{
         
     }//GEN-LAST:event_btnExcluirActionPerformed
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        this.habilitarBtn(false, false, true, false, true, false, false);
-        //pega os dados inseridos na caixa de texto
-        String nome = txtNome.getText();
-        String matricula = txtMatricula.getText();
-        String curso = txtCurso.getText();
-        String departamento = txtDepartament.getText();
-        String email = txtEmail.getText();
-        String senha = txtSenha.getText();
+    private void btnSalvarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarEdicaoActionPerformed
+ 
+        String nome = this.txtNome.getText();
+        String curso = this.txtCurso.getText();
+        String email = this.txtEmail.getText();
+        String senha = this.txtSenha.getText();
+        String departamento = this.txtDepartament.getText();
+        String matricula = this.txtMatricula.getText();
         
-        //verifica se todos os campos estao preenchidos
-        if(nome.equals("") || matricula.equals("") || curso.equals("") || departamento.equals("") || email.equals("") || senha.equals("")){
-            JOptionPane.showMessageDialog(null, "Todos os campos devem ser inseridos!", "erro", JOptionPane.INFORMATION_MESSAGE );
-        }
-        else{
-            Aluno aluno = new Aluno(nome, departamento, email, matricula, curso, senha); //instancia um novo objeto aluno
-            AlunoDAO dao = new AlunoDAO();
-            dao.create(aluno);            
-            this.limpar();
-        }
+        AlunoDAO dao = new AlunoDAO();
+        Aluno aluno = new Aluno(this.aluno.getId(), nome, departamento, email, matricula, curso, senha);
+        this.setAluno(aluno);
+        dao.update(aluno);
+        this.limpar();
+        this.habilitarBtn(true, true, false, false, true, true, true);
         
-        this.habilitarBtn(true, true, false, true, false, false, false);
-        this.habilitarTexto(false, false, false, false, false, false);
-        //carregarTabelaAvaliacao();
-        
-        
-    }//GEN-LAST:event_btnSalvarActionPerformed
+    }//GEN-LAST:event_btnSalvarEdicaoActionPerformed
  
     
-    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        //apenas habilita botoes e campos de texto para que a consulta seja realizada
-        this.limpar();
-        this.habilitarTexto(false, false, false, true, false, false);
-        this.habilitarBtn(false, false, true, true, false, false, true);
-        this.txtMatricula.requestFocus();   
-        //carregarTabelaAvaliacao();
-    }//GEN-LAST:event_btnPesquisarActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         //cancela a acao atual e volta para estado inicial da pagina, com todos os campos limpos
         this.limpar();
-        this.habilitarBtn(true, true, false, true, false, false, false);
+        this.habilitarBtn(true, true, false, false, false, true, true);
         this.habilitarTexto(false, false, false, false, false, false);
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         //apenas habilita botoes e campos de texto para que os dados sejam inseridos
-        this.limpar();
-        this.habilitarTexto(true, true, true, true, true, true);
-        this.habilitarBtn(false, false, true, false, true, false, false);
+        this.txtNome.setText(this.aluno.getNome());
+        this.txtEmail.setText(this.aluno.getEmail());
+        this.txtCurso.setText(this.aluno.getCurso());
+        this.txtDepartament.setText(this.aluno.getDepartamento());
+        this.txtSenha.setText(this.aluno.getSenha());
+        this.txtMatricula.setText(this.aluno.getMatricula());
+        this.habilitarTexto(true, true, true, false, true, true);
+        this.habilitarBtn(false, false, true, true, false, false, false);
         this.txtNome.requestFocus();
         //carregarTabelaAvaliacao();
-    }//GEN-LAST:event_btnNovoActionPerformed
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaActionPerformed
         // TODO add your handling code here:
@@ -539,14 +484,36 @@ public class TelaAluno extends javax.swing.JFrame{
         if(i>=0 && i<aluno.getAvaliacoes().size()){
             Avaliacao avalia = aluno.getAvaliacoes().get(i);
         }
-        this.habilitarBtn(true, false, true, true, false, true, false);
+        this.habilitarBtn(true, false, true, false, true, false, true);
         
     }//GEN-LAST:event_tblAvaliacoesMouseClicked
+
+    private void btnEditAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAvaliacaoActionPerformed
+         if(tblAvaliacoes.getSelectedRow() != -1){
+            AvaliacaoDAO dao = new AvaliacaoDAO();
+             
+            String feedback = (String) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 2);
+            int id = (int) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 0);
+            Professor professor = dao.buscarProfessor((String) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 1));
+            float nota = (float)tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 3);
+            
+            Avaliacao avalia = new Avaliacao(id, professor, this.aluno, feedback, nota);            
+            dao.update(avalia);
+            
+            // Remover a linha do modelo da tabela
+            DefaultTableModel modelo = (DefaultTableModel) tblAvaliacoes.getModel();
+            modelo.removeRow(tblAvaliacoes.getSelectedRow());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Selecione uma avaliação para excluir.");
+        }
+    }//GEN-LAST:event_btnEditAvaliacaoActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -576,16 +543,17 @@ public class TelaAluno extends javax.swing.JFrame{
                 new TelaAluno().setVisible(true);
             }
         });
+        
+             
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditAvaliacao;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovaAvaliacao;
-    private javax.swing.JButton btnNovo;
-    private javax.swing.JButton btnOk;
-    private javax.swing.JButton btnPesquisar;
-    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnSalvarEdicao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

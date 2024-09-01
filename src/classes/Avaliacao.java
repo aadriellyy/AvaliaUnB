@@ -19,8 +19,15 @@ public class Avaliacao {
         this.nota = nota;
         this.like = 0;
         this.aluno = aluno;
-        id ++;
         this.professor = prof;
+    }
+    
+      public Avaliacao (int id, Professor prof, Aluno alu, String feedback, float nota){
+        this.id = id;
+        this.professor = prof;
+        this.feedback = feedback;
+        this.nota = nota;
+        id ++;
     }
 
     public Avaliacao() {

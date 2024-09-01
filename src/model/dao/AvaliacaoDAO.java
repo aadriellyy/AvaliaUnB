@@ -4,10 +4,6 @@
  */
 package model.dao;
 
-import Connection.ConnectionFactory;
-import classes.Aluno;
-import classes.Avaliacao;
-import classes.Professor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import Connection.ConnectionFactory;
+import classes.Aluno;
+import classes.Avaliacao;
+import classes.Professor;
 
 /**
  *
@@ -26,10 +28,11 @@ public class AvaliacaoDAO {
     
     
     public Professor buscarProfessor(String nome){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         
+        nome = nome.trim().toLowerCase();
         Professor prof = null;
         List<Professor> professores = new ArrayList<>();
         
@@ -44,12 +47,13 @@ public class AvaliacaoDAO {
                 professores.add(professor);
             }   
             for(Professor profe: professores){
-                if(profe.getNome().equals(nome)){
+                String nomeProf = profe.getNome().trim().toLowerCase();
+                if(nomeProf.equals(nome)){
                     prof = profe;
                 }
             }    
         } catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -59,7 +63,7 @@ public class AvaliacaoDAO {
     }
     
     public List<Avaliacao> read(){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         AlunoDAO procuraAluno = new AlunoDAO();
@@ -93,38 +97,32 @@ public class AvaliacaoDAO {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
         
         return avaliacoes;
     }
-    
-    public void create(String feedback, float nota, int like, Aluno aluno, Professor professor){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+    public void create(Avaliacao avaliacao){
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
-        Aluno alu = aluno;
-        Professor prof = professor;
-        System.out.println(feedback + " " + nota + " " + alu.getMatricula() + " " + prof.getId());
-        Avaliacao avaliacao = new Avaliacao(feedback, nota, alu, prof);
-        avaliacao.setLike(like);
-        
+        Aluno alu = avaliacao.getAluno();
+        Professor prof = avaliacao.getProfessor();
         
         try {
-            stmt = con.prepareStatement("INSERT INTO avaliacao (feedback, nota, professorID, alunoID, likes) VALUES(?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO avaliacao (feedback, nota, professorID, alunoID) VALUES(?, ?, ?, ?)");
             stmt.setString(1, avaliacao.getFeedback()); 
             stmt.setFloat(2, avaliacao.getNota());
             stmt.setInt(3, avaliacao.getProfessor().getId());
             stmt.setInt(4, avaliacao.getAluno().getId());
-            stmt.setInt(5, avaliacao.getLike());
             //executando a sql
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Avaliação salva com sucesso!");
 
         } catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao salvar avaliação!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
@@ -132,7 +130,7 @@ public class AvaliacaoDAO {
     }
     
     public void updateLike (Avaliacao avalia){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
          try {
             stmt = con.prepareStatement("UPDATE avaliacao SET likes=? WHERE id=?");
@@ -140,19 +138,38 @@ public class AvaliacaoDAO {
             stmt.setInt(1, avalia.getLike()); 
             stmt.setInt(2, avalia.getId());
             //executando a sql
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Avaliação salva com sucesso!");    
-            }
-            catch (NullPointerException e){
-                
+            stmt.executeUpdate();}
+            catch (NullPointerException e){       
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao salvar avaliação!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }
+    }
+    
+    public void update(Avaliacao avaliacao){
+        
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        try {
+            stmt = con.prepareStatement("UPDATE avaliacao SET feedback = ?, nota = ? WHERE id = ?");
+            stmt.setString(1, avaliacao.getFeedback());
+            stmt.setFloat(2, avaliacao.getNota());
+            stmt.setInt(3, avaliacao.getId());
+            //executando a sql
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizada com sucesso!");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }       
     }
     
     public Avaliacao achaAvaliacao(Avaliacao avalia){

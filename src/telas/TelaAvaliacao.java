@@ -5,6 +5,7 @@
 package telas;
 
 import classes.Aluno;
+import classes.Avaliacao;
 import classes.Professor;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         btnAvaliar = new javax.swing.JButton();
         btnCancelarPesquisa = new javax.swing.JButton();
         btnExibir = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
         lblBusca = new javax.swing.JPanel();
         txtNota = new javax.swing.JTextField();
         txtNomePesquisa = new javax.swing.JTextField();
@@ -139,6 +141,14 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             }
         });
 
+        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/de-volta.png"))); // NOI18N
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -149,27 +159,29 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblNome2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblNome3)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblNome4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblNome2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAvaliar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelarPesquisa)
-                        .addGap(63, 63, 63)
-                        .addComponent(btnExibir)
-                        .addGap(52, 52, 52))))
+                        .addComponent(lblNome4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnVoltar)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnAvaliar)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnCancelarPesquisa))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(lblNome3)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnExibir)
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +207,8 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAvaliar)
                     .addComponent(btnCancelarPesquisa)
-                    .addComponent(btnExibir))
+                    .addComponent(btnExibir)
+                    .addComponent(btnVoltar))
                 .addContainerGap())
         );
 
@@ -248,28 +261,27 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         lblBuscaLayout.setHorizontalGroup(
             lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lblBuscaLayout.createSequentialGroup()
-                .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(lblBuscaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblFiltrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(lblBuscaLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(lblNome)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)
-                        .addGap(52, 52, 52)
-                        .addComponent(lblNome1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(5, 5, 5)
+                .addComponent(lblNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar)
+                .addGap(52, 52, 52)
+                .addComponent(lblNome1)
+                .addGap(18, 18, 18)
+                .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(lblBuscaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblFiltrar)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         lblBuscaLayout.setVerticalGroup(
             lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,7 +474,8 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         try{
             AvaliacaoDAO dao = new AvaliacaoDAO();
             Professor prof = dao.buscarProfessor(professorPesquisado);
-            new telaProfessor(prof,).setVisible(true);}
+            new telaProfessor(prof).setVisible(true);
+        }
         catch (NullPointerException e){
             JOptionPane.showMessageDialog(null, "Não foi possível abrir o perfil do professor", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -522,12 +535,15 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                 aluno= alu;
             }
         }
-        
         if(feedback.equals(" ") || this.txtNotaAvaliacao.getText().equals(" ") || aluno.getId() == 0){
             JOptionPane.showMessageDialog(null, "A nota e feedback devem ser preenchidos!");
         }
+        else if (nota < 0 || nota > 10){
+            JOptionPane.showMessageDialog(null, "A nota deve estar entre 0 e 10");
+        }
         else{
-            dao.create(feedback, nota,0, aluno, prof);
+            Avaliacao avalia = new Avaliacao(feedback, nota, aluno, prof);
+            dao.create(avalia);
         }
         this.inicial();
         
@@ -543,6 +559,19 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     private void txtNotaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaAvaliacaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNotaAvaliacaoActionPerformed
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        this.limpar();
+        Aluno aluno = new Aluno();
+        AlunoDAO dao = new AlunoDAO();
+        for(Aluno alu: dao.read()){
+            if(alu.getMatricula().equals(this.getMatricula())){
+                aluno = alu;
+            }
+        }  
+        this.setVisible(false);
+        new TelaAluno(aluno).setVisible(true);
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -593,6 +622,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     private javax.swing.JButton btnExibir;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;

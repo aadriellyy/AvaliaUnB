@@ -28,8 +28,13 @@ public class GradeDAO  {
     
     public ArrayList<Integer> readIDs(){ //método para ler todos os ids de alunos que possuem grade salva 
         ArrayList<Integer> listaIDs = new ArrayList<>();
+<<<<<<< HEAD
         Connection con = ConnectionFactory.getConnection(); 
         PreparedStatement stmt = null;  
+=======
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+>>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("SELECT * FROM grade");
@@ -48,7 +53,7 @@ public class GradeDAO  {
     }
     
     public ArrayList<ArrayList<String>> achaGrade(int idAluno){ //método para achar professor através do nome
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         ArrayList<ArrayList<String>> horariosGrade = null;
@@ -123,7 +128,28 @@ public class GradeDAO  {
                     adicionarHorario.add("");
                     horarios.add(adicionarHorario);
                 }
+<<<<<<< HEAD
                 return horarios;
+=======
+        return horarios;
+        }
+    //}
+
+    public void create (String novoHorario, int horas, int alunoID){
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        String [] horarioSeparado = novoHorario.split(":");
+        verificaHorario(horarioSeparado[1]);
+        try {
+            ArrayList<Integer> listaIDs = this.readIDs();
+            if (!listaIDs.contains(alunoID)){
+                stmt = con.prepareStatement("INSERT INTO grade (horarios, horas, alunoID) values (?,?,?)");
+                stmt.setString(1,novoHorario);
+                stmt.setInt(2, horas);
+                stmt.setInt(3, alunoID);
+                stmt.executeUpdate();
+>>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
             }
         }
         catch (NullPointerException e){
@@ -136,9 +162,15 @@ public class GradeDAO  {
 
    
     
+<<<<<<< HEAD
     public int readHoras(int alunoID){  //metodo que retorna a carga horária na grade de um aluno
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;  
+=======
+    public int readHoras(int alunoID){
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+>>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         int horas=0;
         try {
@@ -225,7 +257,7 @@ public class GradeDAO  {
 
     public ArrayList<String> acharDisciplinasAdicionadas(int idAluno){
         ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] horariosDisciplinas = null;
@@ -255,9 +287,15 @@ public class GradeDAO  {
         return disciplinasAdicionadas;
      }
    
+<<<<<<< HEAD
     public void update (String novosHorarios, int horas, int idAluno){ //metodo que cria/atualiza a grade de um aluno
         Connection con = ConnectionFactory.getConnection(); 
         PreparedStatement stmt = null;  
+=======
+    public void update (String novosHorarios, int horas, int idAluno){
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+>>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         ArrayList<Integer> listaIDs = this.readIDs();
         try {

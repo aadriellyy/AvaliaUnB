@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 public class DisciplinaDAO {
     public List<Disciplina> read(){ //método para criar uma lista com todos os objetos do tipo Disciplina através dos dados do banco
         
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null; 
         
@@ -51,7 +51,7 @@ public class DisciplinaDAO {
     }
     
     public void update(Disciplina disciplina){ //metodo para atualizar os dados da disciplina no banco de dados       
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("UPDATE disciplinas SET  listaProfessores = ?  WHERE codigo=?");
@@ -76,8 +76,13 @@ public class DisciplinaDAO {
     }
    
 
+<<<<<<< HEAD
    public void criaListaDisciplina (Disciplina disciplina){ //metodo que procura a lista de professores do objeto de Disciplina passada como parâmetro  
        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+=======
+   public void criaListaDisciplina (Disciplina disciplina){ 
+       Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+>>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] nomeProfessores = null;

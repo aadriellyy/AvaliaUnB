@@ -29,10 +29,10 @@ public class AlunoDAO {
     
     public void create(Aluno aluno){
         
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
-            stmt = con.prepareStatement("INSERT INTO alunos (nome, email, senha, curso, departamento, matricula) VALUES(?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO aluno (nome, email, senha, curso, departamento, matricula) VALUES(?, ?, ?, ?, ?, ?)");
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getSenha());
@@ -55,14 +55,14 @@ public class AlunoDAO {
     
     public List<Aluno> read(){
         
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         
         List<Aluno> alunos = new ArrayList<>();
         
         try {
-            stmt = con.prepareStatement("SELECT * FROM alunos");
+            stmt = con.prepareStatement("SELECT * FROM aluno");
             rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -83,10 +83,10 @@ public class AlunoDAO {
     
     public void update(Aluno aluno){
         
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
-            stmt = con.prepareStatement("UPDATE alunos SET nome = ?, email = ?, senha = ?, curso = ?, departamento = ?, matricula = ? WHERE id = ?");
+            stmt = con.prepareStatement("UPDATE aluno SET nome = ?, email = ?, senha = ?, curso = ?, departamento = ?, matricula = ? WHERE id = ?");
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getSenha());
@@ -108,7 +108,7 @@ public class AlunoDAO {
     }
     
     public Professor buscarProfessor(int id){
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         
@@ -145,7 +145,7 @@ public class AlunoDAO {
     }
     
     public Aluno agrupAvaliacao(Aluno aluno){
-        Connection con = ConnectionFactory.getConnection();
+        Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
         int id = aluno.getId();
         
@@ -181,7 +181,7 @@ public class AlunoDAO {
     }
     
     public void delete(Avaliacao avalia){
-        Connection con = ConnectionFactory.getConnection();
+        Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
         
         try {
