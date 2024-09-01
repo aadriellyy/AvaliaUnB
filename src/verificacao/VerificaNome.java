@@ -8,7 +8,8 @@ package verificacao;
  *
  * @author pedro
  */
-public class VerificaNome {
+public class VerificaNome implements Verificadores {
+    @Override
     public boolean verifica (String texto){
         String [] listaCaracteres = texto.split(" ");
         for (String palavra : listaCaracteres){

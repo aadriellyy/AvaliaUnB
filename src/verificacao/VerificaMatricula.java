@@ -8,7 +8,8 @@ package verificacao;
  *
  * @author pedro
  */
-public class VerificaMatricula {
+public class VerificaMatricula implements Verificadores{   
+    @Override
     public boolean verifica(String matricula){
         for (int i=0; i<matricula.length();i++){
             Character carac = matricula.charAt(i);

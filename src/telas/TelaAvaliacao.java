@@ -474,7 +474,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         try{
             AvaliacaoDAO dao = new AvaliacaoDAO();
             Professor prof = dao.buscarProfessor(professorPesquisado);
-            new telaProfessor(prof).setVisible(true);}
+            new telaProfessor(prof,).setVisible(true);}
         catch (NullPointerException e){
             JOptionPane.showMessageDialog(null, "Não foi possível abrir o perfil do professor", "Erro", JOptionPane.ERROR_MESSAGE);
         }

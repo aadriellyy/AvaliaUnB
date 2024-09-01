@@ -36,7 +36,7 @@ public class ProfessorDAO {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                if (rs.getString("listaDisciplinas")!=null){
+                if (rs.getString("listaDisciplinas")!=null){ //verifica se o professor possui alguma disciplina cadastrada
                 Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
                          rs.getString("email"));
                 professor.setId(rs.getInt("id"));
@@ -54,7 +54,7 @@ public class ProfessorDAO {
         
         return professores;
     }
-    
+
 
     public void update (Professor professor, String idAvaliacao){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
@@ -165,6 +165,7 @@ public class ProfessorDAO {
                             Aluno aluno = this.buscarAluno(alunoId);
                             Avaliacao avalia = new Avaliacao(rs.getString("feedback"), rs.getFloat("nota"), aluno, prof);
                             avalia.setId(rs.getInt("id"));
+                            avalia.setLike(rs.getInt("likes"));
                             prof.recebeAvaliacao(avalia);
                         }
                     }
@@ -224,6 +225,7 @@ public class ProfessorDAO {
             while(rs.next()){
                 if (rs.getInt("id")==(prof.getId())){
                     listaHorarios = rs.getString("listaHorarios").split(";");
+                    JOptionPane.showMessageDialog(null, "listaHorarios");
                     break;
                 }
             }

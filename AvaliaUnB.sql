@@ -1,3 +1,3 @@
-SELECT * FROM professores
+SELECT * FROM alunos
 
 
