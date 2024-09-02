@@ -20,9 +20,14 @@ public class telaLogin extends javax.swing.JFrame {
     
     private Aluno aluno;
     private static String matriculaLogada;
+    private String senhaAdm= "abc123";
     public telaLogin() {
         initComponents();
         this.txtSenha.setText("");
+        this.txtSenhaAdm.setEnabled(false);
+        this.btnLoginAdm.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        
     }
     
     /**
@@ -42,9 +47,15 @@ public class telaLogin extends javax.swing.JFrame {
         btnCadastrar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
+        btnAdministrador = new javax.swing.JButton();
+        txtSenhaAdm = new javax.swing.JPasswordField();
+        btnLoginAdm = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login/cadastro");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone login.png")).getImage());
+        setResizable(false);
 
         lblMatricula.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblMatricula.setText("Matrícula:");
@@ -83,21 +94,37 @@ public class telaLogin extends javax.swing.JFrame {
 
         txtSenha.setText("jPasswordField1");
 
+        btnAdministrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone_adm_tela.png"))); // NOI18N
+        btnAdministrador.setText("Administrador");
+        btnAdministrador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministradorActionPerformed(evt);
+            }
+        });
+
+        btnLoginAdm.setText("Login");
+        btnLoginAdm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginAdmActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(btnCadastrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(212, 212, 212)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblSenha)
-                    .addComponent(lblMatricula))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMatricula)
+                    .addComponent(lblSenha))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -108,10 +135,27 @@ public class telaLogin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnCadastrar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(177, 177, 177))
             .addGroup(layout.createSequentialGroup()
                 .addGap(186, 186, 186)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAdministrador)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLoginAdm)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar))
+                    .addComponent(txtSenhaAdm, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(131, 131, 131))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,15 +168,24 @@ public class telaLogin extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblMatricula)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSenha)
                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCadastrar)
-                    .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                    .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCadastrar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSenhaAdm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnLoginAdm))))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -184,6 +237,52 @@ public class telaLogin extends javax.swing.JFrame {
        this.txtMatricula.setText("");
        this.txtSenha.setText("");
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
+        txtSenhaAdm.setEnabled(true);
+        btnLoginAdm.setEnabled(true);
+        btnAdministrador.setEnabled(false);
+        txtMatricula.setEnabled(false);
+        txtSenha.setEnabled(false);
+        txtMatricula.setText("");
+        txtSenha.setText("");
+        btnEntrar.setEnabled(false);
+        btnCadastrar.setEnabled(false);
+        btnCancelar.setEnabled(true);
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnAdministradorActionPerformed
+
+    private void btnLoginAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginAdmActionPerformed
+        String entrada = txtSenhaAdm.getText();
+        if (entrada.equals(senhaAdm)){
+            new TelaAdministrador().setVisible(true);
+            this.setVisible(false);           
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Senha incorreta");
+            txtSenhaAdm.setText("");
+            txtSenhaAdm.setEnabled(false);
+            btnLoginAdm.setEnabled(false);
+            txtMatricula.setEnabled(true);
+            txtSenha.setEnabled(true);
+            btnEntrar.setEnabled(true);
+            btnCadastrar.setEnabled(true);
+            btnCancelar.setEnabled(false);
+            btnAdministrador.setEnabled(true);
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_btnLoginAdmActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+            txtSenhaAdm.setText("");
+            txtSenhaAdm.setEnabled(false);
+            btnLoginAdm.setEnabled(false);
+            txtMatricula.setEnabled(true);
+            txtSenha.setEnabled(true);
+            btnEntrar.setEnabled(true);
+            btnCadastrar.setEnabled(true);
+            btnCancelar.setEnabled(false);
+            btnAdministrador.setEnabled(true);// TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,6 +375,7 @@ public class telaLogin extends javax.swing.JFrame {
                         feedback TEXT,
                         nota INT,
                         professorID INT,
+                        likes INT,
                         alunoID INT,
                         FOREIGN KEY (professorID) REFERENCES professores(id),
                         FOREIGN KEY (alunoID) REFERENCES aluno(id)
@@ -285,7 +385,7 @@ public class telaLogin extends javax.swing.JFrame {
 
                 // Criação da tabela disciplina
                 String createDisciplinaTableSQL = """
-                    CREATE TABLE IF NOT EXISTS disciplina (
+                    CREATE TABLE IF NOT EXISTS disciplinas (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         nome VARCHAR(100),
                         codigo VARCHAR(15), 
@@ -295,6 +395,16 @@ public class telaLogin extends javax.swing.JFrame {
                     );
                 """;
                 stmt.executeUpdate(createDisciplinaTableSQL);
+                
+                String createGradeTableSQL= """
+                 CREATE TABLE IF NOT EXISTS grade (
+                 horarios VARCHAR(400),
+                 horas INT,
+                 alunoID INT, 
+                 FOREIGN KEY (alunoID) REFERENCES aluno(id)
+                 );                                                     
+                 """;
+                stmt.executeUpdate(createGradeTableSQL);
                 
             }
             catch(SQLException ex){
@@ -313,13 +423,17 @@ public class telaLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdministrador;
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEntrar;
+    private javax.swing.JButton btnLoginAdm;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblMatricula;
     private javax.swing.JLabel lblSenha;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JPasswordField txtSenha;
+    private javax.swing.JPasswordField txtSenhaAdm;
     // End of variables declaration//GEN-END:variables
 }

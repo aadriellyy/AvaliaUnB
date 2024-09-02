@@ -36,6 +36,7 @@ ProfessorDAO professorPesquisa = new ProfessorDAO();
 List<Professor> listaProfessores = professorPesquisa.read();
 ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
 Aluno alunoTela= null;
+ArrayList<Integer> listaCurtidas = new ArrayList<>();
 
     /**
      * Creates new form telaProfessor
@@ -94,9 +95,7 @@ Aluno alunoTela= null;
                 }
 
         };
-        for (Avaliacao avalia : professorTela.rankearAvaliacao()){
-            JOptionPane.showMessageDialog(null, avalia.getLike());
-           
+        for (Avaliacao avalia : professorTela.rankearAvaliacao()){           
             Object linha [] = new Object[] {avalia.getFeedback(),
                                             avalia.getNota(),
                                             avalia.getLike()
@@ -657,13 +656,19 @@ Aluno alunoTela= null;
         if (linha>=0 && linha <tblAvaliacoes.getRowCount()){
             Avaliacao avaliacaoSelecionada = professorTela.getListaAvaliacoes().get(linha);
             AvaliacaoDAO procuraAvaliacao = new AvaliacaoDAO();
-            int novoLike = avaliacaoSelecionada.getLike()+1;
-            avaliacaoSelecionada.setLike(novoLike);
-            procuraAvaliacao.updateLike(avaliacaoSelecionada);
-            professorTela.limpaAvaliacoes();
-            professorPesquisa.criaListaAvaliacoes(professorTela);
-            lblNumAvaliacoes.setText(String.valueOf(professorTela.getListaAvaliacoes().size()));
-            carregarTabelaAvaliacoes();
+            if (listaCurtidas.contains(avaliacaoSelecionada.getId())){
+                JOptionPane.showMessageDialog(null, "Você já curtiu essa avaliação");
+            }
+            else{
+                int novoLike = avaliacaoSelecionada.getLike()+1;
+                avaliacaoSelecionada.setLike(novoLike);
+                procuraAvaliacao.updateLike(avaliacaoSelecionada);
+                listaCurtidas.add(avaliacaoSelecionada.getId());
+                professorTela.limpaAvaliacoes();
+                professorPesquisa.criaListaAvaliacoes(professorTela);
+                lblNumAvaliacoes.setText(String.valueOf(professorTela.getListaAvaliacoes().size()));
+                carregarTabelaAvaliacoes();
+            }
         }// TODO add your handling code here:
     }//GEN-LAST:event_btnLikeActionPerformed
 

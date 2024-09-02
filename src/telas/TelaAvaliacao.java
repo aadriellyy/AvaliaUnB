@@ -25,16 +25,18 @@ public class TelaAvaliacao extends javax.swing.JFrame {
      */
     private String matriculaAluno;
     private String professorPesquisado;
+    private Aluno alunoTela;
     public TelaAvaliacao(){
         initComponents();
         this.limpar();
         this.inicial();
     }
     
-    public TelaAvaliacao(String matricula) {
+    public TelaAvaliacao(String matricula, Aluno aluno) {
         initComponents();
         this.limpar();
         this.inicial();
+        alunoTela= aluno;
         this.matriculaAluno = matricula;
     }
 
@@ -79,6 +81,8 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         txtNotaAvaliacao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/icon-avaliacao.png")).getImage());
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -474,7 +478,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         try{
             AvaliacaoDAO dao = new AvaliacaoDAO();
             Professor prof = dao.buscarProfessor(professorPesquisado);
-            new telaProfessor(prof).setVisible(true);
+            new telaProfessor(prof,alunoTela).setVisible(true);
         }
         catch (NullPointerException e){
             JOptionPane.showMessageDialog(null, "Não foi possível abrir o perfil do professor", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -498,7 +502,12 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         if(prof != null){
             iniciaProfessor.criaListaAvaliacoes(prof);
             //quando existir a media de nota da classe professor
-            this.txtNota.setText(String.valueOf(prof.mediaAvaliacao()));
+            if (prof.mediaAvaliacao()==-1.0){
+                this.txtNota.setText("N/A");
+            }
+            else{
+                this.txtNota.setText(String.valueOf(prof.mediaAvaliacao()));
+            }
             this.txtNomeProfessor.setText(prof.getNome());
             professorPesquisado= prof.getNome();
             this.txtDepartamento.setText(prof.getDepartamento());

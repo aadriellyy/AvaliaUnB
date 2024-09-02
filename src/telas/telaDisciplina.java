@@ -908,7 +908,6 @@ public class telaDisciplina extends javax.swing.JFrame {
                 carregaInformacoes();
             }
         }
-
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPerfilDisciplinaActionPerformed
 

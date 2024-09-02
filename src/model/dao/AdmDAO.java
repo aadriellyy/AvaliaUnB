@@ -107,13 +107,9 @@ public class AdmDAO {
         
     }
 
-<<<<<<< HEAD
-    public void addDisciplina(String codigoDisciplina, String horario, int idProfessor){ //adiciona disciplina a lista de um professor, juntamente do horário que o professor leciona a disciplina
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
     public void addDisciplina(String codigoDisciplina, String horario, int idProfessor){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
         try {
@@ -167,9 +163,8 @@ public class AdmDAO {
         }         
     }
     
-<<<<<<< HEAD
     public void editarDisciplina (Disciplina disc, String codigo){ //edita os dados de uma disciplina no banco de dados de acordo com os atributos do objeto de Disciplina passado como parâmetro
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         ArrayList<String> listaProfessores = new ArrayList<>();
         for (Professor prof : disc.getListaProfessores()){
@@ -192,12 +187,9 @@ public class AdmDAO {
             ConnectionFactory.closeConnection(con, stmt);
         } 
     }
-    public void addProfessor(String nomeProfessor, Disciplina disc){ //adiciona professor a lista de uma disciplina no banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
     public void addProfessor(String nomeProfessor, Disciplina disc){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;
         String codigoDisc = disc.getCodigo();
         ResultSet rs = null;
@@ -259,13 +251,9 @@ public class AdmDAO {
         } 
     }
     
-<<<<<<< HEAD
-    public void editarHorarioProfessor (Professor prof, String codigoDisciplina, String novoHorario){ //edita o horario que um professor ministra uma disciplina no banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
     public void editarHorarioProfessor (Professor prof, String codigoDisciplina, String novoHorario){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;
         ResultSet rs = null; //preparando a sql para execucao
         try {
@@ -310,13 +298,10 @@ public class AdmDAO {
         } 
     }
     
-<<<<<<< HEAD
-    public void deleteDisciplina(Disciplina disc){ //exclui uma disciplina do banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
+
     public void deleteDisciplina(Disciplina disc){ 
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from disciplinas WHERE codigo = ?");
@@ -330,13 +315,9 @@ public class AdmDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }  
     }
-<<<<<<< HEAD
-    public void deleteAvaliacao (Avaliacao avalia){ //exclui uma avaliação do banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
     public void deleteAvaliacao (Avaliacao avalia){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from avaliacao WHERE id = ?");
@@ -351,13 +332,8 @@ public class AdmDAO {
         }  
     }
 
-<<<<<<< HEAD
-    public void createProfessor (Professor prof, String listaDisciplinas, String listaHorarios){ //insere um novo professor no banco de dados 
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
     public void createProfessor (Professor prof, String listaDisciplinas, String listaHorarios){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement("INSERT INTO professores (nome,email, departamento, listaDisciplinas, listaHorarios) VALUES (?,?,?,?,?)");
@@ -377,10 +353,10 @@ public class AdmDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }  
     }
-<<<<<<< HEAD
+
     
     public void createDisciplina (Disciplina disc, String listaProfessores){ //insere uma nova disciplina no banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement("INSERT INTO disciplinas (nome,codigo,departamento,horas,listaProfessores) VALUES (?,?,?,?,?)");
@@ -401,12 +377,9 @@ public class AdmDAO {
         }  
     }
     
-    public void deleteProfessor(Professor prof){ //exclui um professor do banco de dados
-        Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
+
     public void deleteProfessor(Professor prof){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
             stmt = con.prepareStatement("DELETE from professores WHERE id = ?");

@@ -76,13 +76,8 @@ public class DisciplinaDAO {
     }
    
 
-<<<<<<< HEAD
-   public void criaListaDisciplina (Disciplina disciplina){ //metodo que procura a lista de professores do objeto de Disciplina passada como parâmetro  
-       Connection con = ConnectionFactory.getConnection(); //abrindo conexao
-=======
    public void criaListaDisciplina (Disciplina disciplina){ 
        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         PreparedStatement stmt = null;  //preparando a sql para execucao
         ResultSet rs = null;
         String [] nomeProfessores = null;
@@ -114,8 +109,7 @@ public class DisciplinaDAO {
 
                 }
             }
-       }
-       
+       }   
        catch (NullPointerException e){
        }
    }

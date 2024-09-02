@@ -28,13 +28,8 @@ public class GradeDAO  {
     
     public ArrayList<Integer> readIDs(){ //método para ler todos os ids de alunos que possuem grade salva 
         ArrayList<Integer> listaIDs = new ArrayList<>();
-<<<<<<< HEAD
-        Connection con = ConnectionFactory.getConnection(); 
         PreparedStatement stmt = null;  
-=======
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
-        PreparedStatement stmt = null;  //preparando a sql para execucao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("SELECT * FROM grade");
@@ -63,7 +58,6 @@ public class GradeDAO  {
         ArrayList<Integer> listaIDs = new ArrayList<>();
         List <Aluno> listaAlunos=procuraAluno.read();
         String [] horariosDisciplinas = null;
-        int count=0;
         for (Aluno aluno : listaAlunos){
             listaIDs.add(aluno.getId());
         }
@@ -81,16 +75,15 @@ public class GradeDAO  {
                     return this.inicializaHorario(horariosGrade);
                 }
                 else{
-                for (String parDisciplinaHorario : horariosDisciplinas){
-                    if (!parDisciplinaHorario.equals("")){
-                        String [] horario = parDisciplinaHorario.split(":");
-                        String codigoDisciplina = horario[0];
-                        String horarioDisciplina = horario[1];
-                        horariosGrade = this.ajustarHorario(horarioDisciplina, codigoDisciplina, horariosGrade);
-                        count++;
-                        encontradoGrade= true;
+                    for (String parDisciplinaHorario : horariosDisciplinas){
+                        if (!parDisciplinaHorario.equals("")){
+                            String [] horario = parDisciplinaHorario.split(":");
+                            String codigoDisciplina = horario[0];
+                            String horarioDisciplina = horario[1];
+                            horariosGrade = this.ajustarHorario(horarioDisciplina, codigoDisciplina, horariosGrade);
+                            encontradoGrade= true;
+                        }
                     }
-                }
                 }
             }
             else{
@@ -108,7 +101,6 @@ public class GradeDAO  {
         if (!encontradoGrade){
             horariosGrade= inicializaHorario(horariosGrade);
         }
-
         return horariosGrade;  
         
     }
@@ -128,28 +120,7 @@ public class GradeDAO  {
                     adicionarHorario.add("");
                     horarios.add(adicionarHorario);
                 }
-<<<<<<< HEAD
                 return horarios;
-=======
-        return horarios;
-        }
-    //}
-
-    public void create (String novoHorario, int horas, int alunoID){
-        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
-        PreparedStatement stmt = null;  //preparando a sql para execucao
-        ResultSet rs = null;
-        String [] horarioSeparado = novoHorario.split(":");
-        verificaHorario(horarioSeparado[1]);
-        try {
-            ArrayList<Integer> listaIDs = this.readIDs();
-            if (!listaIDs.contains(alunoID)){
-                stmt = con.prepareStatement("INSERT INTO grade (horarios, horas, alunoID) values (?,?,?)");
-                stmt.setString(1,novoHorario);
-                stmt.setInt(2, horas);
-                stmt.setInt(3, alunoID);
-                stmt.executeUpdate();
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
             }
         }
         catch (NullPointerException e){
@@ -158,19 +129,12 @@ public class GradeDAO  {
             return horarios;
         }
         return horarios;
+                            
     }
-
-   
-    
-<<<<<<< HEAD
-    public int readHoras(int alunoID){  //metodo que retorna a carga horária na grade de um aluno
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement stmt = null;  
-=======
+  
     public int readHoras(int alunoID){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         int horas=0;
         try {
@@ -287,15 +251,9 @@ public class GradeDAO  {
         return disciplinasAdicionadas;
      }
    
-<<<<<<< HEAD
-    public void update (String novosHorarios, int horas, int idAluno){ //metodo que cria/atualiza a grade de um aluno
-        Connection con = ConnectionFactory.getConnection(); 
-        PreparedStatement stmt = null;  
-=======
     public void update (String novosHorarios, int horas, int idAluno){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         ResultSet rs = null;
         ArrayList<Integer> listaIDs = this.readIDs();
         try {
@@ -322,7 +280,7 @@ public class GradeDAO  {
     
     public ArrayList<String> acharHorariosAdicionados (int idAluno){
         ArrayList<String> horariosAdicionados = new ArrayList<>();
-        Connection con = ConnectionFactory.getConnection(); 
+        Connection con = ConnectionFactory.getDatabaseConnection(); 
         PreparedStatement stmt = null;  
         ResultSet rs = null;
         String [] horariosDisciplinas = null;
@@ -351,125 +309,9 @@ public class GradeDAO  {
         }
         return horariosAdicionados;
     }
-    
-    public  void verificaHorario (String horario){//metodo
-        if (horario.equals("")){
-            throw new IllegalArgumentException ("Horário vazio");
-        }
-        String dia, horas, turno;
-        dia = "";
-        horas="";
-        turno = "";
-        int count = 0;
-        Character carac = horario.charAt(count);
-        ArrayList <Character> listaDias = new ArrayList<>();
-        listaDias.add('2');
-        listaDias.add('3');
-        listaDias.add('4');
-        listaDias.add('5');
-        listaDias.add('6');
-        listaDias.add('7');
-
-        while (count < horario.length() && isDigit(carac)){
-            if (!listaDias.contains(carac)){
-                throw new IllegalArgumentException ("Este dia não existe");
-            }
-            if (!dia.contains(String.valueOf(carac))){
-            dia= dia+carac;
-            count+=1;
-            carac= horario.charAt(count);   
-            }   
-            else {
-                throw new IllegalArgumentException ("Dia repetido no código");
-            }
-        }
-        if (dia.length()>6 || dia.length()<1){
-            throw new IllegalArgumentException ("Quantidade de dias inválida");
-        }
-
-        ArrayList <Character> listaTurnos = new ArrayList<>();
-        listaTurnos.add('m');
-        listaTurnos.add('M');
-        listaTurnos.add('t');
-        listaTurnos.add('T');
-        listaTurnos.add('n');
-        listaTurnos.add('N');
-
-        while (count < horario.length() && Character.isAlphabetic(carac)){
-            if (!listaTurnos.contains(carac)){
-                throw new IllegalArgumentException ("Turno inválido");   
-            }
-            else{
-            turno= turno+carac;
-            count+=1;
-            carac= horario.charAt(count);
-            }
-        }
-        if (turno.length()!=1){
-            throw new IllegalArgumentException ("Foi informado mais de um turno");   
-        }
-        ArrayList <Character> listaHoras= new ArrayList<>();
-        listaHoras.add('1');
-        listaHoras.add('2');
-        listaHoras.add('3');
-        listaHoras.add('4');
-        listaHoras.add('5');
-        ArrayList <Character> listaHorasNoite = new ArrayList<>();
-        listaHorasNoite.add('1');
-        listaHorasNoite.add('2');
-        listaHorasNoite.add('3');
-        listaHorasNoite.add('4');
-        while (count < horario.length()-1 && isDigit(carac)){
-            if (turno.equals('n')|| turno.equals('N')){
-                if (!listaHorasNoite.contains(carac)){
-                    throw new IllegalArgumentException ("Informado horário inválido");   
-
-                }
-                else{
-                    horas= horas+carac;
-                    count+=1;
-                    carac= horario.charAt(count);
-                }
-            }
-            else{
-                if (!listaHoras.contains(carac)){
-                    throw new IllegalArgumentException ("Informado horário inválido");   
-                }
-                else{
-                    horas= horas+carac;
-                    count+=1;
-                    carac= horario.charAt(count);
-                }
-            }
-        }
-        if (turno.equals('n')|| turno.equals('N')){
-            if (isDigit(horario.charAt(horario.length()-1)) && listaHorasNoite.contains(horario.charAt(horario.length()-1))){
-                horas = horas + horario.charAt(horario.length()-1);
-            }
-            else {
-                throw new IllegalArgumentException ("Informado horário inválido");   
-            }
-        }
-        else {
-            if (isDigit(horario.charAt(horario.length()-1)) && listaHoras.contains(horario.charAt(horario.length()-1))){
-                horas = horas + horario.charAt(horario.length()-1);
-            }
-            else {
-                throw new IllegalArgumentException ("Informado horário inválido");   
-            }
-        }
-        if (turno.equals('n')|| turno.equals('N')){
-            if (horas.length()<1 || horas.length()>4){
-                        throw new IllegalArgumentException ("Informado horário inválido");   
-            }
-        }
-        else {
-            if (horas.length()<1 || horas.length()>5){
-                        throw new IllegalArgumentException ("Informado horário inválido"); 
-            }  
-        }
-    }       
 }
+    
+    
             
     
 

@@ -83,7 +83,7 @@ public class TelaAluno extends javax.swing.JFrame{
                 avalia.getId(),
                 avalia.getProfessor().getNome(),
                 avalia.getFeedback(), 
-                avalia.getLike()
+                avalia.getNota(),
             });
         }
         
@@ -149,6 +149,7 @@ public class TelaAluno extends javax.swing.JFrame{
         lblEmail = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
+        btnExibirGrade = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAvaliacoes = new javax.swing.JTable();
@@ -158,6 +159,8 @@ public class TelaAluno extends javax.swing.JFrame{
         jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-aluno.png")).getImage());
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Perfil Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
         jPanel1.setToolTipText("Perfil do Aluno");
@@ -228,6 +231,14 @@ public class TelaAluno extends javax.swing.JFrame{
 
         txtSenha.setText("jPasswordField2");
 
+        btnExibirGrade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/disciplina/icone salvar grade.png"))); // NOI18N
+        btnExibirGrade.setText("Exibir grade");
+        btnExibirGrade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExibirGradeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,9 +246,11 @@ public class TelaAluno extends javax.swing.JFrame{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(84, Short.MAX_VALUE)
+                        .addContainerGap(29, Short.MAX_VALUE)
                         .addComponent(btnNovaAvaliacao)
-                        .addGap(304, 304, 304)
+                        .addGap(211, 211, 211)
+                        .addComponent(btnExibirGrade)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelar)
@@ -297,12 +310,17 @@ public class TelaAluno extends javax.swing.JFrame{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 29, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalvarEdicao)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnNovaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSalvarEdicao)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnEditar)
+                            .addComponent(btnNovaAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(btnExibirGrade, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -405,7 +423,7 @@ public class TelaAluno extends javax.swing.JFrame{
     private void btnNovaAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaAvaliacaoActionPerformed
         this.limpar();
         this.setVisible(false);
-        new TelaAvaliacao(aluno.getMatricula()).setVisible(true);
+        new TelaAvaliacao(aluno.getMatricula(), this.aluno).setVisible(true);
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnNovaAvaliacaoActionPerformed
 
@@ -454,6 +472,8 @@ public class TelaAluno extends javax.swing.JFrame{
         this.limpar();
         this.habilitarBtn(true, true, false, false, false, true, true);
         this.habilitarTexto(false, false, false, false, false, false);
+        btnExibirGrade.setVisible(true);
+        btnExibirGrade.setEnabled(true);
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -467,6 +487,8 @@ public class TelaAluno extends javax.swing.JFrame{
         this.txtMatricula.setText(this.aluno.getMatricula());
         this.habilitarTexto(true, true, true, false, true, true);
         this.habilitarBtn(false, false, true, true, false, false, false);
+        btnExibirGrade.setVisible(false);
+        btnExibirGrade.setEnabled(false);
         this.txtNome.requestFocus();
         //carregarTabelaAvaliacao();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -508,6 +530,11 @@ public class TelaAluno extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(null, "Selecione uma avaliação para excluir.");
         }
     }//GEN-LAST:event_btnEditAvaliacaoActionPerformed
+
+    private void btnExibirGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirGradeActionPerformed
+        this.setVisible(false);
+        new telaGrade(this.getAluno()).setVisible(true);              // TODO add your handling code here:
+    }//GEN-LAST:event_btnExibirGradeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -552,6 +579,7 @@ public class TelaAluno extends javax.swing.JFrame{
     private javax.swing.JButton btnEditAvaliacao;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnExibirGrade;
     private javax.swing.JButton btnNovaAvaliacao;
     private javax.swing.JButton btnSalvarEdicao;
     private javax.swing.JLabel jLabel1;

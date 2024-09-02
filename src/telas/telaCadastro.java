@@ -195,11 +195,9 @@ public class telaCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-<<<<<<< HEAD
+
         AlunoDAO procuraAluno = new AlunoDAO();
         List<Aluno> listaAlunos = procuraAluno.read();
-=======
->>>>>>> 4201ee5e9b280d50be3b51321792d2ecfb842632
         String nome = txtNome.getText();
         String matricula = txtMatricula.getText();
         String curso = txtCurso.getText();
