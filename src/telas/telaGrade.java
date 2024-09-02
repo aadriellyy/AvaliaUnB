@@ -105,6 +105,7 @@ public class telaGrade extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Minha grade");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone grade.png")).getImage());
         setResizable(false);
 
@@ -217,7 +218,7 @@ public class telaGrade extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblGrade);
 
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
-        jLabel3.setText("Sua grade");
+        jLabel3.setText("Minha grade");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

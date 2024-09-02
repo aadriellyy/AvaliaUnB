@@ -62,6 +62,7 @@ public class telaCadastro extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/cadastro icon.png")).getImage());
+        setResizable(false);
 
         lblNome.setText("Nome:");
 

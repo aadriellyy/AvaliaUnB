@@ -59,6 +59,7 @@ public class Avaliacao extends javax.swing.JFrame {
         lblNome6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Avaliação");
 
         lblBusca.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisar Professor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic", 1, 18))); // NOI18N
         lblBusca.setToolTipText("Buscar por professor");
@@ -294,7 +295,7 @@ public class Avaliacao extends javax.swing.JFrame {
                         .addComponent(txtFeedback)
                         .addContainerGap())
                     .addGroup(lblAvaliacaoLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addGap(51, 51, 51)
                         .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExcluir)

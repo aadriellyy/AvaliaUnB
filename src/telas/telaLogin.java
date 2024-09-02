@@ -406,6 +406,18 @@ public class telaLogin extends javax.swing.JFrame {
                  """;
                 stmt.executeUpdate(createGradeTableSQL);
                 
+                String createComentarioTableSQL= """
+                CREATE TABLE IF NOT EXISTS comentario(
+                                            id int auto_increment,
+                                            texto text, 
+                                            dateCreated date,
+                                            avaliacaoid int,
+                                            primary key(id),
+                                            foreign key (avaliacaoid) references avaliacao(id)                                            
+                                            );                           
+                                                 """;
+                stmt.executeUpdate(createComentarioTableSQL);
+                
             }
             catch(SQLException ex){
                 Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);

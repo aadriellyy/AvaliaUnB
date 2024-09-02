@@ -73,8 +73,7 @@ public class TelaAluno extends javax.swing.JFrame{
     private void carregarTabelaAvaliacao(){
         DefaultTableModel modelo = new DefaultTableModel(new Object[] {"ID", "Professor (a)", "Feedback", "Nota"},0);
         AlunoDAO dao = new AlunoDAO();
-
-        
+       
         List <Avaliacao> listaAvaliacao = dao.agrupAvaliacao(this.aluno).getAvaliacoes();
                 
         modelo.setNumRows(0);
@@ -159,6 +158,7 @@ public class TelaAluno extends javax.swing.JFrame{
         jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Perfil");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-aluno/user-aluno.png")).getImage());
         setResizable(false);
 

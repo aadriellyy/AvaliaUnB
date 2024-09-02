@@ -81,6 +81,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         txtNotaAvaliacao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Avaliação");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/icon-avaliacao.png")).getImage());
         setResizable(false);
 
