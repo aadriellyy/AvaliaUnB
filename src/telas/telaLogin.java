@@ -149,13 +149,14 @@ public class telaLogin extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAdministrador)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(btnLoginAdm)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelar))
                     .addComponent(txtSenhaAdm, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(131, 131, 131))
+                .addGap(146, 146, 146))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,7 +350,8 @@ public class telaLogin extends javax.swing.JFrame {
                         senha VARCHAR(100),
                         curso VARCHAR(100),
                         departamento VARCHAR(100),
-                        matricula VARCHAR(50) UNIQUE KEY
+                        matricula VARCHAR(50) UNIQUE KEY,
+                        avaliacoesCurtidas VARCHAR(150)
                     );
                 """;
                 stmt.executeUpdate(createAlunoTableSQL);
@@ -396,6 +398,7 @@ public class telaLogin extends javax.swing.JFrame {
                 """;
                 stmt.executeUpdate(createDisciplinaTableSQL);
                 
+                //cria a tabela de grade
                 String createGradeTableSQL= """
                  CREATE TABLE IF NOT EXISTS grade (
                  horarios VARCHAR(400),
@@ -406,6 +409,7 @@ public class telaLogin extends javax.swing.JFrame {
                  """;
                 stmt.executeUpdate(createGradeTableSQL);
                 
+                //cria a tabela de comentário
                 String createComentarioTableSQL= """
                 CREATE TABLE IF NOT EXISTS comentario(
                                             id int auto_increment,

@@ -17,7 +17,9 @@ import verificacao.VerificaEmail;
 import verificacao.VerificaMatricula;
 import verificacao.VerificaNome;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 
 /**
@@ -25,12 +27,41 @@ import java.util.List;
  * @author pedro
  */
 public class telaCadastro extends javax.swing.JFrame {
-
+    String[] listaDepartamentos = new String []{"Departamento de Ciência da Computação","Departamento de Matemática", "Departamento de História",
+                                                "Departamento de Estatística","Departamento de Administração", "Departamento de Medicina", 
+                                                "Faculdade de Direito", "Departamento de Física", "Departamento de Filosofia","Instituto de Relações Internacionais",
+                                                "Departamento de Geografia","Departamento de Economia","Departamento de Psicologia", "Departamento de Química",
+                                                "Faculdade de Educação Física", "Faculdade de Comunicação", "Departamento de Jornalismo"
+                                                };
+    String[] listaCursos = new String []{"Ciência da Computação","Matemática", "História","Estatística","Administração", "Medicina", "Direito", "Física", 
+                                        "Filosofia","Relações Internacionais","Geografia","Economia","Psicologia", "Química"
+                                    };
     /**
      * Creates new form telaCadastro
      */
     public telaCadastro() {
         initComponents();
+        this.carregarComboBoxDepartamentos();
+        this.carregarComboBoxCursos();
+    }
+    
+    private void carregarComboBoxDepartamentos(){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        modelo.addElement("Selecione um departamento");
+        Arrays.sort(this.listaDepartamentos);
+        for (String departamento : this.listaDepartamentos){
+            modelo.addElement(departamento);
+        }
+        this.cmbDepartamento.setModel(modelo);
+    }
+        private void carregarComboBoxCursos(){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        modelo.addElement("Selecione um curso");
+        Arrays.sort(this.listaCursos);
+        for (String curso : this.listaCursos){
+            modelo.addElement(curso);
+        }
+        this.cmbCurso.setModel(modelo);
     }
 
     /**
@@ -48,13 +79,13 @@ public class telaCadastro extends javax.swing.JFrame {
         lblEmail = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         lblDepartamento = new javax.swing.JLabel();
-        txtDepartamento = new javax.swing.JTextField();
         lblCurso = new javax.swing.JLabel();
-        txtCurso = new javax.swing.JTextField();
         lblMatricula = new javax.swing.JLabel();
         txtMatricula = new javax.swing.JTextField();
         lblSenha = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
+        cmbDepartamento = new javax.swing.JComboBox<>();
+        cmbCurso = new javax.swing.JComboBox<>();
         btnCadastrar = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -76,41 +107,41 @@ public class telaCadastro extends javax.swing.JFrame {
 
         lblSenha.setText("Senha:");
 
+        cmbDepartamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNome))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtEmail))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblMatricula)
-                                    .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                                    .addComponent(txtMatricula)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 115, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(lblMatricula)
+                            .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                                .addComponent(txtMatricula))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,11 +157,11 @@ public class telaCadastro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDepartamento)
-                    .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCurso)
-                    .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMatricula)
@@ -165,14 +196,15 @@ public class telaCadastro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
                         .addComponent(btnCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnVoltar))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -201,8 +233,8 @@ public class telaCadastro extends javax.swing.JFrame {
         List<Aluno> listaAlunos = procuraAluno.read();
         String nome = txtNome.getText();
         String matricula = txtMatricula.getText();
-        String curso = txtCurso.getText();
-        String departamento = txtDepartamento.getText();
+        String curso = (String) this.cmbCurso.getSelectedItem();
+        String departamento = (String) this.cmbDepartamento.getSelectedItem();
         String email = txtEmail.getText();
         String senha = txtSenha.getText();
         VerificaNome verificadorNome = new VerificaNome();
@@ -213,6 +245,12 @@ public class telaCadastro extends javax.swing.JFrame {
         if(nome.equals("") || matricula.equals("") || curso.equals("") || departamento.equals("") || email.equals("") || senha.equals("")
             || !valido){
             JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos corretamente!", "erro", JOptionPane.INFORMATION_MESSAGE );
+        }
+        else if (this.cmbDepartamento.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null, "Escolha um departamento");
+        }
+        else if (this.cmbCurso.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null, "Escolha um curso");            
         }
         else{
             boolean alunoJaCadastrado = false;
@@ -282,6 +320,8 @@ public class telaCadastro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JComboBox<String> cmbCurso;
+    private javax.swing.JComboBox<String> cmbDepartamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCurso;
@@ -290,8 +330,6 @@ public class telaCadastro extends javax.swing.JFrame {
     private javax.swing.JLabel lblMatricula;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblSenha;
-    private javax.swing.JTextField txtCurso;
-    private javax.swing.JTextField txtDepartamento;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNome;

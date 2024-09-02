@@ -27,13 +27,13 @@ public class AdmDAO {
     public void tiraProfessorLista(String codigoDisciplina, String nomeProfessor){ //método para excluir um professor da lista de professores de uma disciplina
         DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
         Disciplina disc= null;
-        for (Disciplina disciplina : procuraDisciplina.read()){
+        for (Disciplina disciplina : procuraDisciplina.read()){//procura a disciplina no banco de dados pelo código
             procuraDisciplina.criaListaDisciplina(disciplina);
             if (disciplina.getCodigo().equals(codigoDisciplina)){
                 disc = disciplina;
             }
         }
-        if (disc!=null){
+        if (disc!=null){ //verifica se a disciplina existe
             ArrayList<Professor> listaProfessores = disc.getListaProfessores();
             ArrayList<String> nomeProfessores = new ArrayList<>();
             Professor professorExcluir = new Professor();

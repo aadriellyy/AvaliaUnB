@@ -1,3 +1,1 @@
-SELECT * FROM alunos
-
-
+SELECT * FROM disciplinas

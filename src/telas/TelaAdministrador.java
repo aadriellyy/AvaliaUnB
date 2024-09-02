@@ -13,11 +13,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.dao.AdmDAO;
@@ -43,6 +45,24 @@ public class TelaAdministrador extends javax.swing.JFrame {
     boolean novoProfessor= false;
     boolean editarProfessor = false;
     boolean novaDisciplina = false;
+    String[] listaDepartamentos = new String []{"Departamento de Ciência da Computação","Departamento de Matemática", "Departamento de História",
+                                                "Departamento de Estatística","Departamento de Administração", "Departamento de Medicina", 
+                                                "Faculdade de Direito", "Departamento de Física", "Departamento de Filosofia","Instituto de Relações Internacionais",
+                                                "Departamento de Geografia","Departamento de Economia","Departamento de Psicologia", "Departamento de Química",
+                                                "Faculdade de Educação Física", "Faculdade de Comunicação", "Departamento de Jornalismo"
+                                                };
+    
+        
+    private void carregarComboBoxDepartamentos(){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        modelo.addElement("Selecione um departamento");
+        Arrays.sort(this.listaDepartamentos);
+        for (String departamento : this.listaDepartamentos){
+            modelo.addElement(departamento);
+        }
+        this.cmbDepartamentoDisciplina.setModel(modelo);
+        this.cmbDepartamentoProfessor.setModel(modelo);
+    }
     /**
      * Creates new form TelaAdministrador
      */
@@ -50,7 +70,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         initComponents();
         txtNomeProfessor.setEnabled(false);
         txtEmail.setEnabled(false);
-        txtDepartamentoProfessor.setEnabled(false);
+        cmbDepartamentoProfessor.setEnabled(false);
         txtDisciplinaHorario.setEnabled(false);
         btnCancelarProfessor.setEnabled(false);
         btnEditarHorarioProfessor.setEnabled(false);
@@ -64,6 +84,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         listaDisciplinasHorarios.setEnabled(false);
         txtEditarHorario.setEnabled(false);
         btnEditarProfessor.setEnabled(false);
+        this.carregarComboBoxDepartamentos();
         limparDisciplina();
     }
     
@@ -71,7 +92,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         professorTela = null;
         txtNomeProfessor.setText("");
         txtEmail.setText("");
-        txtDepartamentoProfessor.setText("");
+        cmbDepartamentoProfessor.setSelectedIndex(0);
         DefaultListModel modelo = new DefaultListModel();
         listaDisciplinasHorarios.setModel(modelo);
         listaDisciplinasHorarios.setEnabled(false);
@@ -79,7 +100,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         txtDisciplinaHorario.setText("");
         txtNomeProfessor.setEnabled(false);
         txtEmail.setEnabled(false);
-        txtDepartamentoProfessor.setEnabled(false); 
+        cmbDepartamentoProfessor.setEnabled(false); 
         txtDisciplinaHorario.setEnabled(false);
         btnCancelarProfessor.setEnabled(false);
         btnEditarHorarioProfessor.setEnabled(false);
@@ -104,8 +125,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
         listaProfessores.setEnabled(false);
         txtCargaHoraria.setEnabled(false);
         txtCargaHoraria.setText("");
-        txtDepartamentoDisciplina.setEnabled(false);
-        txtDepartamentoDisciplina.setText("");
+        cmbDepartamentoDisciplina.setEnabled(false);
+        cmbDepartamentoDisciplina.setSelectedIndex(0);
         txtCodigoDisciplina.setEnabled(false);
         txtCodigoDisciplina.setText("");
         txtAdicionarProfessores.setEnabled(false);
@@ -119,6 +140,14 @@ public class TelaAdministrador extends javax.swing.JFrame {
         btnOkPesquisaDisciplina.setEnabled(false);
     }
     
+    private int achaDepartamento(String valor){
+        for (int i=0; i<listaDepartamentos.length;i++){
+            if (valor.equals(listaDepartamentos[i])){
+                return i+1;
+            }
+        }
+        return -1;
+    }
     public void carregarListaDisciplinas () {
         DefaultListModel data = new DefaultListModel();
         for (Disciplina disciplina : professorTela.getDisciplinas()){
@@ -145,7 +174,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
         procuraProfessor.criaListaAvaliacoes(professorTela);
         txtNomeProfessor.setText(professorTela.getNome());
         txtEmail.setText(professorTela.getEmail());
-        txtDepartamentoProfessor.setText(professorTela.getDepartamento());
+        int procuraDepartamentoProfessor = this.achaDepartamento(professorTela.getDepartamento());
+        cmbDepartamentoProfessor.setSelectedIndex(procuraDepartamentoProfessor);
         carregarListaDisciplinas();     
         
     }
@@ -154,7 +184,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
         procuraDisciplina.criaListaDisciplina(disciplinaTela);
         txtNomeDisciplina.setText(disciplinaTela.getNome());
         txtCodigoDisciplina.setText(disciplinaTela.getCodigo());
-        txtDepartamentoDisciplina.setText(disciplinaTela.getDepartamento());
+        int procuraDepartamentoDisciplina = this.achaDepartamento(disciplinaTela.getDepartamento());
+        cmbDepartamentoDisciplina.setSelectedIndex(procuraDepartamentoDisciplina);
         txtCargaHoraria.setText(String.valueOf(disciplinaTela.getHoras()));
         carregarListaProfessores();
     }
@@ -174,7 +205,6 @@ public class TelaAdministrador extends javax.swing.JFrame {
         lblNomeDisciplina = new javax.swing.JLabel();
         txtNomeDisciplina = new javax.swing.JTextField();
         lblDepartamentoDisciplina = new javax.swing.JLabel();
-        txtDepartamentoDisciplina = new javax.swing.JTextField();
         lblCargaHoraria = new javax.swing.JLabel();
         txtCargaHoraria = new javax.swing.JTextField();
         lblCodigoDisciplina = new javax.swing.JLabel();
@@ -192,6 +222,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         btnExcluirDisciplina = new javax.swing.JButton();
         btnCancelarDisciplina = new javax.swing.JButton();
         btnOkPesquisaDisciplina = new javax.swing.JButton();
+        cmbDepartamentoDisciplina = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         lblProfessores = new javax.swing.JLabel();
         lblNomeProfessor = new javax.swing.JLabel();
@@ -200,7 +231,6 @@ public class TelaAdministrador extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         btnOkProfessor = new javax.swing.JButton();
         lblDepartamento = new javax.swing.JLabel();
-        txtDepartamentoProfessor = new javax.swing.JTextField();
         lblDisciplinasHorarios = new javax.swing.JLabel();
         scrlpnlListaDisciplinasHorarios = new javax.swing.JScrollPane();
         listaDisciplinasHorarios = new javax.swing.JList<>();
@@ -217,6 +247,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         btnNovoProfessor = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditarProfessor = new javax.swing.JButton();
+        cmbDepartamentoProfessor = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -311,6 +342,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
             }
         });
 
+        cmbDepartamentoDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -333,7 +366,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCargaHoraria, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDepartamentoDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmbDepartamentoDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(lblNomeDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,7 +399,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(372, 372, 372)
                         .addComponent(lblDisciplinas)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,7 +418,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDepartamentoDisciplina)
-                    .addComponent(txtDepartamentoDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDepartamentoDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCargaHoraria)
@@ -557,6 +590,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        cmbDepartamentoProfessor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -583,8 +618,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(lblDepartamento)
                         .addGap(18, 18, 18)
-                        .addComponent(txtDepartamentoProfessor)
-                        .addGap(221, 221, 221))
+                        .addComponent(cmbDepartamentoProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDisciplinasHorarios)
@@ -625,7 +660,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDepartamento)
-                    .addComponent(txtDepartamentoProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDepartamentoProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -799,7 +834,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         btnSalvarDisciplina.setEnabled(true);
         txtNomeDisciplina.setEnabled(true);
         txtCodigoDisciplina.setEnabled(true);
-        txtDepartamentoDisciplina.setEnabled(true);
+        cmbDepartamentoDisciplina.setEnabled(true);
         txtCargaHoraria.setEnabled(true);
         txtAdicionarProfessores.setEnabled(true);
         novaDisciplina= true;
@@ -890,7 +925,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         Horario verificaHorario = new Horario();
         String nome = txtNomeDisciplina.getText();
         String codigo = txtCodigoDisciplina.getText();
-        String departamento = txtDepartamentoDisciplina.getText();
+        String departamento = (String) cmbDepartamentoDisciplina.getSelectedItem();
         String carga= txtCargaHoraria.getText();
         String [] adicionarProfessores = txtAdicionarProfessores.getText().split(",");
         ArrayList<String> listaNomesProfessores= new ArrayList<>();
@@ -898,14 +933,14 @@ public class TelaAdministrador extends javax.swing.JFrame {
         ArrayList<String> novaListaHorarios = new ArrayList<>();
         List<Professor> listaProfessoresGeral = procuraProfessor.read();
         for (Professor prof: listaProfessoresGeral){
-            listaNomesProfessores.add(prof.getNome());
+            listaNomesProfessores.add(prof.getNome().toLowerCase());
         }
         boolean validoProfessor = false;
         boolean validoHorario = false;
         if (!txtAdicionarProfessores.getText().equals("")){
             for (String professorHorario : adicionarProfessores){
                 String[] separaProfessorHorario = professorHorario.split(":");
-                validoProfessor = listaNomesProfessores.contains(separaProfessorHorario[0]);
+                validoProfessor = listaNomesProfessores.contains(separaProfessorHorario[0].toLowerCase());
                 validoHorario = verificaHorario.verifica(separaProfessorHorario[1]);
                 novaListaProfessores.add(separaProfessorHorario[0]);
                 novaListaHorarios.add(separaProfessorHorario[1]);
@@ -915,7 +950,10 @@ public class TelaAdministrador extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Digite entradas válidas");
         }
         else if (Integer.parseInt(carga)<=0){
-            JOptionPane.showMessageDialog(null, "Digite entradas válidas");
+            JOptionPane.showMessageDialog(null, "Digite uma carga horária valida");
+        }
+        else if (cmbDepartamentoDisciplina.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null, "Selecione um departamento para a disciplina");            
         }
         else{
             if (novaDisciplina){
@@ -938,7 +976,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         VerificaCodigo verificadorCodigo = new VerificaCodigo();
         String nome = txtNomeProfessor.getText();
         String email = txtEmail.getText();
-        String departamento = txtDepartamentoProfessor.getText();
+        String departamento = (String) cmbDepartamentoProfessor.getSelectedItem();
         String horarios = txtDisciplinaHorario.getText();
         String [] horariosSeparados = horarios.split(";");
         ArrayList<String> nomeDisciplinas = new ArrayList<>();
@@ -949,7 +987,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
             for (String horariosLoop : horariosSeparados){
                 String [] disciplinaHorario = horariosLoop.split(":");
                 for (Disciplina disc : procuraDisciplina.read()){
-                    if (disc.getCodigo().equals(disciplinaHorario[0])){
+                    if (disc.getCodigo().toLowerCase().equals(disciplinaHorario[0].toLowerCase())){
                         existeDisciplina=true;
                         nomeDisciplinas.add(disc.getCodigo());
                         break;
@@ -966,6 +1004,9 @@ public class TelaAdministrador extends javax.swing.JFrame {
         boolean valido = verificadorEmail.verifica(email) && verificadorNome.verifica(nome) && horarioValido && codigoValido;
         if (nome.equals("") || email.equals("") || departamento.equals("") || horarios.equals("") || !valido || !existeDisciplina){
             JOptionPane.showMessageDialog(null, "Digite entradas válidas");
+        }
+        else if (cmbDepartamentoProfessor.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null, "Escolha um departamento para o professor");
         }
         else {
             if (novoProfessor){
@@ -1029,7 +1070,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
         editarProfessor = false;
         txtNomeProfessor.setEnabled(true);
         txtEmail.setEnabled(true);
-        txtDepartamentoProfessor.setEnabled(true);
+        cmbDepartamentoProfessor.setEnabled(true);
         txtDisciplinaHorario.setEnabled(true);
         listaDisciplinasHorarios.setEnabled(false);// TODO add your handling code here:
     }//GEN-LAST:event_btnNovoProfessorActionPerformed
@@ -1065,7 +1106,7 @@ public class TelaAdministrador extends javax.swing.JFrame {
 
     private void btnEditarProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProfessorActionPerformed
         txtNomeProfessor.setEnabled(true);
-        txtDepartamentoProfessor.setEnabled(true);
+        cmbDepartamentoProfessor.setEnabled(true);
         txtEmail.setEnabled(true);
         listaDisciplinasHorarios.setEnabled(true);
         btnSalvar.setEnabled(true);
@@ -1131,6 +1172,8 @@ public class TelaAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton btnRemoveProfessor;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnSalvarDisciplina;
+    private javax.swing.JComboBox<String> cmbDepartamentoDisciplina;
+    private javax.swing.JComboBox<String> cmbDepartamentoProfessor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1157,8 +1200,6 @@ public class TelaAdministrador extends javax.swing.JFrame {
     private javax.swing.JTextField txtAdicionarProfessores;
     private javax.swing.JTextField txtCargaHoraria;
     private javax.swing.JTextField txtCodigoDisciplina;
-    private javax.swing.JTextField txtDepartamentoDisciplina;
-    private javax.swing.JTextField txtDepartamentoProfessor;
     private javax.swing.JTextField txtDisciplinaHorario;
     private javax.swing.JTextField txtEditarHorario;
     private javax.swing.JTextField txtEmail;

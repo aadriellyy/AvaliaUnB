@@ -39,6 +39,32 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         alunoTela= aluno;
         this.matriculaAluno = matricula;
     }
+    
+    public TelaAvaliacao(String matricula, Aluno aluno, Professor professor){
+        initComponents();
+        this.limpar();
+        this.inicial();
+        alunoTela= aluno;
+        this.matriculaAluno = matricula;
+        ProfessorDAO iniciaProfessor = new ProfessorDAO();
+        if(professor != null){
+            iniciaProfessor.criaListaAvaliacoes(professor);
+            //quando existir a media de nota da classe professor
+            if (professor.mediaAvaliacao()==-1.0){
+                this.txtNota.setText("N/A");
+            }
+            else{
+                this.txtNota.setText(String.valueOf(professor.mediaAvaliacao()));
+            }
+            this.txtNomeProfessor.setText(professor.getNome());
+            professorPesquisado= professor.getNome();
+            this.txtDepartamento.setText(professor.getDepartamento());
+            this.habilitarBtn(true, false, true, true, true, false, false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Professor(a) não encontrado(a)");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -101,7 +101,7 @@ public class AlunoDAO {
             
         } catch (SQLException ex) {
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }       
@@ -171,7 +171,7 @@ public class AlunoDAO {
         
         catch (SQLException ex){
             Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao autalizar!" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt, rs);
         }       
@@ -201,4 +201,61 @@ public class AlunoDAO {
         
     }
     
+    public ArrayList<Integer>  avaliacoesCurtidas (int id){//procura os ids das avaliações que o aluno ja curtiu
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;  //preparando a sql para execucao
+        ResultSet rs = null;
+        ArrayList<Integer> listaCurtidas = new ArrayList<>();
+        String [] idsAvaliacoes = null;
+        
+        try {
+            stmt = con.prepareStatement("SELECT * FROM aluno where id =?");
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();            
+            while(rs.next()){
+                if (rs.getString("avaliacoesCurtidas")!=null){
+                    idsAvaliacoes = rs.getString("avaliacoesCurtidas").split(",");
+                }
+            }
+            if (idsAvaliacoes!=null){
+                for (String idLoop : idsAvaliacoes){
+                    listaCurtidas.add(Integer.valueOf(idLoop));
+                }
+            }
+            else {
+                return listaCurtidas;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }      
+        return listaCurtidas;
+    }
+    
+    public void atualizarAvaliacoesCurtidas(int idAluno, int idAvaliacao){//atualizando os ids das avaliações que o aluno já curtiu
+        Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
+        PreparedStatement stmt = null;
+        ResultSet rs=null;
+        ArrayList<Integer> listaCurtidas = this.avaliacoesCurtidas(idAluno);
+        listaCurtidas.add(idAvaliacao);
+        ArrayList<String> novoArrayCurtidas= new ArrayList<>();
+        for (Integer curtida : listaCurtidas){
+            novoArrayCurtidas.add(String.valueOf(curtida));
+        }
+        String novaListaAvaliacoes = String.join(",", novoArrayCurtidas);
+        JOptionPane.showMessageDialog(null, novaListaAvaliacoes);
+        try {
+            stmt = con.prepareStatement("UPDATE aluno SET avaliacoesCurtidas=? where id =?");
+            stmt.setString(1, novaListaAvaliacoes);
+            stmt.setInt(2, idAluno);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }      
+    }
+    
 }
+

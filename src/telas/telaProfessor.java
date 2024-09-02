@@ -37,6 +37,7 @@ List<Professor> listaProfessores = professorPesquisa.read();
 ArrayList<String> disciplinasAdicionadas = new ArrayList<>();
 Aluno alunoTela= null;
 ArrayList<Integer> listaCurtidas = new ArrayList<>();
+AlunoDAO procuraAluno = new AlunoDAO();
 
     /**
      * Creates new form telaProfessor
@@ -109,38 +110,7 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
 
 
     public telaProfessor() {              
-        professorTela= listaProfessores.get(5);
-        AlunoDAO procuraAluno = new AlunoDAO();
-        List<Aluno> listaAlunos = procuraAluno.read();
-        alunoTela=listaAlunos.get(5);
-        initComponents();
-        try{
-        carregaInformacoes();
-        carregarTabelaDisciplinas();
-        carregarTabelaAvaliacoes ();
-        Font font = lblEmail.getFont();
-        Map attributes = font.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        lblEmail.setFont(font.deriveFont(attributes));
-        StringSelection stringSelection = new StringSelection(lblEmail.getText());
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null); 
-        btnIrAvaliar.setEnabled (false);
-        btnPesquisar.setEnabled(true);
-        btnVoltar.setEnabled(true);
-        cmbPesquisa.setEnabled(false);  
-        rdbDisciplina.setEnabled(true);
-        rdbPesquisaProfessor.setEnabled(true);}
-        
-        catch (NullPointerException e){
-            JOptionPane.showMessageDialog(null, "Não foi possível acessar o perfil do professor");
-        }    
-    }
-    
-    public telaProfessor(Professor prof,Aluno aluno) {
-        professorTela=prof;
-        alunoTela= aluno;
-        initComponents();
+            
         try{
             carregaInformacoes();
             carregarTabelaDisciplinas();
@@ -160,6 +130,34 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
             rdbPesquisaProfessor.setEnabled(true);
         }
         
+        catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Não foi possível acessar o perfil do professor");
+        } 
+    }
+    
+    public telaProfessor(Professor prof,Aluno aluno) {
+        professorTela=prof;
+        alunoTela= aluno;
+        initComponents();
+        try{
+            this.listaCurtidas= procuraAluno.avaliacoesCurtidas(alunoTela.getId());
+            carregaInformacoes();
+            carregarTabelaDisciplinas();
+            carregarTabelaAvaliacoes ();
+            Font font = lblEmail.getFont();
+            Map attributes = font.getAttributes();
+            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            lblEmail.setFont(font.deriveFont(attributes));
+            StringSelection stringSelection = new StringSelection(lblEmail.getText());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null); 
+            btnIrAvaliar.setEnabled (true);
+            btnPesquisar.setEnabled(true);
+            btnVoltar.setEnabled(true);
+            cmbPesquisa.setEnabled(false);  
+            rdbDisciplina.setEnabled(true);
+            rdbPesquisaProfessor.setEnabled(true);
+        }        
         catch (NullPointerException e){
             JOptionPane.showMessageDialog(null, "Não foi possível acessar o perfil do professor");
         }
@@ -317,6 +315,11 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
 
         btnIrAvaliar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/img-avaliacao/nova-avaliacao.png"))); // NOI18N
         btnIrAvaliar.setText("Avaliar");
+        btnIrAvaliar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIrAvaliarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -587,9 +590,7 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
                 }
                 if (!achou){
                     JOptionPane.showMessageDialog(null, "Nenhum professor encontrado", "", JOptionPane.INFORMATION_MESSAGE);
-
                 }
-
             }
             else if (pesquisaDisciplina){
                 DisciplinaDAO procuraDisciplina = new DisciplinaDAO();
@@ -663,7 +664,8 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
                 int novoLike = avaliacaoSelecionada.getLike()+1;
                 avaliacaoSelecionada.setLike(novoLike);
                 procuraAvaliacao.updateLike(avaliacaoSelecionada);
-                listaCurtidas.add(avaliacaoSelecionada.getId());
+                procuraAluno.atualizarAvaliacoesCurtidas(alunoTela.getId(), avaliacaoSelecionada.getId());
+                listaCurtidas= procuraAluno.avaliacoesCurtidas(alunoTela.getId());
                 professorTela.limpaAvaliacoes();
                 professorPesquisa.criaListaAvaliacoes(professorTela);
                 lblNumAvaliacoes.setText(String.valueOf(professorTela.getListaAvaliacoes().size()));
@@ -694,6 +696,12 @@ ArrayList<Integer> listaCurtidas = new ArrayList<>();
             }
         }// TODO add your handling code here:
     }//GEN-LAST:event_tblDisciplinasMouseClicked
+
+    private void btnIrAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrAvaliarActionPerformed
+        this.setVisible(false);
+        new TelaAvaliacao (alunoTela.getMatricula(), alunoTela, professorTela).setVisible(true);
+        dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIrAvaliarActionPerformed
 
     /**
      * @param args the command line arguments

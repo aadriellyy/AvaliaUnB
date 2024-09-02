@@ -29,7 +29,7 @@ public class Professor extends Pessoa{
     }//construtor que inicializa os atributos, incluindo a lista de disciplina
     
     public Professor(){
-        
+        id++;
     }
     
 

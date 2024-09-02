@@ -11,4 +11,10 @@ VALUES ("Marcos Fagundes Caetano", "caetano@unb.br", "Departamento de Ciência d
 ("Carla Denise Castanho", "carladenisecastanho@gmail.com", "Departamento de Ciência da Computação", "CIC0004","CIC0004:235T45"),
 ("Marcelo Grandi Mandelli", "mgmandelli@unb.br", "Departamento de Ciência da Computação", "CIC0229", "CIC0229:24M34"),
 ("Carla Maria Chagas e Cavalcante Koike", "ckoike@unb.br", "Departamento de Ciência da Computação", "CIC0229", "CIC0229:24M34"),
-("Vinicius Ruela Pereira Borges", "viniciusrpb@unb.br", "Departamento de Ciência da Computação", "CIC0169", "CIC0169:24T45")
+("Vinicius Ruela Pereira Borges", "viniciusrpb@unb.br", "Departamento de Ciência da Computação", "CIC0169", "CIC0169:24T45"),
+("Roberto Vila Gabriel", "rovig161@unb.br", "Departamento de Estatística", "EST0023", "EST0023:24M12"),
+("Priscila America Soliz Mendes Barreto","pris@unb.br", "Departamento de Ciência da Computação", "CIC0124", "CIC0090:24T23"),
+("Thais Carvalho Valadares Rodrigues", "thaisrodrigues@unb.br", "Departamento de Estatística", "EST0023","EST0023:24M34"),
+("Raderson Rodrigues da Silva", "rrsilva@unb.br", "Departamento de Matemática", "MAT0053", "MAT0053:24M12"),
+("Carlos Maber Carrion Riveros", "carlosc@unb.br","Departamento de Matemática", "MAT0053", "MAT0053:24M34"),
+("Fernando Antônio de Araújo Chacon Albuquerque", "nando@unb.br","Departamento de Ciência da Computação", "CIC0197", "CIC0197:35M345")

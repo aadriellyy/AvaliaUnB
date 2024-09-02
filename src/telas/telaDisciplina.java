@@ -11,6 +11,7 @@ import static java.lang.Character.isDigit;
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.dao.AlunoDAO;
 import model.dao.DisciplinaDAO;
 import model.dao.GradeDAO;
 import model.dao.ProfessorDAO;
@@ -740,7 +741,8 @@ public class telaDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPesquisaActionPerformed
 
     private void btnAvaliarProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarProfessorActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        new TelaAvaliacao(alunoTela.getMatricula(), this.alunoTela, this.professorSelecionado).setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_btnAvaliarProfessorActionPerformed
 
     private void btnAdicionarGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGradeActionPerformed

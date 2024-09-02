@@ -43,6 +43,7 @@ public class telaGrade extends javax.swing.JFrame {
         btnPerfilDisciplina.setEnabled(false);
         btnRemover.setEnabled(false);
         carregarTabelaGrade();
+        lblHoras.setText(String.valueOf(horasGrade));
     }
             
     public void carregarTabelaGrade (){
@@ -181,8 +182,8 @@ public class telaGrade extends javax.swing.JFrame {
                             .addComponent(lblTitleTotalHoras))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblDisciplinaEscolhida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)))
+                            .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                            .addComponent(lblDisciplinaEscolhida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -190,7 +191,7 @@ public class telaGrade extends javax.swing.JFrame {
                             .addComponent(btnTelaInicial)
                             .addComponent(btnSalvarGrade)
                             .addComponent(btnRemover))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
