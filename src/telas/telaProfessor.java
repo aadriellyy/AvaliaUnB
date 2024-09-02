@@ -64,8 +64,9 @@ AlunoDAO procuraAluno = new AlunoDAO();
         btnPesquisar.setEnabled(true);
         btnVoltar.setEnabled(true);
         btnLike.setEnabled(false);
-        cmbPesquisa.setEnabled(false);      
-    }
+        cmbPesquisa.setEnabled(false);  
+        btnComentario.setEnabled(false);
+    } 
     
     public void carregarTabelaDisciplinas (){
         DefaultTableModel modelo = new DefaultTableModel (new Object[] {"Disciplina","Código","Horário"},0){
@@ -206,6 +207,7 @@ AlunoDAO procuraAluno = new AlunoDAO();
         tblAvaliacoes = new javax.swing.JTable();
         btnVoltar = new javax.swing.JButton();
         btnLike = new javax.swing.JButton();
+        btnComentario = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -472,6 +474,13 @@ AlunoDAO procuraAluno = new AlunoDAO();
             }
         });
 
+        btnComentario.setText("Ver comentários");
+        btnComentario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComentarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -479,16 +488,18 @@ AlunoDAO procuraAluno = new AlunoDAO();
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
+                        .addGap(171, 171, 171)
                         .addComponent(btnVoltar)
                         .addGap(18, 18, 18)
-                        .addComponent(btnLike))
+                        .addComponent(btnLike)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnComentario))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblFoto)
                             .addComponent(pnlPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,8 +543,9 @@ AlunoDAO procuraAluno = new AlunoDAO();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLike, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVoltar))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(btnVoltar)
+                    .addComponent(btnComentario))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jScrollPane3.setViewportView(jPanel1);
@@ -551,7 +563,7 @@ AlunoDAO procuraAluno = new AlunoDAO();
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -678,6 +690,7 @@ AlunoDAO procuraAluno = new AlunoDAO();
         int linha = tblAvaliacoes.getSelectedRow();
         if (linha>=0 && linha <tblAvaliacoes.getRowCount()){
             btnLike.setEnabled(true);
+            btnComentario.setEnabled(true);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_tblAvaliacoesMouseClicked
 
@@ -702,6 +715,16 @@ AlunoDAO procuraAluno = new AlunoDAO();
         new TelaAvaliacao (alunoTela.getMatricula(), alunoTela, professorTela).setVisible(true);
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btnIrAvaliarActionPerformed
+
+    private void btnComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarioActionPerformed
+        int indice = tblAvaliacoes.getSelectedRow();
+        ArrayList<Avaliacao> listaAvaliacoes = professorTela.rankearAvaliacao();
+        Avaliacao avaliacaoComentario = listaAvaliacoes.get(indice);
+        new TelaComentario(avaliacaoComentario, professorTela, alunoTela).setVisible(true);
+        this.setVisible(false);
+        dispose();
+                // TODO add your handling code here:
+    }//GEN-LAST:event_btnComentarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -740,6 +763,7 @@ AlunoDAO procuraAluno = new AlunoDAO();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnComentario;
     private javax.swing.JButton btnIrAvaliar;
     private javax.swing.JButton btnLike;
     private javax.swing.JButton btnPerfilDisciplina;

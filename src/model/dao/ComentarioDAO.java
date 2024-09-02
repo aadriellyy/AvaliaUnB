@@ -34,7 +34,7 @@ public class ComentarioDAO {
     }
     
     
-    public void comentar(Comentario comentario, int id){
+    public void comentar(Comentario comentario, Avaliacao avalia){
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -48,7 +48,7 @@ public class ComentarioDAO {
             stmt.setString(2, comentario.getTexto());
             LocalDate data = LocalDate.of(ano, mes, dia);
             stmt.setDate(3, (java.sql.Date.valueOf(data)));
-            stmt.setInt(4, id);
+            stmt.setInt(4, avalia.getId());
             //executando a sql
             stmt.executeUpdate();
             
