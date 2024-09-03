@@ -34,7 +34,7 @@ public class ComentarioDAO {
     }
     
     
-    public void comentar(Comentario comentario, Avaliacao avalia){
+    public void comentar(Comentario comentario, Avaliacao avalia){//método para fazer um comentario da avaliação
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -51,18 +51,18 @@ public class ComentarioDAO {
             stmt.setInt(4, avalia.getId());
             //executando a sql
             stmt.executeUpdate();
-            
+
             JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ComentarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao salvar!" + ex);
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }
-    }
+        }
     
-    public void updateComentario(Comentario comentario){
+    public void updateComentario(Comentario comentario){//método para editar um comentario
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         
@@ -89,7 +89,7 @@ public class ComentarioDAO {
         }       
     }
     
-    public void excluirComentario(Comentario comentario){
+    public void excluirComentario(Comentario comentario){//método para excluir um comentário
         Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
         try {
@@ -107,7 +107,7 @@ public class ComentarioDAO {
         }
     }
     
-    public ArrayList<Comentario> agruparComentario (Avaliacao avalia){
+    public ArrayList<Comentario> agruparComentario (Avaliacao avalia){//método para agrupar os comentarios dentro de um lista para depois ser exibido na tabela
         ArrayList<Comentario> listaComentarios = new ArrayList<>();
         Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
@@ -134,7 +134,7 @@ public class ComentarioDAO {
         return listaComentarios;
         
     }
-    public String mostrarComentario(Avaliacao avaliacao, Comentario comentario){
+    public String mostrarComentario(Avaliacao avaliacao, Comentario comentario){//método para mostrar o comentario 
         Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;

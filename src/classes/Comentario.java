@@ -10,8 +10,6 @@ public class Comentario {
     //Construtores
     public Comentario(){}
 
-
-
     public Comentario(String texto, Date dateCreated, Avaliacao avaliacao) {
         id++;
         this.texto = texto;
@@ -54,19 +52,5 @@ public class Comentario {
         return avaliacao;
     }
 
-    //metodo pro bd
-    public void comentar(int avaliacaoId){
-
-    }
-    public void excluirComentario(int comentarioId){
-
-    }
-
-    public void updateComentario(int comentarioId){
-
-    }
-
-    public String mostraComentario (int avaliacaoId, int comentarioId){
-        return "";
-    }
+    
 }
