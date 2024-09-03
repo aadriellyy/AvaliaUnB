@@ -155,14 +155,23 @@ public class AvaliacaoDAO {
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
         try {
-            stmt = con.prepareStatement("UPDATE avaliacao SET feedback = ?, nota = ? WHERE id = ?");
-            stmt.setString(1, avaliacao.getFeedback());
-            stmt.setFloat(2, avaliacao.getNota());
-            stmt.setInt(3, avaliacao.getId());
-            //executando a sql
-            stmt.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Atualizada com sucesso!");
+            String notaText = String.valueOf(avaliacao.getNota());
+            if (avaliacao.getFeedback().equals(" ") || notaText.equals(" ")){
+                JOptionPane.showMessageDialog(null, "Os campos não podem ser nulos");
+            }
+            else if(avaliacao.getNota() < 0 || avaliacao.getNota() > 10){
+                JOptionPane.showMessageDialog(null, "A nota deve estar entre 0 e 10");
+            }
+            else{
+                stmt = con.prepareStatement("UPDATE avaliacao SET feedback = ?, nota = ? WHERE id = ?");
+                stmt.setString(1, avaliacao.getFeedback());
+                stmt.setFloat(2, avaliacao.getNota());
+                stmt.setInt(3, avaliacao.getId());
+                //executando a sql
+                stmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Atualizada com sucesso!");
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(AvaliacaoDAO.class.getName()).log(Level.SEVERE, null, ex);

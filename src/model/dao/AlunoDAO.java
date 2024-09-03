@@ -115,30 +115,9 @@ public class AlunoDAO {
         Professor prof = null;
         ProfessorDAO procuraProfessor = new ProfessorDAO();
         List<Professor> professores = new ArrayList<>();
-        
-        /*try {
-            /*stmt = con.prepareStatement("SELECT * FROM professores");
-            rs = stmt.executeQuery();
-            
-            while(rs.next()){
-                Professor professor = new Professor(rs.getString("nome"), rs.getString("departamento"),
-                         rs.getString("email")); 
-                professor.setId(rs.getInt(id));
-                professores.add(professor);
-            }   */
-            professores= procuraProfessor.read();
-            prof = procuraProfessor.achaProfessor(id);
-            /*for(Professor profe: professores){
-                if(profe.getId() == id){
-                    prof = profe;
-                }
-            }
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            ConnectionFactory.closeConnection(con, stmt, rs);
-        }*/
+       
+        professores= procuraProfessor.read();
+        prof = procuraProfessor.achaProfessor(id);
       
         return prof;
         

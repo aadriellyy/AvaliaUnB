@@ -59,7 +59,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             this.txtNomeProfessor.setText(professor.getNome());
             professorPesquisado= professor.getNome();
             this.txtDepartamento.setText(professor.getDepartamento());
-            this.habilitarBtn(true, false, true, true, true, false, false);
+            this.habilitarBtn(false, true, true, true, false, false);
         }
         else{
             JOptionPane.showMessageDialog(null, "Professor(a) não encontrado(a)");
@@ -92,10 +92,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         txtNota = new javax.swing.JTextField();
         txtNomePesquisa = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        lblFiltrar = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        btnOk = new javax.swing.JButton();
         lblNome = new javax.swing.JLabel();
         lblNome1 = new javax.swing.JLabel();
         lblAvaliacao = new javax.swing.JPanel();
@@ -208,7 +204,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
                             .addComponent(lblNome3)
                             .addGap(18, 18, 18)
                             .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnExibir)
@@ -266,21 +262,6 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             }
         });
 
-        lblFiltrar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        lblFiltrar.setText("Filtrar por:");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Discplina" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departamento" }));
-
-        btnOk.setBackground(new java.awt.Color(0, 204, 51));
-        btnOk.setText("OK");
-        btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOkActionPerformed(evt);
-            }
-        });
-
         lblNome.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         lblNome.setText("Nome:");
 
@@ -292,43 +273,33 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         lblBuscaLayout.setHorizontalGroup(
             lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lblBuscaLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(lblNome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnBuscar)
-                .addGap(52, 52, 52)
-                .addComponent(lblNome1)
-                .addGap(18, 18, 18)
-                .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(lblBuscaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblFiltrar)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lblBuscaLayout.createSequentialGroup()
+                        .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscar)
+                        .addGap(72, 72, 72))
+                    .addGroup(lblBuscaLayout.createSequentialGroup()
+                        .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lblBuscaLayout.createSequentialGroup()
+                                .addComponent(lblNome1)
+                                .addGap(14, 14, 14)
+                                .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblNome))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         lblBuscaLayout.setVerticalGroup(
             lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lblBuscaLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblFiltrar)
-                    .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOk)))
-                .addGap(34, 34, 34)
+                .addGap(24, 24, 24)
+                .addComponent(lblNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNome)
                     .addComponent(txtNomePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar)
+                    .addComponent(btnBuscar))
+                .addGap(17, 17, 17)
+                .addGroup(lblBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome1)
                     .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -444,14 +415,13 @@ public class TelaAvaliacao extends javax.swing.JFrame {
 
     private void inicial(){
         this.limpar();
-        this.habilitarBtn(true, true, false, false, false, false, false);
+        this.habilitarBtn(true, false, false, false, false, false);
         this.habilitarTxt(true, false, false, false, false, false);
     }
     
-    private void habilitarBtn(boolean ok, boolean buscar, boolean avaliar, boolean cancelarPesquisa, 
+    private void habilitarBtn(boolean buscar, boolean avaliar, boolean cancelarPesquisa, 
             boolean exibirAvaliacao, boolean salvar, boolean cancelarAvaliacao){
      
-        this.btnOk.setEnabled(ok);
         this.btnBuscar.setEnabled(buscar);
         this.btnAvaliar.setEnabled(avaliar);
         this.btnCancelarPesquisa.setEnabled(cancelarPesquisa);
@@ -491,7 +461,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
 
     private void btnAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvaliarActionPerformed
         this.habilitarTxt(false, false, false, false, true, true);
-        this.habilitarBtn(false, false, false, false, false, true, true);
+        this.habilitarBtn(false, false, false, false, true, true);
     }//GEN-LAST:event_btnAvaliarActionPerformed
 
     private void btnCancelarPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPesquisaActionPerformed
@@ -538,17 +508,13 @@ public class TelaAvaliacao extends javax.swing.JFrame {
             this.txtNomeProfessor.setText(prof.getNome());
             professorPesquisado= prof.getNome();
             this.txtDepartamento.setText(prof.getDepartamento());
-            this.habilitarBtn(true, false, true, true, true, false, false);
+            this.habilitarBtn(false, true, true, true, false, false);
         }
         else{
             JOptionPane.showMessageDialog(null, "Professor(a) não encontrado(a)");
         }
         
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnOkActionPerformed
 
     private void txtFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeedbackActionPerformed
         // TODO add your handling code here:
@@ -564,23 +530,17 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         Aluno aluno = new Aluno();
         alunos = daoAluno.read();
         String feedback = this.txtFeedback.getText();
-        float nota = Float.parseFloat(this.txtNotaAvaliacao.getText());
+        float nota = Float.parseFloat(this.txtNotaAvaliacao.getText().trim());
         
         for(Aluno alu: alunos){
             if (alu.getMatricula().equals(this.getMatricula())){
                 aluno= alu;
             }
         }
-        if(feedback.equals(" ") || this.txtNotaAvaliacao.getText().equals(" ") || aluno.getId() == 0){
-            JOptionPane.showMessageDialog(null, "A nota e feedback devem ser preenchidos!");
-        }
-        else if (nota < 0 || nota > 10){
-            JOptionPane.showMessageDialog(null, "A nota deve estar entre 0 e 10");
-        }
-        else{
-            Avaliacao avalia = new Avaliacao(feedback, nota, aluno, prof);
-            dao.create(avalia);
-        }
+       
+        Avaliacao avalia = new Avaliacao(feedback, nota, aluno, prof);
+        dao.create(avalia);
+        
         this.inicial();
         
         
@@ -656,17 +616,13 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelarAvaliacao;
     private javax.swing.JButton btnCancelarPesquisa;
     private javax.swing.JButton btnExibir;
-    private javax.swing.JButton btnOk;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel lblAvaliacao;
     private javax.swing.JPanel lblBusca;
-    private javax.swing.JLabel lblFiltrar;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblNome1;
     private javax.swing.JLabel lblNome2;

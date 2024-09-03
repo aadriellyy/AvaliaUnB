@@ -127,9 +127,12 @@ public class TelaAluno extends javax.swing.JFrame{
         DefaultTableModel modelo = new DefaultTableModel(new Object[] {"ID", "Professor (a)", "Feedback", "Nota"},0){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+                if(column == 1){
+                    return false;
+                }
+                return true;
+              }};
+        
         AlunoDAO dao = new AlunoDAO();
        
         List <Avaliacao> listaAvaliacao = dao.agrupAvaliacao(this.aluno).getAvaliacoes();         
@@ -400,9 +403,16 @@ public class TelaAluno extends javax.swing.JFrame{
                 "id", "Professor (a)", "Feedback", "Nota"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -584,24 +594,25 @@ public class TelaAluno extends javax.swing.JFrame{
     }//GEN-LAST:event_tblAvaliacoesMouseClicked
 
     private void btnEditAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAvaliacaoActionPerformed
-         if(tblAvaliacoes.getSelectedRow() != -1){
+       if(tblAvaliacoes.getSelectedRow() != -1){
             AvaliacaoDAO dao = new AvaliacaoDAO();
-             
-            String feedback = (String) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 2);
-            int id = (int) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 0);
-            Professor professor = dao.buscarProfessor((String) tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 1));
-            float nota = (float)tblAvaliacoes.getValueAt(tblAvaliacoes.getSelectedRow(), 3);
+
+            int selectedRow = tblAvaliacoes.getSelectedRow();
+            int id = (int) tblAvaliacoes.getValueAt(selectedRow, 0);
             
-            Avaliacao avalia = new Avaliacao(id, professor, this.aluno, feedback, nota);            
-            dao.update(avalia);
-            
-            // Remover a linha do modelo da tabela
             DefaultTableModel modelo = (DefaultTableModel) tblAvaliacoes.getModel();
-            modelo.removeRow(tblAvaliacoes.getSelectedRow());
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Selecione uma avaliação para excluir.");
-        }
+ 
+            Professor professor = dao.buscarProfessor(modelo.getValueAt(selectedRow, 1).toString());
+            String feedback = modelo.getValueAt(selectedRow, 2).toString();
+            float nota = Float.parseFloat(modelo.getValueAt(selectedRow, 3).toString());
+
+            Avaliacao avalia = new Avaliacao(id, professor , this.aluno, feedback, nota);
+            
+            dao.update(avalia);     
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma avaliação para atualizar.");
+}
     }//GEN-LAST:event_btnEditAvaliacaoActionPerformed
 
     private void btnExibirGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirGradeActionPerformed

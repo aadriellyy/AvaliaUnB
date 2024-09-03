@@ -391,7 +391,7 @@
                     <Column editable="false" title="id" type="java.lang.Object"/>
                     <Column editable="false" title="Professor (a)" type="java.lang.Object"/>
                     <Column editable="false" title="Feedback" type="java.lang.Object"/>
-                    <Column editable="false" title="Nota" type="java.lang.Object"/>
+                    <Column editable="false" title="Nota" type="java.lang.Float"/>
                   </Table>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
