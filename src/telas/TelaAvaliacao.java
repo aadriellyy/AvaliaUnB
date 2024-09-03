@@ -32,6 +32,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         this.inicial();
     }
     
+    //sobrecarga de construtor usada na tela de login
     public TelaAvaliacao(String matricula, Aluno aluno) {
         initComponents();
         this.limpar();
@@ -40,6 +41,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
         this.matriculaAluno = matricula;
     }
     
+    //sobrecarga de construtor usada na tela de professor
     public TelaAvaliacao(String matricula, Aluno aluno, Professor professor){
         initComponents();
         this.limpar();
@@ -469,6 +471,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarPesquisaActionPerformed
 
     private void btnExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirActionPerformed
+        //botao que leva ate o perfil do professor selecionado
         this.limpar();
         this.setVisible(false);
         String nomeProfessor = this.txtNomeProfessor.getText();
@@ -491,7 +494,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomePesquisaActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+        //botao que busca um professor pelo nome inserido
         String nomeProfessor = this.txtNomePesquisa.getText();
         AvaliacaoDAO dao = new AvaliacaoDAO();
         Professor prof = dao.buscarProfessor(nomeProfessor);
@@ -521,7 +524,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFeedbackActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
+        //botao que salva uma avaliacao
         AvaliacaoDAO dao = new AvaliacaoDAO();
         Professor prof = dao.buscarProfessor(this.txtNomeProfessor.getText());
         AlunoDAO daoAluno = new AlunoDAO();
@@ -557,6 +560,7 @@ public class TelaAvaliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNotaAvaliacaoActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        //botao usado para voltar a tela de aluno
         this.limpar();
         Aluno aluno = new Aluno();
         AlunoDAO dao = new AlunoDAO();

@@ -193,6 +193,7 @@ public class telaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    //verifica se a matricula inserida eh igual a matricula existente
     public static boolean matricula(String matriculaAtual){
         if(matriculaAtual.equals(matriculaLogada)){
             return true;
@@ -203,6 +204,7 @@ public class telaLogin extends javax.swing.JFrame {
     }
     
     public static Aluno autenticar(String matricula, String senha){
+       //verifica se matricula e senha sao correspondentes
         AlunoDAO dao = new AlunoDAO();
         for(Aluno aluno: dao.read()){
             if(aluno.getSenha().equals(senha) && aluno.getMatricula().equals(matricula)){
@@ -213,10 +215,12 @@ public class telaLogin extends javax.swing.JFrame {
     }
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        //redireciona para a tela de cadastro
         new telaCadastro().setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+       //redireciona para a tela de aluno caso as condições sejam satisfeitas
        String matricula = txtMatricula.getText();
        String senha = txtSenha.getText();
        
@@ -240,6 +244,7 @@ public class telaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
+       //habilita o login de adm
         txtSenhaAdm.setEnabled(true);
         btnLoginAdm.setEnabled(true);
         btnAdministrador.setEnabled(false);
@@ -254,6 +259,7 @@ public class telaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdministradorActionPerformed
 
     private void btnLoginAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginAdmActionPerformed
+        //permite o login como adm
         String entrada = txtSenhaAdm.getText();
         if (entrada.equals(senhaAdm)){
             new TelaAdministrador().setVisible(true);
@@ -319,6 +325,8 @@ public class telaLogin extends javax.swing.JFrame {
             }
         });
         
+        
+        //a partir daqui é criado do zero a conexao inicial, dataBase usada e tabelas do programa
         Connection con = null;
         Statement stmt = null;
             try {

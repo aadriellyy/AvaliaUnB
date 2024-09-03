@@ -27,6 +27,8 @@ import classes.Professor;
 public class AvaliacaoDAO {
     
     
+    
+    //metodo para buscar um professor no banco de dados pelo nome
     public Professor buscarProfessor(String nome){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -62,6 +64,7 @@ public class AvaliacaoDAO {
         
     }
     
+    //metodo usado para agrupar todas as avaliacoes de um determinado professor
     public List<Avaliacao> read(){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -104,6 +107,8 @@ public class AvaliacaoDAO {
         
         return avaliacoes;
     }
+    
+    //metodo para criar uma avaliacao
     public void create(Avaliacao avaliacao){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -129,6 +134,7 @@ public class AvaliacaoDAO {
         }
     }
     
+    //metodo para curtir uma avaliacao
     public void updateLike (Avaliacao avalia){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -150,6 +156,8 @@ public class AvaliacaoDAO {
         }
     }
     
+    
+    // metodo para atualizar uma avaliacao
     public void update(Avaliacao avaliacao){
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
@@ -181,6 +189,7 @@ public class AvaliacaoDAO {
         }       
     }
     
+    //metodo para encontrar uma avaliacao pelo id
     public Avaliacao achaAvaliacao(Avaliacao avalia){
         List<Avaliacao> listaAvaliacoes = this.read();
         for (Avaliacao avaliacao: listaAvaliacoes){

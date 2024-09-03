@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 public class AlunoDAO {
     
     //CRUD DE ALUNO
+    
     private Aluno aluno;
     
     public void setAluno(Aluno aluno){
@@ -27,6 +28,8 @@ public class AlunoDAO {
         return this.aluno;
     }
     
+    
+    //metodo usado para criar um novo aluno
     public void create(Aluno aluno){
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
@@ -53,6 +56,7 @@ public class AlunoDAO {
         
     }
     
+    //metodo usado para ler todos os alunos cadastrados no banco de dados
     public List<Aluno> read(){
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
@@ -81,6 +85,7 @@ public class AlunoDAO {
         return alunos;
     }
     
+    //metodo usado para atualizar o aluno
     public void update(Aluno aluno){
         
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
@@ -107,6 +112,7 @@ public class AlunoDAO {
         }       
     }
     
+    //metodo usado para buscar um professor acessando o seu id
     public Professor buscarProfessor(int id){
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -123,6 +129,7 @@ public class AlunoDAO {
         
     }
     
+    //metodo usado para adicionar todas as avaliacoes feitas por um aluno ao objeto aluno
     public Aluno agrupAvaliacao(Aluno aluno){
         Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
@@ -159,6 +166,7 @@ public class AlunoDAO {
         
     }
     
+    //metodo feito para deletar uma avaliacao
     public void delete(Avaliacao avalia){
         Connection con = ConnectionFactory.getDatabaseConnection();
         PreparedStatement stmt = null;
@@ -180,6 +188,7 @@ public class AlunoDAO {
         
     }
     
+    //metodo feito para retornar a lista de avaliações que o aluno curtiu, para evitar que ele curta a mesma avaliação varias vezes
     public ArrayList<Integer>  avaliacoesCurtidas (int id){//procura os ids das avaliações que o aluno ja curtiu
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;  //preparando a sql para execucao
@@ -212,6 +221,8 @@ public class AlunoDAO {
         return listaCurtidas;
     }
     
+    
+    //atualiza o número de curtidas de uma avaliacao
     public void atualizarAvaliacoesCurtidas(int idAluno, int idAvaliacao){//atualizando os ids das avaliações que o aluno já curtiu
         Connection con = ConnectionFactory.getDatabaseConnection(); //abrindo conexao
         PreparedStatement stmt = null;
